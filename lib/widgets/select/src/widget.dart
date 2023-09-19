@@ -171,28 +171,28 @@ class SmartSelect<T> extends StatefulWidget {
     this.choiceItems,
     this.choiceLoader,
   })  : assert(
-          title != null || modalConfig.title != null,
-          'title and modalConfig.title must not be both null',
+  title != null || modalConfig.title != null,
+  'title and modalConfig.title must not be both null',
+  ),
+        assert(
+        (isMultiChoice && multiOnChange != null && multiBuilder != null) ||
+            (!isMultiChoice &&
+                singleOnChange != null &&
+                singleBuilder != null),
+        isMultiChoice
+            ? 'multiValue, multiOnChange, and multiBuilder must be not null in multiple choice'
+            : 'singleValue, singleOnChange, and singleBuilder must be not null in single choice',
         ),
         assert(
-          (isMultiChoice && multiOnChange != null && multiBuilder != null) ||
-              (!isMultiChoice &&
-                  singleOnChange != null &&
-                  singleBuilder != null),
-          isMultiChoice
-              ? 'multiValue, multiOnChange, and multiBuilder must be not null in multiple choice'
-              : 'singleValue, singleOnChange, and singleBuilder must be not null in single choice',
+        (isMultiChoice && choiceConfig.type != S2ChoiceType.radios) ||
+            (!isMultiChoice && choiceConfig.type != S2ChoiceType.checkboxes),
+        isMultiChoice
+            ? 'multiple choice can\'t use S2ChoiceType.radios'
+            : 'Single choice can\'t use S2ChoiceType.checkboxes',
         ),
         assert(
-          (isMultiChoice && choiceConfig.type != S2ChoiceType.radios) ||
-              (!isMultiChoice && choiceConfig.type != S2ChoiceType.checkboxes),
-          isMultiChoice
-              ? 'multiple choice can\'t use S2ChoiceType.radios'
-              : 'Single choice can\'t use S2ChoiceType.checkboxes',
-        ),
-        assert(
-          choiceItems != null || choiceLoader != null,
-          '`choiceItems` and `choiceLoader` can\'t be both null',
+        choiceItems != null || choiceLoader != null,
+        '`choiceItems` and `choiceLoader` can\'t be both null',
         ),
         super(key: key);
 
@@ -403,9 +403,9 @@ class SmartSelect<T> extends StatefulWidget {
     S2ComplexWidgetBuilder<S2SingleState<T>, S2Choice<T>>? choiceBuilder,
     S2ComplexWidgetBuilder<S2SingleState<T>, S2Choice<T>>? choiceTitleBuilder,
     S2ComplexWidgetBuilder<S2SingleState<T>, S2Choice<T>>?
-        choiceSubtitleBuilder,
+    choiceSubtitleBuilder,
     S2ComplexWidgetBuilder<S2SingleState<T>, S2Choice<T>>?
-        choiceSecondaryBuilder,
+    choiceSecondaryBuilder,
     IndexedWidgetBuilder? choiceDividerBuilder,
     S2WidgetBuilder<S2SingleState<T>>? choiceEmptyBuilder,
     S2ComplexWidgetBuilder<S2SingleState<T>, S2Group<T>>? groupBuilder,
@@ -468,55 +468,55 @@ class SmartSelect<T> extends StatefulWidget {
       singleValidation: validation,
       singleModalValidation: modalValidation,
       singleBuilder: S2SingleBuilder<T>().merge(builder).copyWith(
-            tile: tileBuilder,
-            modal: modalBuilder,
-            modalHeader: modalHeaderBuilder,
-            modalActions: modalActionsBuilder,
-            modalConfirm: modalConfirmBuilder,
-            modalDivider: modalDividerBuilder,
-            modalFooter: modalFooterBuilder,
-            modalFilter: modalFilterBuilder,
-            modalFilterToggle: modalFilterToggleBuilder,
-            choice: choiceBuilder,
-            choiceTitle: choiceTitleBuilder,
-            choiceSubtitle: choiceSubtitleBuilder,
-            choiceSecondary: choiceSecondaryBuilder,
-            choiceDivider: choiceDividerBuilder,
-            choiceEmpty: choiceEmptyBuilder,
-            group: groupBuilder,
-            groupHeader: groupHeaderBuilder,
-          ),
+        tile: tileBuilder,
+        modal: modalBuilder,
+        modalHeader: modalHeaderBuilder,
+        modalActions: modalActionsBuilder,
+        modalConfirm: modalConfirmBuilder,
+        modalDivider: modalDividerBuilder,
+        modalFooter: modalFooterBuilder,
+        modalFilter: modalFilterBuilder,
+        modalFilterToggle: modalFilterToggleBuilder,
+        choice: choiceBuilder,
+        choiceTitle: choiceTitleBuilder,
+        choiceSubtitle: choiceSubtitleBuilder,
+        choiceSecondary: choiceSecondaryBuilder,
+        choiceDivider: choiceDividerBuilder,
+        choiceEmpty: choiceEmptyBuilder,
+        group: groupBuilder,
+        groupHeader: groupHeaderBuilder,
+      ),
       choiceConfig: defaultChoiceConfig.merge(choiceConfig).copyWith(
-            type: choiceType,
-            layout: choiceLayout,
-            direction: choiceDirection,
-            gridDelegate: choiceGrid,
-            gridCount: choiceGridCount,
-            gridSpacing: choiceGridSpacing,
-            useDivider: choiceDivider,
-            style: choiceStyle,
-            activeStyle: choiceActiveStyle,
-            pageLimit: choicePageLimit,
-            delay: choiceDelay,
-          ),
+        type: choiceType,
+        layout: choiceLayout,
+        direction: choiceDirection,
+        gridDelegate: choiceGrid,
+        gridCount: choiceGridCount,
+        gridSpacing: choiceGridSpacing,
+        useDivider: choiceDivider,
+        style: choiceStyle,
+        activeStyle: choiceActiveStyle,
+        pageLimit: choicePageLimit,
+        delay: choiceDelay,
+      ),
       groupConfig: defaultGroupConfig.merge(groupConfig).copyWith(
-            enabled: groupEnabled ?? choiceGrouped,
-            useSelector: groupSelector,
-            useCounter: groupCounter,
-            sortBy: groupSortBy,
-            headerStyle: groupHeaderStyle,
-          ),
+        enabled: groupEnabled ?? choiceGrouped,
+        useSelector: groupSelector,
+        useCounter: groupCounter,
+        sortBy: groupSortBy,
+        headerStyle: groupHeaderStyle,
+      ),
       modalConfig: defaultModalConfig.merge(modalConfig).copyWith(
-            type: modalType,
-            title: modalTitle,
-            filterHint: modalFilterHint,
-            filterAuto: modalFilterAuto,
-            useFilter: modalFilter,
-            useHeader: modalHeader,
-            useConfirm: modalConfirm,
-            style: modalStyle,
-            headerStyle: modalHeaderStyle,
-          ),
+        type: modalType,
+        title: modalTitle,
+        filterHint: modalFilterHint,
+        filterAuto: modalFilterAuto,
+        useFilter: modalFilter,
+        useHeader: modalHeader,
+        useConfirm: modalConfirm,
+        style: modalStyle,
+        headerStyle: modalHeaderStyle,
+      ),
     );
   }
 
@@ -728,7 +728,7 @@ class SmartSelect<T> extends StatefulWidget {
     S2ComplexWidgetBuilder<S2MultiState<T>, S2Choice<T>>? choiceTitleBuilder,
     S2ComplexWidgetBuilder<S2MultiState<T>, S2Choice<T>>? choiceSubtitleBuilder,
     S2ComplexWidgetBuilder<S2MultiState<T>, S2Choice<T>>?
-        choiceSecondaryBuilder,
+    choiceSecondaryBuilder,
     IndexedWidgetBuilder? choiceDividerBuilder,
     S2WidgetBuilder<S2MultiState<T>>? choiceEmptyBuilder,
     S2ComplexWidgetBuilder<S2MultiState<T>, S2Group<T>>? groupBuilder,
@@ -791,55 +791,55 @@ class SmartSelect<T> extends StatefulWidget {
       multiValidation: validation,
       multiModalValidation: modalValidation,
       multiBuilder: S2MultiBuilder<T>().merge(builder).copyWith(
-            tile: tileBuilder,
-            modal: modalBuilder,
-            modalHeader: modalHeaderBuilder,
-            modalActions: modalActionsBuilder,
-            modalConfirm: modalConfirmBuilder,
-            modalDivider: modalDividerBuilder,
-            modalFooter: modalFooterBuilder,
-            modalFilter: modalFilterBuilder,
-            modalFilterToggle: modalFilterToggleBuilder,
-            choice: choiceBuilder,
-            choiceTitle: choiceTitleBuilder,
-            choiceSubtitle: choiceSubtitleBuilder,
-            choiceSecondary: choiceSecondaryBuilder,
-            choiceDivider: choiceDividerBuilder,
-            choiceEmpty: choiceEmptyBuilder,
-            group: groupBuilder,
-            groupHeader: groupHeaderBuilder,
-          ),
+        tile: tileBuilder,
+        modal: modalBuilder,
+        modalHeader: modalHeaderBuilder,
+        modalActions: modalActionsBuilder,
+        modalConfirm: modalConfirmBuilder,
+        modalDivider: modalDividerBuilder,
+        modalFooter: modalFooterBuilder,
+        modalFilter: modalFilterBuilder,
+        modalFilterToggle: modalFilterToggleBuilder,
+        choice: choiceBuilder,
+        choiceTitle: choiceTitleBuilder,
+        choiceSubtitle: choiceSubtitleBuilder,
+        choiceSecondary: choiceSecondaryBuilder,
+        choiceDivider: choiceDividerBuilder,
+        choiceEmpty: choiceEmptyBuilder,
+        group: groupBuilder,
+        groupHeader: groupHeaderBuilder,
+      ),
       choiceConfig: defaultChoiceConfig.merge(choiceConfig).copyWith(
-            type: choiceType,
-            layout: choiceLayout,
-            direction: choiceDirection,
-            gridDelegate: choiceGrid,
-            gridCount: choiceGridCount,
-            gridSpacing: choiceGridSpacing,
-            useDivider: choiceDivider,
-            style: choiceStyle,
-            activeStyle: choiceActiveStyle,
-            pageLimit: choicePageLimit,
-            delay: choiceDelay,
-          ),
+        type: choiceType,
+        layout: choiceLayout,
+        direction: choiceDirection,
+        gridDelegate: choiceGrid,
+        gridCount: choiceGridCount,
+        gridSpacing: choiceGridSpacing,
+        useDivider: choiceDivider,
+        style: choiceStyle,
+        activeStyle: choiceActiveStyle,
+        pageLimit: choicePageLimit,
+        delay: choiceDelay,
+      ),
       groupConfig: defaultGroupConfig.merge(groupConfig).copyWith(
-            enabled: groupEnabled ?? choiceGrouped,
-            useSelector: groupSelector,
-            useCounter: groupCounter,
-            sortBy: groupSortBy,
-            headerStyle: groupHeaderStyle,
-          ),
+        enabled: groupEnabled ?? choiceGrouped,
+        useSelector: groupSelector,
+        useCounter: groupCounter,
+        sortBy: groupSortBy,
+        headerStyle: groupHeaderStyle,
+      ),
       modalConfig: defaultModalConfig.merge(modalConfig).copyWith(
-            type: modalType,
-            title: modalTitle,
-            filterHint: modalFilterHint,
-            filterAuto: modalFilterAuto,
-            useFilter: modalFilter,
-            useHeader: modalHeader,
-            useConfirm: modalConfirm,
-            style: modalStyle,
-            headerStyle: modalHeaderStyle,
-          ),
+        type: modalType,
+        title: modalTitle,
+        filterHint: modalFilterHint,
+        filterAuto: modalFilterAuto,
+        useFilter: modalFilter,
+        useHeader: modalHeader,
+        useConfirm: modalConfirm,
+        style: modalStyle,
+        headerStyle: modalHeaderStyle,
+      ),
     );
   }
 
@@ -977,19 +977,19 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
     return widget.modalConfig.copyWith(
       headerStyle: S2ModalHeaderStyle(
         backgroundColor:
-            widget.modalConfig.isFullPage != true ? theme.cardColor : null,
+        widget.modalConfig.isFullPage != true ? theme.cardColor : null,
         textStyle: widget.modalConfig.isFullPage != true
             ? theme.textTheme.headline6
             : theme.primaryTextTheme.headline6,
         iconTheme:
-            widget.modalConfig.isFullPage != true ? theme.iconTheme : null,
+        widget.modalConfig.isFullPage != true ? theme.iconTheme : null,
         errorStyle: TextStyle(
           fontSize: 13.5,
           fontWeight: FontWeight.w500,
           color: widget.modalConfig.isFullPage == true
-              ? (theme.primaryColorBrightness == Brightness.dark
-                  ? Colors.white
-                  : theme.errorColor)
+              ?(theme.brightness==Brightness.dark
+              ? Colors.white
+              : theme.errorColor)
               : theme.errorColor,
         ),
       ).merge(widget.modalConfig.headerStyle),
@@ -1030,16 +1030,16 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
       onWillPop: onModalWillClose,
       child: modalConfig.isFullPage == true
           ? Scaffold(
-              backgroundColor: modalConfig.style.backgroundColor,
-              appBar: PreferredSize(
-                child: modalHeader!,
-                preferredSize: Size.fromHeight(kToolbarHeight),
-              ),
-              body: SafeArea(
-                maintainBottomViewPadding: true,
-                child: modalBody,
-              ),
-            )
+        backgroundColor: modalConfig.style.backgroundColor,
+        appBar: PreferredSize(
+          child: modalHeader!,
+          preferredSize: Size.fromHeight(kToolbarHeight),
+        ),
+        body: SafeArea(
+          maintainBottomViewPadding: true,
+          child: modalBody,
+        ),
+      )
           : modalBody,
     );
   }
@@ -1136,11 +1136,11 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
       onSubmitted: modalConfig.filterAuto ? null : filter!.apply,
       onChanged: modalConfig.filterAuto
           ? (query) {
-              debouncer.run(
-                () => filter!.apply(query),
-                delay: modalConfig.filterDelay,
-              );
-            }
+        debouncer.run(
+              () => filter!.apply(query),
+          delay: modalConfig.filterDelay,
+        );
+      }
           : null,
     );
   }
@@ -1159,13 +1159,13 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
   Widget get defaultModalFilterToggle {
     return !filter!.activated
         ? IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () => filter!.show(modalContext),
-          )
+      icon: Icon(Icons.search),
+      onPressed: () => filter!.show(modalContext),
+    )
         : IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () => filter!.hide(modalContext),
-          );
+      icon: Icon(Icons.clear),
+      onPressed: () => filter!.hide(modalContext),
+    );
   }
 
   /// Returns the confirm button widget
@@ -1179,7 +1179,7 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
   /// Returns the default confirm button widget
   Widget get defaultConfirmButton {
     final VoidCallback? onPressed =
-        selection!.isValid ? () => closeModal(confirmed: true) : null;
+    selection!.isValid ? () => closeModal(confirmed: true) : null;
 
     if (modalConfig.confirmLabel != null) {
       if (modalConfig.confirmIcon != null) {
@@ -1211,7 +1211,7 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
         padding: modalConfig.confirmMargin ?? const EdgeInsets.all(0),
         child: IconButton(
           icon:
-              modalConfig.confirmIcon ?? const Icon(Icons.check_circle_outline),
+          modalConfig.confirmIcon ?? const Icon(Icons.check_circle_outline),
           color: modalConfig.confirmColor,
           onPressed: onPressed,
         ),
@@ -1236,7 +1236,7 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
       primary: true,
       shape: modalHeaderStyle.shape,
       elevation: modalHeaderStyle.elevation,
-      brightness: modalHeaderStyle.brightness,
+      //brightness: modalHeaderStyle.brightness,
       backgroundColor: modalHeaderStyle.backgroundColor,
       actionsIconTheme: modalHeaderStyle.actionsIconTheme,
       iconTheme: modalHeaderStyle.iconTheme,
@@ -1246,13 +1246,13 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
       title: isFiltering
           ? modalFilter
           : Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                modalTitle,
-                modalError,
-              ],
-            ),
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          modalTitle,
+          modalError,
+        ],
+      ),
       actions: modalActions,
     );
   }
@@ -1361,49 +1361,49 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
     return choices!.isInitializing && choices!.isAsync
         ? choiceProgress
         : choices!.isNotEmpty
-            ? ListTileTheme(
-                contentPadding: choiceConfig.style?.padding,
-                child: Builder(
-                  builder: (_) {
-                    // return grouped choices if the configuration meet the requirement
-                    if (groupConfig.enabled) {
-                      final List<S2Group<T>>? groups =
-                          choices!.groupItems(groupConfig);
-                      if (groups != null) {
-                        // appendable and reloadable choices are incompatible with grouped choices
-                        return groupedChoices(groups);
-                      }
-                    }
+        ? ListTileTheme(
+      contentPadding: choiceConfig.style?.padding,
+      child: Builder(
+        builder: (_) {
+          // return grouped choices if the configuration meet the requirement
+          if (groupConfig.enabled) {
+            final List<S2Group<T>>? groups =
+            choices!.groupItems(groupConfig);
+            if (groups != null) {
+              // appendable and reloadable choices are incompatible with grouped choices
+              return groupedChoices(groups);
+            }
+          }
 
-                    return S2Pagination(
-                      child: ungroupedChoices(choices!.items),
-                      reloadable: choices!.isAsync,
-                      appendable: choiceConfig.pageLimit != null,
-                      onReload: () => choices!.reload(query: filter?.value),
-                      onAppend: () => choices!.append(query: filter?.value),
-                    );
-                  },
-                ),
-              )
-            : choiceEmpty;
+          return S2Pagination(
+            child: ungroupedChoices(choices!.items),
+            reloadable: choices!.isAsync,
+            appendable: choiceConfig.pageLimit != null,
+            onReload: () => choices!.reload(query: filter?.value),
+            onAppend: () => choices!.append(query: filter?.value),
+          );
+        },
+      ),
+    )
+        : choiceEmpty;
   }
 
   /// Returns the ungrouped choice items widget
   Widget ungroupedChoices(List<S2Choice<T>>? _choices) {
     return S2ChoicesList<T>(
       itemLength:
-          choices!.isAppending ? _choices!.length + 1 : _choices!.length,
+      choices!.isAppending ? _choices!.length + 1 : _choices!.length,
       itemBuilder: (context, i) {
         return choices!.isAppending && i == _choices.length
             ? Container(
-                child: const Center(
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
-              )
+          child: const Center(
+            child: SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        )
             : choiceListBuilder(_choices[i])!;
       },
       dividerBuilder: builder.choiceDivider,
@@ -1468,13 +1468,13 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
         highlight: filter?.value,
         style: group.headerStyle!.textStyle,
         highlightColor:
-            group.headerStyle!.highlightColor ?? const Color(0xFFFFF176),
+        group.headerStyle!.highlightColor ?? const Color(0xFFFFF176),
       ),
       trailing: groupConfig.useSelector == true
           ? choiceSelector(group.choices) ?? groupCounter(group)
           : groupConfig.useCounter == true
-              ? groupCounter(group)
-              : null,
+          ? groupCounter(group)
+          : null,
     );
   }
 
@@ -1538,14 +1538,14 @@ abstract class S2State<T> extends State<SmartSelect<T>> {
           isScrollControlled: true,
           builder: (_) {
             final MediaQueryData mediaQuery =
-                MediaQueryData.fromWindow(WidgetsBinding.instance.window);
+            MediaQueryData.fromWindow(WidgetsBinding.instance.window);
             final double topObstructions = mediaQuery.viewPadding.top;
             final double bottomObstructions = mediaQuery.viewPadding.bottom;
             final double keyboardHeight = mediaQuery.viewInsets.bottom;
             final double deviceHeight = mediaQuery.size.height;
             final bool isKeyboardOpen = keyboardHeight > 0;
             final double maxHeightFactor =
-                isKeyboardOpen ? 1 : modalConfig.maxHeightFactor;
+            isKeyboardOpen ? 1 : modalConfig.maxHeightFactor;
             final double modalHeight =
                 (deviceHeight * maxHeightFactor) + keyboardHeight;
             final bool isFullHeight = modalHeight >= deviceHeight;
@@ -1756,7 +1756,7 @@ class S2SingleState<T> extends S2State<T> {
         ..addListener(_selectedHandler)
         ..resolve(defaultResolver: (value) async {
           return widget.choiceItems?.firstWhereOrNull(
-            (item) => item.value == value,
+                (item) => item.value == value,
           );
         });
     }
@@ -1870,7 +1870,7 @@ class S2SingleState<T> extends S2State<T> {
   Widget? choiceTitle(S2Choice<T> choice) {
     return choice.title != null
         ? builder?.choiceTitle?.call(modalContext, this, choice) ??
-            defaultChoiceTitle(choice)
+        defaultChoiceTitle(choice)
         : null;
   }
 
@@ -1878,7 +1878,7 @@ class S2SingleState<T> extends S2State<T> {
   Widget? choiceSubtitle(S2Choice<T> choice) {
     return choice.subtitle != null
         ? builder?.choiceSubtitle?.call(modalContext, this, choice) ??
-            defaultChoiceSubtitle(choice)
+        defaultChoiceSubtitle(choice)
         : null;
   }
 
@@ -2077,7 +2077,7 @@ class S2MultiState<T> extends S2State<T> {
   Widget? choiceTitle(S2Choice<T> choice) {
     return choice.title != null
         ? builder?.choiceTitle?.call(modalContext, this, choice) ??
-            defaultChoiceTitle(choice)
+        defaultChoiceTitle(choice)
         : null;
   }
 
@@ -2085,7 +2085,7 @@ class S2MultiState<T> extends S2State<T> {
   Widget? choiceSubtitle(S2Choice<T> choice) {
     return choice.subtitle != null
         ? builder?.choiceSubtitle?.call(modalContext, this, choice) ??
-            defaultChoiceSubtitle(choice)
+        defaultChoiceSubtitle(choice)
         : null;
   }
 
@@ -2101,8 +2101,8 @@ class S2MultiState<T> extends S2State<T> {
       value: selection!.length == choices!.length
           ? true
           : selection!.length == 0
-              ? false
-              : null,
+          ? false
+          : null,
       tristate: true,
       onChanged: (value) {
         if (value == true) {
@@ -2121,8 +2121,8 @@ class S2MultiState<T> extends S2State<T> {
       value: selection!.hasAll(choices!)
           ? true
           : selection!.hasAny(choices)
-              ? null
-              : false,
+          ? null
+          : false,
       tristate: true,
       onChanged: (value) {
         if (value == true) {

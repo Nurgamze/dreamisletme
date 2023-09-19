@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:auto_orientation/auto_orientation.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -12,16 +10,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:sdsdream_flutter/modeller/GridModeller.dart';
-import 'package:sdsdream_flutter/modeller/Listeler.dart';
-import 'package:sdsdream_flutter/modeller/Modeller.dart';
-import 'package:sdsdream_flutter/widgets/Dialoglar.dart';
-import 'package:sdsdream_flutter/widgets/DreamCogsGif.dart';
-import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
-import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../modeller/GridModeller.dart';
+import '../modeller/Listeler.dart';
+import '../modeller/Modeller.dart';
+import '../widgets/Dialoglar.dart';
+import '../widgets/DreamCogsGif.dart';
+import '../widgets/HorizontalPage.dart';
+import '../widgets/const_screen.dart';
 import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
@@ -130,21 +128,25 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                           scanBarcodeNormal();
                         }
                     ),
-                    filtreMarkalarMi || filtreReyonlarMi || filtreVoltajMi || filtreGucMu || filtreEbatMi || filtreCalismaOrtami || filtreRenkMi || filtreLedSayisiMi || filtreEkOzellikMi ||  grupFiltreMi ? Badge(
-                      position: BadgePosition.topEnd(top: 0, end: 5),
-                      badgeColor: Colors.red,
-                      badgeContent: Text("${_filtreler.length + filtreMarkalarList.length + filtreReyonlarList.length +
-                          filtreVoltajList.length + filtreGucList.length +
-                          filtreEbatList.length + filtreCalismaOrtamiList.length +
-                          filtreRenkList.length + filtreLedSayisiList.length + filtreEkOzellikList.length}",style: TextStyle(color: Colors.white)),
-                      child: IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
-                        if(filtreSecMarkalarList.isEmpty){
-                          showDialog(context: context,builder: (conxtext) => Center(child:  CircularProgressIndicator(),));
-                          await _filtreGetir();
-                          Navigator.pop(context);
-                        }
-                        showDialog(context: context,builder: (context) => _filtreDialog());
-                      }),
+                    filtreMarkalarMi || filtreReyonlarMi || filtreVoltajMi || filtreGucMu || filtreEbatMi || filtreCalismaOrtami || filtreRenkMi || filtreLedSayisiMi || filtreEkOzellikMi ||  grupFiltreMi ?
+                    Stack(
+                      alignment: Alignment(0,5),
+                      children: [
+                        Container(
+                          color: Colors.red,
+                        ),Text("${_filtreler.length + filtreMarkalarList.length + filtreReyonlarList.length +
+                            filtreVoltajList.length + filtreGucList.length +
+                            filtreEbatList.length + filtreCalismaOrtamiList.length +
+                            filtreRenkList.length + filtreLedSayisiList.length + filtreEkOzellikList.length}",style: TextStyle(color: Colors.white)),
+                        IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
+                          if(filtreSecMarkalarList.isEmpty){
+                            showDialog(context: context,builder: (conxtext) => Center(child:  CircularProgressIndicator(),));
+                            await _filtreGetir();
+                            Navigator.pop(context);
+                          }
+                          showDialog(context: context,builder: (context) => _filtreDialog());
+                        }),
+                      ],
                     )
                         : IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: () async {
                       if(filtreSecMarkalarList.isEmpty){
@@ -604,16 +606,19 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                       },
                       tileBuilder: (context, state) {
                         if(grupFiltreMi){
-                          return Badge(
-                            position: BadgePosition.topEnd(top: 5, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${_filtreler.length}",style: TextStyle(color: Colors.white)),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("Ana Grup/Alt Grup",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(top: 10),),
-                                onTap: () async {
-                                  state.showModal();
-                                }
-                            ),
+                          return Stack(
+                            alignment: Alignment(5,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),  Text("${_filtreler.length}",style: TextStyle(color: Colors.white)),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("Ana Grup/Alt Grup",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(top: 10),),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }
+                              ),
+                            ],
                           );
                         }else{
                           return InkWell(
@@ -730,18 +735,21 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreMarkalarMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreMarkalarList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Marka",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () async {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreMarkalarList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Marka",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
 
-
-                                  }
-                              ),
                             );
                           }else{
                             return InkWell(
@@ -860,17 +868,20 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreReyonlarMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreReyonlarList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Reyon",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ), Text("${filtreReyonlarList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Reyon",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
 
-                                  }
-                              ),
                             );
                           }else{
                             return InkWell(
@@ -989,17 +1000,19 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreVoltajMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreVoltajList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Voltaj",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color:Colors.red,
+                                ),Text("${filtreVoltajList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Voltaj",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -1118,17 +1131,20 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreGucMu){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreGucList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Güç",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),Text("${filtreGucList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Güç",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
 
-                                  }
-                              ),
                             );
                           }else{
                             return InkWell(
@@ -1247,17 +1263,20 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreEbatMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreEbatList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Ebat",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ), Text("${filtreEbatList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Ebat",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
 
-                                  }
-                              ),
                             );
                           }else{
                             return InkWell(
@@ -1376,17 +1395,20 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreCalismaOrtami){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreCalismaOrtamiList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Çalışma Ortamı",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ), Text("${filtreCalismaOrtamiList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Çalışma Ortamı",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
 
-                                  }
-                              ),
                             );
                           }else{
                             return InkWell(
@@ -1505,17 +1527,22 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreRenkMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreRenkList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Renk",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreRenkList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Renk",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
 
-                                  }
-                              ),
+                                    }
+                                ),
+                              ],
+
                             );
                           }else{
                             return InkWell(
@@ -1634,17 +1661,20 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreLedSayisiMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreLedSayisiList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Led Sayısı",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ), Text("${filtreLedSayisiList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Led Sayısı",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
 
-                                  }
-                              ),
                             );
                           }else{
                             return InkWell(
@@ -1763,17 +1793,20 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreEkOzellikMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreEkOzellikList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Ek Özellik",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),Text("${filtreEkOzellikList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Ek Özellik",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
 
-                                  }
-                              ),
                             );
                           }else{
                             return InkWell(

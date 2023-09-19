@@ -12,8 +12,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sdsdream_flutter/modeller/GridModeller.dart';
-import 'package:sdsdream_flutter/modeller/Listeler.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -23,6 +21,8 @@ import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
 import '../widgets/select/src/widget.dart';
+import 'modeller/GridModeller.dart';
+import 'modeller/Listeler.dart';
 import 'modeller/Modeller.dart';
 import 'widgets/Dialoglar.dart';
 import 'widgets/DreamCogsGif.dart';
@@ -76,8 +76,8 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
 
 
 
-  
-  
+
+
   List<ZiyaretPlaniGridModel> yedekGridList = [];
 
 
@@ -107,14 +107,16 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
                 _exportExcel();
 
               }),
-              cariKodFiltreMi || ilgiliFiltreMi ? Badge(
-                position: BadgePosition.topEnd(top: 0, end: 5),
-                badgeColor: Colors.red,
-                badgeContent: Text("${cariKodFiltreler.length + ilgiliFiltreler.length + sehirFiltreler.length}",style: TextStyle(color: Colors.white)),
-                child: IconButton(icon: const FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
-                  showDialog(context: context,builder: (context) => _filtreDialog());
-
-                }),
+              cariKodFiltreMi || ilgiliFiltreMi ? Stack(
+                alignment: Alignment(0,5),
+                children: [
+                  Container(
+                    color: Colors.red,
+                  ), Text("${cariKodFiltreler.length + ilgiliFiltreler.length + sehirFiltreler.length}",style: TextStyle(color: Colors.white)),
+                  IconButton(icon: const FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
+                    showDialog(context: context,builder: (context) => _filtreDialog());
+                  }),
+                ],
               )
                   : IconButton(icon: const FaIcon(FontAwesomeIcons.filter), onPressed: () async {
                 showDialog(context: context,builder: (context) => _filtreDialog());
@@ -165,18 +167,18 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
                       onTap: () => callDatePicker(2),
                     ),
                     InkWell(
-                        child: Container(
-                            decoration: Sabitler.dreamBoxDecoration,
-                            margin: const EdgeInsets.only(right: 1),
-                            height: 50,
-                            width: 50,
-                            child: Center(
-                                child: Icon(Icons.search,color: Colors.blue.shade900,)
-                            )
-                        ),
-                        onTap: () async {
-                          await _ziyaretPlaniGetir();
-                        },
+                      child: Container(
+                          decoration: Sabitler.dreamBoxDecoration,
+                          margin: const EdgeInsets.only(right: 1),
+                          height: 50,
+                          width: 50,
+                          child: Center(
+                              child: Icon(Icons.search,color: Colors.blue.shade900,)
+                          )
+                      ),
+                      onTap: () async {
+                        await _ziyaretPlaniGetir();
+                      },
                     ),
                   ],
                 ),
@@ -601,16 +603,20 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
                       },
                       tileBuilder: (context, state) {
                         if(cariKodFiltreMi){
-                          return Badge(
-                            position: BadgePosition.topEnd(top: 0, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${cariKodFiltreler.length}",style: TextStyle(color: Colors.white)),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("Cari",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(top: 10),),
-                                onTap: () async {
-                                  state.showModal();
-                                }
-                            ),
+                          return Stack(
+                            alignment: Alignment(0,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),
+                              Text("${cariKodFiltreler.length}",style: TextStyle(color: Colors.white)),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("Cari",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(top: 10),),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }
+                              ),
+                            ],
                           );
                         }else{
                           return InkWell(
@@ -722,18 +728,20 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
                       },
                       tileBuilder: (context, state) {
                         if(ilgiliFiltreMi){
-                          return Badge(
-                            position: BadgePosition.bottomEnd(bottom: 0, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${ilgiliFiltreler.length}",style: TextStyle(color: Colors.white),),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("İlgili-Atanan",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                onTap: () async {
-                                  state.showModal();
+                          return Stack(
+                            alignment: Alignment(0,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),Text("${ilgiliFiltreler.length}",style: TextStyle(color: Colors.white),),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("İlgili-Atanan",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }
+                              ),
+                            ],
 
-
-                                }
-                            ),
                           );
                         }else{
                           return InkWell(
@@ -845,18 +853,20 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
                       },
                       tileBuilder: (context, state) {
                         if(sehirFiltreMi){
-                          return Badge(
-                            position: BadgePosition.bottomEnd(bottom: 0, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${sehirFiltreler.length}",style: TextStyle(color: Colors.white),),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("Şehir",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                onTap: () async {
-                                  state.showModal();
+                          return Stack(
+                            alignment: Alignment(0,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ), Text("${sehirFiltreler.length}",style: TextStyle(color: Colors.white),),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("Şehir",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }
+                              ),
+                            ],
 
-
-                                }
-                            ),
                           );
                         }else{
                           return InkWell(
@@ -875,18 +885,18 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton(
-                      onPressed: () {
-                        setState(() {
-                          cariKodFiltreler = [];
-                          ilgiliFiltreler = [];
-                          sehirFiltreler = [];
-                          ilgiliFiltreMi = false;
-                          cariKodFiltreMi = false;
-                          sehirFiltreMi = false;
-                          _gridAra([], [],[]);
-                        });
-                        Navigator.pop(context);
-                      },
+                    onPressed: () {
+                      setState(() {
+                        cariKodFiltreler = [];
+                        ilgiliFiltreler = [];
+                        sehirFiltreler = [];
+                        ilgiliFiltreMi = false;
+                        cariKodFiltreMi = false;
+                        sehirFiltreMi = false;
+                        _gridAra([], [],[]);
+                      });
+                      Navigator.pop(context);
+                    },
                     child: const Text("Temizle",style: TextStyle(color: Colors.red,fontWeight: FontWeight.w700,fontSize: 18),),
                   ),
                   Container(
@@ -897,7 +907,7 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
                       onPressed: () {
                         Navigator.pop(context);
                         _gridAra(cariKodFiltreler,ilgiliFiltreler,sehirFiltreler);
-                        },
+                      },
                       child: Text("Tamam",style: TextStyle(color: Colors.green.shade800,fontWeight: FontWeight.w700,fontSize: 18),)
                   )
                 ],
@@ -922,7 +932,7 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
     }
     setState(() {
       ziyaretPlaniGridList = arananlarList;
-      
+
       _ziyaretPlaniDataSource = ZiyaretPlaniDataSource(_dataGridController);
     });
   }
@@ -1057,7 +1067,7 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
     Share.shareFiles([path]);
     tapSending= false;
   }
-  
+
 }
 
 

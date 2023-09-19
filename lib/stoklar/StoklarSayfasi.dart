@@ -4,6 +4,13 @@ import 'package:auto_orientation/auto_orientation.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../modeller/GridModeller.dart';
+import '../modeller/Listeler.dart';
+import '../modeller/Modeller.dart';
+import '../widgets/Dialoglar.dart';
+import '../widgets/DreamCogsGif.dart';
+import '../widgets/HorizontalPage.dart';
+import '../widgets/const_screen.dart';
 import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
@@ -15,13 +22,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:sdsdream_flutter/modeller/GridModeller.dart';
-import 'package:sdsdream_flutter/modeller/Listeler.dart';
-import 'package:sdsdream_flutter/modeller/Modeller.dart';
-import 'package:sdsdream_flutter/widgets/Dialoglar.dart';
-import 'package:sdsdream_flutter/widgets/DreamCogsGif.dart';
-import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
-import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -78,8 +78,8 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
   List<String?> filtreSezonlarList = [];
   List<String?> filtreHammaddelerList = [];
   List<String?> filtreKategorilerList = [];
-  
-  
+
+
   final DataGridController _dataGridController = DataGridController();
   late StoklarDataSource _stoklarDataSource;
 
@@ -103,7 +103,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
   }
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     stoklarGridList.clear();
     if(!TelefonBilgiler.isTablet) AutoOrientation.portraitAutoMode();
@@ -113,297 +113,302 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
     return ConstScreen(
-      child: OrientationBuilder(
-        builder: (context,currentOrientation){
-          if(currentOrientation == Orientation.landscape && !TelefonBilgiler.isTablet){
-            return HorizontalPage(_grid(),);
-          }else{
-            return Scaffold(
-              resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                title: Container(
-                    child: Image(image: AssetImage("assets/images/b2b_isletme_v3.png"),width: 150,)
-                ),
-                centerTitle: true,
-                backgroundColor: Colors.blue.shade900,
-                actions: [
-                  IconButton(
-                      icon: FaIcon(FontAwesomeIcons.camera),
-                      onPressed: () {
-                        scanBarcodeNormal();
-                      }
+        child: OrientationBuilder(
+          builder: (context,currentOrientation){
+            if(currentOrientation == Orientation.landscape && !TelefonBilgiler.isTablet){
+              return HorizontalPage(_grid(),);
+            }else{
+              return Scaffold(
+                resizeToAvoidBottomInset: false,
+                appBar: AppBar(
+                  title: Container(
+                      child: Image(image: AssetImage("assets/images/b2b_isletme_v3.png"),width: 150,)
                   ),
-                  filtreMarkalarMi || filtreReyonlarMi || filtreUreticilerMi || filtreAmbalajlarMi || filtreSektorlerMi || filtreKalitekontrolMi || filtreModellerMi || filtreSezonlarMi || filtreHammaddelerMi || filtreKategorilerMi ||  grupFiltreMi ? Badge(
-                    position: BadgePosition.topEnd(top: 0, end: 5),
-                    badgeColor: Colors.red,
-                    badgeContent: Text("${_filtreler.length + filtreMarkalarList.length + filtreReyonlarList.length +
-                        filtreUreticilerList.length + filtreAmbalajlarList.length +
-                        filtreSektorlerList.length + filtreKalitekontrolList.length +
-                        filtreModellerList.length + filtreSezonlarList.length + filtreHammaddelerList.length +
-                        filtreKategorilerList.length }",style: TextStyle(color: Colors.white)),
-                    child: IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
+                  centerTitle: true,
+                  backgroundColor: Colors.blue.shade900,
+                  actions: [
+                    IconButton(
+                        icon: FaIcon(FontAwesomeIcons.camera),
+                        onPressed: () {
+                          scanBarcodeNormal();
+                        }
+                    ),
+                    filtreMarkalarMi || filtreReyonlarMi || filtreUreticilerMi || filtreAmbalajlarMi || filtreSektorlerMi || filtreKalitekontrolMi || filtreModellerMi || filtreSezonlarMi || filtreHammaddelerMi || filtreKategorilerMi ||  grupFiltreMi ?
+                    Stack(
+                      alignment: Alignment(0,5),
+                      children: [
+                        Container(
+                          color: Colors.red,
+                        ),
+                        Text("${_filtreler.length + filtreMarkalarList.length + filtreReyonlarList.length +
+                            filtreUreticilerList.length + filtreAmbalajlarList.length +
+                            filtreSektorlerList.length + filtreKalitekontrolList.length +
+                            filtreModellerList.length + filtreSezonlarList.length + filtreHammaddelerList.length +
+                            filtreKategorilerList.length }",style: TextStyle(color: Colors.white)),
+                        IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
+                          if(filtreSecMarkalarList.isEmpty){
+                            showDialog(context: context,builder: (conxtext) => Center(child:  CircularProgressIndicator(),));
+                            await _filtreGetir();
+                            Navigator.pop(context);
+                          }
+                          showDialog(context: context,builder: (context) => _filtreDialog());
+                        }),
+                      ],
+                    )
+                        : IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: () async {
                       if(filtreSecMarkalarList.isEmpty){
                         showDialog(context: context,builder: (conxtext) => Center(child:  CircularProgressIndicator(),));
                         await _filtreGetir();
                         Navigator.pop(context);
                       }
                       showDialog(context: context,builder: (context) => _filtreDialog());
-                    }),
-                  )
-                      : IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: () async {
-                    if(filtreSecMarkalarList.isEmpty){
-                      showDialog(context: context,builder: (conxtext) => Center(child:  CircularProgressIndicator(),));
-                      await _filtreGetir();
-                      Navigator.pop(context);
                     }
-                    showDialog(context: context,builder: (context) => _filtreDialog());
-                  }
-                  ),
-                ],
-              ),
-              body: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(top: 5,left: 10),
-                        margin: EdgeInsets.only(top: 10,left: 5,bottom: 5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 6,
-                                offset: Offset(3, 5),
+                    ),
+                  ],
+                ),
+                body: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(top: 5,left: 10),
+                          margin: EdgeInsets.only(top: 10,left: 5,bottom: 5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 6,
+                                  offset: Offset(3, 5),
+                                ),
+                              ],
+                              color: Colors.white
+                          ),
+                          width: MediaQuery.of(context).size.width -70,
+                          height: 60,
+                          child: TypeAheadFormField(
+                            hideOnLoading: true,
+                            textFieldConfiguration: TextFieldConfiguration(
+                              onSubmitted: (value) async {
+                                if(await Foksiyonlar.internetDurumu(context)){
+                                  setState(() {
+                                    loading = false;
+                                    arananKelime = _stokAramaController.text;
+                                  });
+                                  stoklarGridList = [];
+                                  _stoklariGetir(false);
+                                }
+                                FocusScope.of(context).requestFocus(new FocusNode());
+                              },
+                              decoration: InputDecoration(
+                                  hintText:
+                                  'Stok arayın',
+                                  border: InputBorder.none,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(Icons.cancel,color: Colors.blue.shade900,),
+                                    onPressed: () {
+                                      //_dataGridController.selectedRow = null;
+                                      _stokAramaController.text = "";
+                                      FocusScope.of(context).unfocus();
+                                    },
+                                  )
                               ),
-                            ],
-                            color: Colors.white
-                        ),
-                        width: MediaQuery.of(context).size.width -70,
-                        height: 60,
-                        child: TypeAheadFormField(
-                          hideOnLoading: true,
-                          textFieldConfiguration: TextFieldConfiguration(
-                            onSubmitted: (value) async {
+                              controller: this._stokAramaController,
+                            ),
+                            suggestionsCallback: (pattern) {
+                              arananKelime = pattern;
+                              if(pattern == "")
+                                return [];
+                              return getSuggestions(pattern);
+                            },
+                            noItemsFoundBuilder: (context) {
+                              return Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red, width: 2),
+                                ),
+                                height: 40,
+                                child: Center(
+                                  child: Text(
+                                    "Sonuç bulunamadı",
+                                    style: TextStyle(color: Colors.redAccent),
+                                  ),
+                                ),
+                              );
+                            },
+                            itemBuilder: (context, suggestion) {
+                              if (arananKelime != "") {
+                                var mySuggestion = suggestion
+                                    .toString()
+                                    .replaceAll(arananKelime.toUpperCase(), '=');
+                                for (var i = 0; i < mySuggestion.toString().length; i++) {
+                                  aramaHelperList.add(mySuggestion[i]);
+                                }
+                              }
+                              return ListTile(
+                                  title: RichText(
+                                    text: TextSpan(
+                                        children: List.generate(
+                                            aramaHelperList.length, (index) {
+                                          if (arananKelime != "") {
+                                            String lastChar;
+                                            if (aramaHelperList[index]
+                                                .toString()
+                                                .toLowerCase() ==
+                                                "=") {
+                                              if (aramaHelperList.length - 1 == index) {
+                                                lastChar = arananKelime.toUpperCase();
+                                                aramaHelperList.clear();
+                                                return TextSpan(
+                                                    text: lastChar,
+                                                    style: TextStyle(color: Colors.red));
+                                              }
+                                              return TextSpan(
+                                                  text: arananKelime.toUpperCase(),
+                                                  style: TextStyle(color: Colors.red));
+                                            }
+                                            if (aramaHelperList.length - 1 == index) {
+                                              lastChar = aramaHelperList[index];
+                                              aramaHelperList.clear();
+                                              return TextSpan(
+                                                  text: lastChar,
+                                                  style: TextStyle(color: Colors.black));
+                                            }
+                                            return TextSpan(
+                                                text: aramaHelperList[index],
+                                                style: TextStyle(color: Colors.black));
+                                          } else {
+                                            return TextSpan(text: "");
+                                          }
+                                        })),
+                                  ));
+                            },
+                            transitionBuilder:
+                                (context, suggestionsBox, controller) {
+                              return suggestionsBox;
+                            },
+                            onSuggestionSelected: (suggestion) async {
+                              this._stokAramaController.text = suggestion.toString();
                               if(await Foksiyonlar.internetDurumu(context)){
                                 setState(() {
-                                  loading = false;
                                   arananKelime = _stokAramaController.text;
                                 });
                                 stoklarGridList = [];
                                 _stoklariGetir(false);
                               }
-                              FocusScope.of(context).requestFocus(new FocusNode());
                             },
-                            decoration: InputDecoration(
-                                hintText:
-                                'Stok arayın',
-                                border: InputBorder.none,
-                                suffixIcon: IconButton(
-                                  icon: Icon(Icons.cancel,color: Colors.blue.shade900,),
-                                  onPressed: () {
-                                    //_dataGridController.selectedRow = null;
-                                    _stokAramaController.text = "";
-                                    FocusScope.of(context).unfocus();
-                                  },
-                                )
-                            ),
-                            controller: this._stokAramaController,
+                            onSaved: (value) => this._stokAramaController.text = value!,
                           ),
-                          suggestionsCallback: (pattern) {
-                            arananKelime = pattern;
-                            if(pattern == "")
-                              return [];
-                            return getSuggestions(pattern);
-                          },
-                          noItemsFoundBuilder: (context) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.red, width: 2),
-                              ),
-                              height: 40,
-                              child: Center(
-                                child: Text(
-                                  "Sonuç bulunamadı",
-                                  style: TextStyle(color: Colors.redAccent),
+                        ),
+                        InkWell(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 5),
+                            child: Container(
+                                margin: EdgeInsets.only(left: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 2,
+                                      blurRadius: 6,
+                                      offset: Offset(3, 5),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            );
-                          },
-                          itemBuilder: (context, suggestion) {
-                            if (arananKelime != "") {
-                              var mySuggestion = suggestion
-                                  .toString()
-                                  .replaceAll(arananKelime.toUpperCase(), '=');
-                              for (var i = 0; i < mySuggestion.toString().length; i++) {
-                                aramaHelperList.add(mySuggestion[i]);
-                              }
-                            }
-                            return ListTile(
-                                title: RichText(
-                                  text: TextSpan(
-                                      children: List.generate(
-                                          aramaHelperList.length, (index) {
-                                        if (arananKelime != "") {
-                                          String lastChar;
-                                          if (aramaHelperList[index]
-                                              .toString()
-                                              .toLowerCase() ==
-                                              "=") {
-                                            if (aramaHelperList.length - 1 == index) {
-                                              lastChar = arananKelime.toUpperCase();
-                                              aramaHelperList.clear();
-                                              return TextSpan(
-                                                  text: lastChar,
-                                                  style: TextStyle(color: Colors.red));
-                                            }
-                                            return TextSpan(
-                                                text: arananKelime.toUpperCase(),
-                                                style: TextStyle(color: Colors.red));
-                                          }
-                                          if (aramaHelperList.length - 1 == index) {
-                                            lastChar = aramaHelperList[index];
-                                            aramaHelperList.clear();
-                                            return TextSpan(
-                                                text: lastChar,
-                                                style: TextStyle(color: Colors.black));
-                                          }
-                                          return TextSpan(
-                                              text: aramaHelperList[index],
-                                              style: TextStyle(color: Colors.black));
-                                        } else {
-                                          return TextSpan(text: "");
-                                        }
-                                      })),
-                                ));
-                          },
-                          transitionBuilder:
-                              (context, suggestionsBox, controller) {
-                            return suggestionsBox;
-                          },
-                          onSuggestionSelected: (suggestion) async {
-                            this._stokAramaController.text = suggestion.toString();
+                                width: 55,
+                                height: 60,
+                                padding: EdgeInsets.all(5),
+                                child: Center(child: FaIcon(FontAwesomeIcons.search,color: Colors.blue.shade900,size: 18,),)
+                            ),
+                          ),
+                          onTap: () async{
                             if(await Foksiyonlar.internetDurumu(context)){
                               setState(() {
-                                arananKelime = _stokAramaController.text;
+                                loading = false;
+                                if(_filtreler.isEmpty){
+                                  gidecekAltGruplar = "";
+                                  gidecekAnaGruplar = "";
+                                  setState(() {
+                                    grupFiltreMi = false;
+                                  });
+                                }else{
+                                  String anaGruplar = "";
+                                  String altGruplar = "";
+                                  var secilenFilteler = _filtreler;
+
+                                  if(secilenFilteler.length >0){
+                                    for(var a in secilenFilteler){
+                                      var anaAlt = a!.split(";");
+                                      anaGruplar += ''''${anaAlt[0]}',''';
+                                      altGruplar += ''''${anaAlt[1]}',''';
+                                    }
+                                    anaGruplar = anaGruplar.substring(0,anaGruplar.length-1);
+                                    altGruplar = altGruplar.substring(0,altGruplar.length-1);
+                                  }
+                                  gidecekAltGruplar = altGruplar;
+                                  gidecekAnaGruplar = anaGruplar;
+                                  setState(() {
+                                    grupFiltreMi = true;
+                                  });
+                                }
+                                if(filtreMarkalarList.isEmpty){
+                                  gidecekMarkalar = "";
+                                  setState(() {
+                                    filtreMarkalarMi = false;
+                                  });
+                                }else{
+                                  String markalar = "";
+                                  var secilenFilteler = filtreMarkalarList;
+                                  if(secilenFilteler.length >0){
+                                    for(var a in secilenFilteler){
+                                      markalar += ''''$a',''';
+                                    }
+                                  }
+                                  markalar.length > 0 ? markalar = markalar.substring(0,markalar.length-1) : markalar = "";
+                                  gidecekMarkalar = markalar;
+                                  setState(() {
+                                    loading = false;
+                                    filtreMarkalarMi = true;
+                                  });
+                                }
+                                if(_stokAramaController.text == ""){
+                                  arananKelime = "*";
+                                }else{
+                                  arananKelime = _stokAramaController.text;
+                                }
                               });
                               stoklarGridList = [];
                               _stoklariGetir(false);
                             }
+                            FocusScope.of(context).requestFocus(new FocusNode());
                           },
-                          onSaved: (value) => this._stokAramaController.text = value!,
                         ),
-                      ),
-                      InkWell(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 5),
-                          child: Container(
-                              margin: EdgeInsets.only(left: 5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 2,
-                                    blurRadius: 6,
-                                    offset: Offset(3, 5),
-                                  ),
-                                ],
-                              ),
-                              width: 55,
-                              height: 60,
-                              padding: EdgeInsets.all(5),
-                              child: Center(child: FaIcon(FontAwesomeIcons.search,color: Colors.blue.shade900,size: 18,),)
-                          ),
+                      ],
+                    ),
+                    SizedBox(height: 5,),
+                    Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(topRight: Radius.circular(5),topLeft: Radius.circular(5)),
+                          color: Colors.blue.shade900,
                         ),
-                        onTap: () async{
-                          if(await Foksiyonlar.internetDurumu(context)){
-                            setState(() {
-                              loading = false;
-                              if(_filtreler.isEmpty){
-                                gidecekAltGruplar = "";
-                                gidecekAnaGruplar = "";
-                                setState(() {
-                                  grupFiltreMi = false;
-                                });
-                              }else{
-                                String anaGruplar = "";
-                                String altGruplar = "";
-                                var secilenFilteler = _filtreler;
-
-                                if(secilenFilteler.length >0){
-                                  for(var a in secilenFilteler){
-                                    var anaAlt = a!.split(";");
-                                    anaGruplar += ''''${anaAlt[0]}',''';
-                                    altGruplar += ''''${anaAlt[1]}',''';
-                                  }
-                                  anaGruplar = anaGruplar.substring(0,anaGruplar.length-1);
-                                  altGruplar = altGruplar.substring(0,altGruplar.length-1);
-                                }
-                                gidecekAltGruplar = altGruplar;
-                                gidecekAnaGruplar = anaGruplar;
-                                setState(() {
-                                  grupFiltreMi = true;
-                                });
-                              }
-                              if(filtreMarkalarList.isEmpty){
-                                gidecekMarkalar = "";
-                                setState(() {
-                                  filtreMarkalarMi = false;
-                                });
-                              }else{
-                                String markalar = "";
-                                var secilenFilteler = filtreMarkalarList;
-                                if(secilenFilteler.length >0){
-                                  for(var a in secilenFilteler){
-                                    markalar += ''''$a',''';
-                                  }
-                                }
-                                markalar.length > 0 ? markalar = markalar.substring(0,markalar.length-1) : markalar = "";
-                                gidecekMarkalar = markalar;
-                                setState(() {
-                                  loading = false;
-                                  filtreMarkalarMi = true;
-                                });
-                              }
-                              if(_stokAramaController.text == ""){
-                                arananKelime = "*";
-                              }else{
-                                arananKelime = _stokAramaController.text;
-                              }
-                            });
-                            stoklarGridList = [];
-                            _stoklariGetir(false);
-                          }
-                          FocusScope.of(context).requestFocus(new FocusNode());
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5,),
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(topRight: Radius.circular(5),topLeft: Radius.circular(5)),
-                        color: Colors.blue.shade900,
-                      ),
-                      margin: EdgeInsets.symmetric(horizontal: 1),
-                      height: 30,
-                      width: MediaQuery.of(context).size.width,
-                      child: Center(child: Text("STOKLAR",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.bold))),)
-                  ),
-                  !loading ? Container(child: DreamCogs(),margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/4),) :
-                  Expanded(child: Container(
-                    margin: EdgeInsets.only(bottom: 1,left: 1,right: 1),
-                    child: _grid(),
-                  ),)
-                ],
-              ),
-            );
-          }
-        },
-      )
+                        margin: EdgeInsets.symmetric(horizontal: 1),
+                        height: 30,
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(child: Text("STOKLAR",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.bold))),)
+                    ),
+                    !loading ? Container(child: DreamCogs(),margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/4),) :
+                    Expanded(child: Container(
+                      margin: EdgeInsets.only(bottom: 1,left: 1,right: 1),
+                      child: _grid(),
+                    ),)
+                  ],
+                ),
+              );
+            }
+          },
+        )
     );
 
   }
@@ -584,7 +589,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                       },
                       groupHeaderBuilder: (context,s,v) {
                         return Container(
-                          height: 40,
+                            height: 40,
                             width: double.infinity,
                             color: Colors.blueGrey,
                             alignment: Alignment.centerLeft,
@@ -609,16 +614,20 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                       },
                       tileBuilder: (context, state) {
                         if(grupFiltreMi){
-                          return Badge(
-                            position: BadgePosition.topEnd(top: 5, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${_filtreler.length}",style: TextStyle(color: Colors.white)),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("Ana Grup/Alt Grup",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(top: 10),),
-                                onTap: () async {
-                                  state.showModal();
-                                }
-                            ),
+                          return Stack(
+                            alignment: Alignment(5,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),
+                              Text("${_filtreler.length}",style: TextStyle(color: Colors.white)),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("Ana Grup/Alt Grup",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(top: 10),),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }
+                              ),
+                            ],
                           );
                         }else{
                           return InkWell(
@@ -735,18 +744,20 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreMarkalarMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreMarkalarList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Marka",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () async {
-                                    state.showModal();
-
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color:Colors.red,
+                                ),
+                                Text("${filtreMarkalarList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Marka",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -768,7 +779,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Reyon',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreReyonlarList,
+                        selectedValue: filtreReyonlarList,
                         onChange: (state) => setState(() => filtreReyonlarList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecReyonlarList,
@@ -865,17 +876,20 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreReyonlarMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreReyonlarList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Reyon",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreReyonlarList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Reyon",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -897,7 +911,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Üreticiler',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreUreticilerList,
+                        selectedValue: filtreUreticilerList,
                         onChange: (state) => setState(() => filtreUreticilerList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecUreticilerList,
@@ -994,17 +1008,19 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreUreticilerMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreUreticilerList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Üretici",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ), Text("${filtreUreticilerList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Üretici",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -1026,7 +1042,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Ambalajlar',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreAmbalajlarList,
+                        selectedValue: filtreAmbalajlarList,
                         onChange: (state) => setState(() => filtreAmbalajlarList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecAmbalajlarList,
@@ -1123,17 +1139,19 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreAmbalajlarMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreAmbalajlarList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Ambalaj",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Ambalaj",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -1155,7 +1173,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Sektörler',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreSektorlerList,
+                        selectedValue: filtreSektorlerList,
                         onChange: (state) => setState(() => filtreSektorlerList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecSektorlerList,
@@ -1252,17 +1270,20 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreSektorlerMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreSektorlerList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Sektör",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreSektorlerList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Sektör",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -1284,7 +1305,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Kalite Kontrol Tanımları',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreKalitekontrolList,
+                        selectedValue: filtreKalitekontrolList,
                         onChange: (state) => setState(() => filtreKalitekontrolList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecKalitekontrolList,
@@ -1381,17 +1402,20 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreKalitekontrolMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreKalitekontrolList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Kalite Kontrol",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreKalitekontrolList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Kalite Kontrol",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -1413,7 +1437,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Modeller',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreModellerList,
+                        selectedValue: filtreModellerList,
                         onChange: (state) => setState(() => filtreModellerList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecModellerList,
@@ -1510,17 +1534,20 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreModellerMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreModellerList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Model",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreModellerList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Model",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -1542,7 +1569,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Sezonlar',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreSezonlarList,
+                        selectedValue: filtreSezonlarList,
                         onChange: (state) => setState(() => filtreSezonlarList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecSezonlarList,
@@ -1612,7 +1639,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                                     }
                                   }
                                   sezonlar.length > 0 ? sezonlar = sezonlar.substring(0,sezonlar.length-1) : sezonlar = "";
-                                 gidecekSezonlar = sezonlar;
+                                  gidecekSezonlar = sezonlar;
                                   setState(() {
                                     loading = false;
                                     if(filtreSezonlarList.isEmpty) filtreSezonlarMi = false;
@@ -1639,17 +1666,20 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreSezonlarMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreSezonlarList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Sezon",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
-
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreSezonlarList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Sezon",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -1671,7 +1701,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Hammaddeler',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreHammaddelerList,
+                        selectedValue: filtreHammaddelerList,
                         onChange: (state) => setState(() => filtreHammaddelerList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecHammaddelerList,
@@ -1768,17 +1798,21 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreHammaddelerMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreHammaddelerList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Hammadde",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreHammaddelerList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Hammadde",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
 
-                                  }
-                              ),
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(
@@ -1800,7 +1834,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     child:   SmartSelect<String?>.multiple(modalHeaderStyle: S2ModalHeaderStyle(backgroundColor: Colors.blue.shade900),
                         title: 'Kategoriler',
                         placeholder: 'Stok Filtrele',
-                       selectedValue: filtreKategorilerList,
+                        selectedValue: filtreKategorilerList,
                         onChange: (state) => setState(() => filtreKategorilerList = state.value),
                         choiceItems: S2Choice.listFrom<String, Map>(
                           source: filtreSecKategorilerList,
@@ -1897,17 +1931,21 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(filtreKategorilerMi){
-                            return Badge(
-                              position: BadgePosition.bottomEnd(bottom: 5, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${filtreKategorilerList.length}",style: TextStyle(color: Colors.white),),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Kategori",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                  onTap: () {
-                                    state.showModal();
+                            return Stack(
+                              alignment: Alignment(5,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text("${filtreKategorilerList.length}",style: TextStyle(color: Colors.white),),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Kategori",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                    onTap: () {
+                                      state.showModal();
 
-                                  }
-                              ),
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(

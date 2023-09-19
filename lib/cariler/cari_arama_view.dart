@@ -3,8 +3,12 @@ import 'dart:convert';
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:sdsdream_flutter/core/models/base_data_grid_source.dart';
-import 'package:sdsdream_flutter/core/services/api_service.dart';
+import '../ZiyaretlerSayfasi.dart';
+import '../core/services/api_service.dart';
+import '../modeller/Modeller.dart';
+import '../stoklar/DreamCogsGif.dart';
+import '../stoklar/HorizontalPage.dart';
+import '../stoklar/const_screen.dart';
 import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
@@ -14,10 +18,6 @@ import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sdsdream_flutter/modeller/Modeller.dart';
-import 'package:sdsdream_flutter/widgets/DreamCogsGif.dart';
-import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
-import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -64,8 +64,8 @@ class _CariAramaViewState extends State<CariAramaView> {
   String gidecekGruplar = "";
   String gidecekBolgeler = "";
   String gidecekTemsilciler = "";
-  
-  
+
+
   List<DreamCari> cariList = [];
   List cariAutoCompleteList = [];
 
@@ -100,14 +100,18 @@ class _CariAramaViewState extends State<CariAramaView> {
                 ),
                 actions: [
                   filtreSektolerMi || filtreGruplarMi || filtreBolgelerMi || filtreTemsilcilerMi ?
-                  Badge(
-                    position: BadgePosition.topEnd(top: 0, end: 5),
-                    badgeColor: Colors.red,
-                    badgeContent: Text("${secilenBolgelerList.length + secilenGruplarList.length + secilenSektorlerList.length +
-                        secilenTemsilcilerList.length}",style: TextStyle(color: Colors.white)),
-                    child: IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
-                      showDialog(context: context,builder: (context) => _filtreDialog());
-                    }),
+                  Stack(
+                    alignment: Alignment(0,5),
+                    children: [
+                      Container(
+                        color: Colors.red,
+                      ) ,
+                      Text("${secilenBolgelerList.length + secilenGruplarList.length + secilenSektorlerList.length +
+                          secilenTemsilcilerList.length}",style: TextStyle(color: Colors.white)),
+                      IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
+                        showDialog(context: context,builder: (context) => _filtreDialog());
+                      }),
+                    ],
                   ) :
                   IconButton(
                       icon: FaIcon(FontAwesomeIcons.filter),
@@ -487,18 +491,22 @@ class _CariAramaViewState extends State<CariAramaView> {
                       },
                       tileBuilder: (context, state) {
                         if(filtreSektolerMi){
-                          return Badge(
-                            position: BadgePosition.bottomEnd(bottom: -5, end: 10),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${secilenSektorlerList.length}",style: TextStyle(color: Colors.white),),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("Sektör",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                onTap: () async {
-                                  state.showModal();
+                          return Stack(
+                            alignment: Alignment(-5,10),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),
+                              Text("${secilenSektorlerList.length}",style: TextStyle(color: Colors.white),),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("Sektör",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                  onTap: () async {
+                                    state.showModal();
 
 
-                                }
-                            ),
+                                  }
+                              ),
+                            ],
                           );
                         }else{
                           return InkWell(
@@ -616,17 +624,21 @@ class _CariAramaViewState extends State<CariAramaView> {
                       },
                       tileBuilder: (context, state) {
                         if(filtreGruplarMi){
-                          return Badge(
-                            position: BadgePosition.bottomEnd(bottom: -0, end: 10),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${secilenGruplarList.length}",style: TextStyle(color: Colors.white),),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("Grup",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                onTap: () {
-                                  state.showModal();
+                          return Stack(
+                            alignment: Alignment(-0,10),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),
+                              Text("${secilenGruplarList.length}",style: TextStyle(color: Colors.white),),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("Grup",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                  onTap: () {
+                                    state.showModal();
 
-                                }
-                            ),
+                                  }
+                              ),
+                            ],
                           );
                         }else{
                           return InkWell(
@@ -742,17 +754,21 @@ class _CariAramaViewState extends State<CariAramaView> {
                       },
                       tileBuilder: (context, state) {
                         if(filtreBolgelerMi){
-                          return Badge(
-                            position: BadgePosition.bottomEnd(bottom: -0, end: 10),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${secilenBolgelerList.length}",style: TextStyle(color: Colors.white),),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("Bölge",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                onTap: () {
-                                  state.showModal();
+                          return Stack(
+                            alignment: Alignment(-0,10),
+                            children: [
+                              Container(
+                                color:Colors.red,
+                              ),
+                              Text("${secilenBolgelerList.length}",style: TextStyle(color: Colors.white),),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("Bölge",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                  onTap: () {
+                                    state.showModal();
 
-                                }
-                            ),
+                                  }
+                              ),
+                            ],
                           );
                         }else{
                           return InkWell(
@@ -870,17 +886,20 @@ class _CariAramaViewState extends State<CariAramaView> {
                       },
                       tileBuilder: (context, state) {
                         if(filtreTemsilcilerMi){
-                          return Badge(
-                            position: BadgePosition.bottomEnd(bottom: -5, end: 10),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${secilenTemsilcilerList.length}",style: TextStyle(color: Colors.white),),
-                            child: InkWell(
-                                child: Container(child: Center(child: Text("Temsilci",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
-                                onTap: () {
-                                  state.showModal();
-
-                                }
-                            ),
+                          return Stack(
+                            alignment: Alignment(-5,10),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),
+                              Text("${secilenTemsilcilerList.length}",style: TextStyle(color: Colors.white),),
+                              InkWell(
+                                  child: Container(child: Center(child: Text("Temsilci",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(bottom: 0),),
+                                  onTap: () {
+                                    state.showModal();
+                                  }
+                              ),
+                            ],
                           );
                         }else{
                           return InkWell(
@@ -1001,7 +1020,7 @@ class _CariAramaViewState extends State<CariAramaView> {
       setState(() {});
     }
   }
-  
+
   _fetchCariler() async {
     _changeLoading(false);
     var postData = jsonEncode({
@@ -1017,7 +1036,7 @@ class _CariAramaViewState extends State<CariAramaView> {
       "Bolgeler" : gidecekBolgeler,
       "Sektorler" : gidecekSektorler,
     });
-    
+
     var serviceData = await APIService.fetchDataWithModel<List<DreamCari>,DreamCari>("Carilers", postData, DreamCari());
     _changeLoading(true);
     if(serviceData.statusCode == 200){
@@ -1033,7 +1052,7 @@ class _CariAramaViewState extends State<CariAramaView> {
       );
       bool canVibrate = await Vibrate.canVibrate;
       if(canVibrate) Vibrate.vibrate();
-      
+
     }
     Future.delayed(Duration(milliseconds: 50), () async{
       FocusScope.of(context).requestFocus(new FocusNode());
@@ -1044,8 +1063,8 @@ class _CariAramaViewState extends State<CariAramaView> {
     loading = value;
     setState(() {});
   }
-  
-  
+
+
   List<String> getSuggestions(String query) {
     List<String> eslesenler = [];
     List<String> eslesenler100 = [];

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
-import 'package:sdsdream_flutter/widgets/const_screen.dart';
+import '../stoklar/HorizontalPage.dart';
+import '../stoklar/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -78,50 +77,54 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
     return ConstScreen(
         child: currentOrientation == Orientation.landscape &&
-                !TelefonBilgiler.isTablet
+            !TelefonBilgiler.isTablet
             ? HorizontalPage(_grid())
             : Scaffold(
-                appBar: AppBar(
-                  title: const Text("Satış/Ciro Kaybı"),
-                  centerTitle: true,
-                  backgroundColor: Colors.blue.shade900,
-                  actions: [
-                    temsilciFiltreMi || sektorFiltreMi
-                        ? Badge(
-                            position: BadgePosition.topEnd(top: 0, end: 5),
-                            badgeColor: Colors.red,
-                            badgeContent: Text(
-                                "${_sektorFiltreler.length + _temsilciFiltreler.length}",
-                                style: TextStyle(color: Colors.white)),
-                            child: IconButton(
-                                icon: const FaIcon(FontAwesomeIcons.filter),
-                                onPressed: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => _filtreDialog());
-                                }),
-                          )
-                        : IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.filter),
-                            onPressed: () async {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => _filtreDialog());
-                            }),
-                  ],
-                ),
-                body: !loading
-                    ? Container(
-                        child: DreamCogs(),
-                        margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).size.height / 4),
-                      )
-                    : Container(
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                        child: _grid(),
-                      ),
-              ));
+          appBar: AppBar(
+            title: const Text("Satış/Ciro Kaybı"),
+            centerTitle: true,
+            backgroundColor: Colors.blue.shade900,
+            actions: [
+              temsilciFiltreMi || sektorFiltreMi
+                  ? Stack(
+                alignment: Alignment(0,5),
+                children: [
+                  Container(
+                    color: Colors.red,
+                  ),
+                  Text(
+                      "${_sektorFiltreler.length + _temsilciFiltreler.length}",
+                      style: TextStyle(color: Colors.white)),
+                  IconButton(
+                      icon: const FaIcon(FontAwesomeIcons.filter),
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) => _filtreDialog());
+                      }),
+                ],
+              )
+                  : IconButton(
+                  icon: const FaIcon(FontAwesomeIcons.filter),
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) => _filtreDialog());
+                  }),
+            ],
+          ),
+          body: !loading
+              ? Container(
+            child: DreamCogs(),
+            margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height / 4),
+          )
+              : Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: _grid(),
+          ),
+        ));
   }
 
   _grid() {
@@ -408,27 +411,31 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if (temsilciFiltreMi) {
-                            return Badge(
-                              position: BadgePosition.topEnd(top: 15, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${_temsilciFiltreler.length}",
-                                  style: TextStyle(color: Colors.white)),
-                              child: InkWell(
-                                  child: Container(
-                                    child: Center(
-                                      child: Text(
-                                        "Temsilci",
-                                        style: TextStyle(
-                                            color: Colors.blue.shade900,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18),
+                            return Stack(
+                              alignment: Alignment(15,20),
+                              children: [
+                                Container(
+                                  color:Colors.red,
+                                ),
+                                Text("${_temsilciFiltreler.length}",
+                                    style: TextStyle(color: Colors.white)),
+                                InkWell(
+                                    child: Container(
+                                      child: Center(
+                                        child: Text(
+                                          "Temsilci",
+                                          style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18),
+                                        ),
                                       ),
+                                      padding: EdgeInsets.only(top: 10),
                                     ),
-                                    padding: EdgeInsets.only(top: 10),
-                                  ),
-                                  onTap: () async {
-                                    state.showModal();
-                                  }),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }),
+                              ],
                             );
                           } else {
                             return InkWell(
@@ -558,30 +565,32 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if (sektorFiltreMi) {
-                            return Badge(
-                              position:
-                                  BadgePosition.bottomEnd(bottom: 10, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text(
-                                "${_sektorFiltreler.length}",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              child: InkWell(
-                                  child: Container(
-                                    child: Center(
-                                      child: Text(
-                                        "Sektör Kodu",
-                                        style: TextStyle(
-                                            color: Colors.blue.shade900,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18),
+                            return Stack(
+                              alignment: Alignment(10,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text(
+                                  "${_sektorFiltreler.length}",
+                                  style: TextStyle(color: Colors.white),
+                                ),InkWell(
+                                    child: Container(
+                                      child: Center(
+                                        child: Text(
+                                          "Sektör Kodu",
+                                          style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18),
+                                        ),
                                       ),
+                                      padding: EdgeInsets.only(bottom: 0),
                                     ),
-                                    padding: EdgeInsets.only(bottom: 0),
-                                  ),
-                                  onTap: () async {
-                                    state.showModal();
-                                  }),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }),
+                              ],
                             );
                           } else {
                             return InkWell(
@@ -660,8 +669,8 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
                             },
                           )
                       )
-                ],
-              ))
+                    ],
+                  ))
             ],
           ),
         ),
@@ -735,34 +744,34 @@ class SatisCiroKaybiDataSource extends DataGridSource {
   void buildDataGridRows() {
     dataGridRows = satisCiroKaybiGridList
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(columnName: 'CARİ KOD', value: e.cariKod),
-              DataGridCell<String>(columnName: 'CARI ISMI', value: e.cariUnvan),
-              DataGridCell<String>(
-                  columnName: 'TEMSİLCİ', value: e.cariTemsilci),
-              DataGridCell<String>(columnName: 'SEKTÖR KODU', value: e.sektor),
-              DataGridCell<double>(columnName: 'CİRO', value: e.ciro),
-              DataGridCell<int>(
-                  columnName: 'HareketliAySayisi', value: e.hareketliAySayisi),
-              DataGridCell<double>(
-                  columnName: 'Hareketli Aylar Ortalaması',
-                  value: e.hareketliAylarOrt),
-              DataGridCell<double>(
-                  columnName: 'Hareket Bağımsız 12 Aylık Ortalama',
-                  value: e.hareketBagimsiz12AyOrt),
-              DataGridCell<double>(
-                  columnName: 'Ağırlıklı Ortalama Ciro Beklentisi',
-                  value: e.agirlikliOrtCiroBeklentisi),
-              DataGridCell<double>(
-                  columnName: 'Son3AylıkOrtalamaCiro',
-                  value: e.son3AylikOrtCiro),
-              DataGridCell<double>(
-                  columnName: 'Ciro Kaybı %', value: e.son3AylikCiroKaybi),
-              DataGridCell<double>(
-                  columnName: 'Son6AylıkOrtalamaCiro',
-                  value: e.son6AylikOrtCiro),
-              DataGridCell<double>(
-                  columnName: 'Ciro Kaybı % 6Ay', value: e.son6AylikCiroKaybi),
-            ]))
+      DataGridCell<String>(columnName: 'CARİ KOD', value: e.cariKod),
+      DataGridCell<String>(columnName: 'CARI ISMI', value: e.cariUnvan),
+      DataGridCell<String>(
+          columnName: 'TEMSİLCİ', value: e.cariTemsilci),
+      DataGridCell<String>(columnName: 'SEKTÖR KODU', value: e.sektor),
+      DataGridCell<double>(columnName: 'CİRO', value: e.ciro),
+      DataGridCell<int>(
+          columnName: 'HareketliAySayisi', value: e.hareketliAySayisi),
+      DataGridCell<double>(
+          columnName: 'Hareketli Aylar Ortalaması',
+          value: e.hareketliAylarOrt),
+      DataGridCell<double>(
+          columnName: 'Hareket Bağımsız 12 Aylık Ortalama',
+          value: e.hareketBagimsiz12AyOrt),
+      DataGridCell<double>(
+          columnName: 'Ağırlıklı Ortalama Ciro Beklentisi',
+          value: e.agirlikliOrtCiroBeklentisi),
+      DataGridCell<double>(
+          columnName: 'Son3AylıkOrtalamaCiro',
+          value: e.son3AylikOrtCiro),
+      DataGridCell<double>(
+          columnName: 'Ciro Kaybı %', value: e.son3AylikCiroKaybi),
+      DataGridCell<double>(
+          columnName: 'Son6AylıkOrtalamaCiro',
+          value: e.son6AylikOrtCiro),
+      DataGridCell<double>(
+          columnName: 'Ciro Kaybı % 6Ay', value: e.son6AylikCiroKaybi),
+    ]))
         .toList();
   }
 

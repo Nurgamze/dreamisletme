@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -10,17 +9,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:sdsdream_flutter/cariler/cari_satislar_view.dart';
-import 'package:sdsdream_flutter/widgets/const_screen.dart';
+import '../cariler/cari_satislar_view.dart';
+import '../stoklar/HorizontalPage.dart';
+import '../stoklar/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import '../modeller/GridModeller.dart';
 import '../modeller/Listeler.dart';
 import '../modeller/Modeller.dart';
 import '../widgets/Dialoglar.dart';
 import '../widgets/DreamCogsGif.dart';
-import '../widgets/HorizontalPage.dart';
 import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
@@ -54,7 +52,7 @@ class _SatisTahsilatAnaliziSayfasiState
   DateTime now = DateTime.now();
 
   DataGridController _satisTahsilatAnaliziSayfasiController =
-      DataGridController();
+  DataGridController();
   late SatisTahsilatlarAnaliziDataSource _satisTahsilatlarAnaliziDataSource;
 
   bool temsilciFiltreMi = false;
@@ -91,132 +89,135 @@ class _SatisTahsilatAnaliziSayfasiState
     Orientation currentOrientation = MediaQuery.of(context).orientation;
     return ConstScreen(
         child: currentOrientation == Orientation.landscape &&
-                !TelefonBilgiler.isTablet
+            !TelefonBilgiler.isTablet
             ? HorizontalPage(_grid())
             : Scaffold(
-                appBar: AppBar(
-                  title: const Image(
-                    image: AssetImage("assets/images/b2b_isletme_v3.png"),
-                    width: 150,
-                  ),
-                  centerTitle: true,
-                  backgroundColor: Colors.blue.shade900,
-                  actions: [
-                    temsilciFiltreMi || sektorFiltreMi
-                        ? Badge(
-                            position: BadgePosition.topEnd(top: 0, end: 5),
-                            badgeColor: Colors.red,
-                            badgeContent: Text(
-                                "${_sektorFiltreler.length + _temsilciFiltreler.length + _carikodFiltreler.length + _bolgeFiltreler.length}",
-                                style: TextStyle(color: Colors.white)),
-                            child: IconButton(
-                                icon: const FaIcon(FontAwesomeIcons.filter),
-                                onPressed: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => _filtreDialog());
-                                }),
-                          )
-                        : IconButton(
-                            icon: const FaIcon(FontAwesomeIcons.filter),
-                            onPressed: () async {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) => _filtreDialog());
-                            }),
-                  ],
-                ),
-                body: Column(
+          appBar: AppBar(
+            title: const Image(
+              image: AssetImage("assets/images/b2b_isletme_v3.png"),
+              width: 150,
+            ),
+            centerTitle: true,
+            backgroundColor: Colors.blue.shade900,
+            actions: [
+              temsilciFiltreMi || sektorFiltreMi
+                  ? Stack(
+                alignment: Alignment(0,5),
+                children: [
+                  Container(
+                    color: Colors.red,
+                  ),Text(
+                      "${_sektorFiltreler.length + _temsilciFiltreler.length + _carikodFiltreler.length + _bolgeFiltreler.length}",
+                      style: TextStyle(color: Colors.white)),
+                  IconButton(
+                      icon: const FaIcon(FontAwesomeIcons.filter),
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) => _filtreDialog());
+                      }),
+                ],
+              )
+                  : IconButton(
+                  icon: const FaIcon(FontAwesomeIcons.filter),
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) => _filtreDialog());
+                  }),
+            ],
+          ),
+          body: Column(
+            children: [
+              Container(
+                color: Colors.white,
+                height: 70,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Container(
-                      color: Colors.white,
-                      height: 70,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          InkWell(
-                            child: Container(
-                                decoration: Sabitler.dreamBoxDecoration,
-                                margin: EdgeInsets.only(right: 1),
-                                height: 50,
-                                width: MediaQuery.of(context).size.width / 2.2 -
-                                    25,
-                                child: Center(
-                                  child: Text(
-                                      "${DateFormat('dd-MM-yyyy').format(secilenTarih1)}",
-                                      style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.blue.shade900,
-                                              fontWeight: FontWeight.bold))),
-                                )),
-                            onTap: () => callDatePicker(1),
-                          ),
-                          InkWell(
-                            child: Container(
-                                decoration: Sabitler.dreamBoxDecoration,
-                                margin: EdgeInsets.only(right: 1),
-                                height: 50,
-                                width: MediaQuery.of(context).size.width / 2.2 -
-                                    25,
-                                child: Center(
-                                  child: Text(
-                                      "${DateFormat('dd-MM-yyyy').format(secilenTarih2)}",
-                                      style: GoogleFonts.roboto(
-                                          textStyle: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.blue.shade900,
-                                              fontWeight: FontWeight.bold))),
-                                )),
-                            onTap: () => callDatePicker(2),
-                          ),
-                          InkWell(
-                              child: Container(
-                                  decoration: Sabitler.dreamBoxDecoration,
-                                  margin: EdgeInsets.only(right: 1),
-                                  height: 50,
-                                  width: 50,
-                                  child: Center(
-                                      child: Icon(
-                                    Icons.search,
-                                    color: Colors.blue.shade900,
-                                  ))),
-                              onTap: () => _satisTahsilatAnaliziGetir()),
-                        ],
-                      ),
+                    InkWell(
+                      child: Container(
+                          decoration: Sabitler.dreamBoxDecoration,
+                          margin: EdgeInsets.only(right: 1),
+                          height: 50,
+                          width: MediaQuery.of(context).size.width / 2.2 -
+                              25,
+                          child: Center(
+                            child: Text(
+                                "${DateFormat('dd-MM-yyyy').format(secilenTarih1)}",
+                                style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.blue.shade900,
+                                        fontWeight: FontWeight.bold))),
+                          )),
+                      onTap: () => callDatePicker(1),
                     ),
-                    Container(
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                              topRight: Radius.circular(5),
-                              topLeft: Radius.circular(5)),
-                          color: Colors.blue.shade900,
-                        ),
-                        margin: EdgeInsets.symmetric(horizontal: 1),
-                        height: 30,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: Text("SATIŞ TAHSİLAT ANALİZİ",
-                              style: GoogleFonts.roboto(
-                                  textStyle: TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold))),
-                        )),
-                    !loading
-                        ? Container(
-                            child: DreamCogs(),
-                            margin: EdgeInsets.only(
-                                top: MediaQuery.of(context).size.height / 4),
-                          )
-                        : Expanded(
-                            child: Container(
-                                margin: EdgeInsets.only(
-                                    bottom: 1, left: 1, right: 1),
-                                child: _grid()))
+                    InkWell(
+                      child: Container(
+                          decoration: Sabitler.dreamBoxDecoration,
+                          margin: EdgeInsets.only(right: 1),
+                          height: 50,
+                          width: MediaQuery.of(context).size.width / 2.2 -
+                              25,
+                          child: Center(
+                            child: Text(
+                                "${DateFormat('dd-MM-yyyy').format(secilenTarih2)}",
+                                style: GoogleFonts.roboto(
+                                    textStyle: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.blue.shade900,
+                                        fontWeight: FontWeight.bold))),
+                          )),
+                      onTap: () => callDatePicker(2),
+                    ),
+                    InkWell(
+                        child: Container(
+                            decoration: Sabitler.dreamBoxDecoration,
+                            margin: EdgeInsets.only(right: 1),
+                            height: 50,
+                            width: 50,
+                            child: Center(
+                                child: Icon(
+                                  Icons.search,
+                                  color: Colors.blue.shade900,
+                                ))),
+                        onTap: () => _satisTahsilatAnaliziGetir()),
                   ],
                 ),
-              ));
+              ),
+              Container(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(5),
+                        topLeft: Radius.circular(5)),
+                    color: Colors.blue.shade900,
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 1),
+                  height: 30,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: Text("SATIŞ TAHSİLAT ANALİZİ",
+                        style: GoogleFonts.roboto(
+                            textStyle: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold))),
+                  )),
+              !loading
+                  ? Container(
+                child: DreamCogs(),
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 4),
+              )
+                  : Expanded(
+                  child: Container(
+                      margin: EdgeInsets.only(
+                          bottom: 1, left: 1, right: 1),
+                      child: _grid()))
+            ],
+          ),
+        ));
   }
 
   _grid() {
@@ -356,8 +357,8 @@ class _SatisTahsilatAnaliziSayfasiState
       response = await http.get(
           Uri.parse(
               "${Sabitler.url}/api/SatisTahsilatAnalizi?tarih1=${DateFormat('dd/MM/yyyy').format(secilenTarih1)}&tarih2=${DateFormat('dd-MM-yyyy').format(secilenTarih2)}&"
-              "vtName=${UserInfo.activeDB}&Mobile=true&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&"
-              "UserId=${UserInfo.activeUserId}"),
+                  "vtName=${UserInfo.activeDB}&Mobile=true&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&"
+                  "UserId=${UserInfo.activeUserId}"),
           headers: {"apiKey": Sabitler.apiKey}).timeout(Duration(seconds: 30));
     } on TimeoutException catch (e) {
       showDialog(
@@ -378,19 +379,19 @@ class _SatisTahsilatAnaliziSayfasiState
       var analizDetay = jsonDecode(response.body);
       for (var analiz in analizDetay) {
         SatisTahsilatlarAnaliziGridModel satisTahsilatlarAnaliziGridModel =
-            SatisTahsilatlarAnaliziGridModel(
-                analiz['Cari'],
-                analiz['Unvan'],
-                analiz['Sektör'],
-                analiz['Grup'],
-                analiz['Temsilci'],
-                analiz['Bölge'],
-                analiz['Net Satış'],
-                analiz['KDV Dahil'],
-                analiz['Nakit Tahsilat'],
-                analiz['Çek Tah.'],
-                analiz['Senet Tah.'],
-                analiz['Toplam Tahsilat']);
+        SatisTahsilatlarAnaliziGridModel(
+            analiz['Cari'],
+            analiz['Unvan'],
+            analiz['Sektör'],
+            analiz['Grup'],
+            analiz['Temsilci'],
+            analiz['Bölge'],
+            analiz['Net Satış'],
+            analiz['KDV Dahil'],
+            analiz['Nakit Tahsilat'],
+            analiz['Çek Tah.'],
+            analiz['Senet Tah.'],
+            analiz['Toplam Tahsilat']);
         satisTahsilatlarAnaliziGridList.add(satisTahsilatlarAnaliziGridModel);
         bool addC = true;
         bool addS = true;
@@ -564,27 +565,31 @@ class _SatisTahsilatAnaliziSayfasiState
                       },
                       tileBuilder: (context, state) {
                         if (carikodFiltreMi) {
-                          return Badge(
-                            position: BadgePosition.topEnd(top: 5, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${_carikodFiltreler.length}",
-                                style: TextStyle(color: Colors.white)),
-                            child: InkWell(
-                                child: Container(
-                                  child: Center(
-                                    child: Text(
-                                      "Cari",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade900,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18),
+                          return Stack(
+                            alignment: Alignment(5,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),
+                              Text("${_carikodFiltreler.length}",
+                                  style: TextStyle(color: Colors.white)),
+                              InkWell(
+                                  child: Container(
+                                    child: Center(
+                                      child: Text(
+                                        "Cari",
+                                        style: TextStyle(
+                                            color: Colors.blue.shade900,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 18),
+                                      ),
                                     ),
+                                    padding: EdgeInsets.only(top: 10),
                                   ),
-                                  padding: EdgeInsets.only(top: 10),
-                                ),
-                                onTap: () async {
-                                  state.showModal();
-                                }),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }),
+                            ],
                           );
                         } else {
                           return InkWell(
@@ -713,26 +718,30 @@ class _SatisTahsilatAnaliziSayfasiState
                       },
                       tileBuilder: (context, state) {
                         if (temsilciFiltreMi) {
-                          return Badge(
-                            position: BadgePosition.topEnd(top: 8, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${_temsilciFiltreler.length}",
-                                style: TextStyle(color: Colors.white)),
-                            child: InkWell(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Temsilci",
-                                    style: TextStyle(
-                                        color: Colors.blue.shade900,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 18),
+                          return Stack(
+                            alignment: Alignment(8,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),
+                              Text("${_temsilciFiltreler.length}",
+                                  style: TextStyle(color: Colors.white)),
+                              InkWell(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Temsilci",
+                                      style: TextStyle(
+                                          color: Colors.blue.shade900,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18),
+                                    ),
+                                    padding: EdgeInsets.only(top: 0),
                                   ),
-                                  padding: EdgeInsets.only(top: 0),
-                                ),
-                                onTap: () async {
-                                  state.showModal();
-                                }),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }),
+                            ],
                           );
                         } else {
                           return InkWell(
@@ -865,37 +874,38 @@ class _SatisTahsilatAnaliziSayfasiState
                         },
                         tileBuilder: (context, state) {
                           if (sektorFiltreMi) {
-                            return Badge(
-                              position:
-                                  BadgePosition.bottomEnd(bottom: 8, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text(
-                                "${_sektorFiltreler.length}",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              child: InkWell(
-                                  child: Container(
-                                    child: Center(
-                                      child: Text(
-                                        "Sektör",
-                                        style: TextStyle(
-                                            color: Colors.blue.shade900,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18),
+                            return Stack(
+                              alignment: Alignment(8,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text(
+                                  "${_sektorFiltreler.length}",
+                                  style: TextStyle(color: Colors.white),
+                                ),InkWell(
+                                    child: Container(
+                                      child: Center(
+                                        child: Text(
+                                          "Sektör",
+                                          style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18),
+                                        ),
                                       ),
+                                      padding: EdgeInsets.only(bottom: 0),
                                     ),
-                                    padding: EdgeInsets.only(bottom: 0),
-                                  ),
-                                  onTap: () async {
-                                    state.showModal();
-                                  }),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }),
+                              ],
                             );
                           } else {
                             return InkWell(
                                 child: Container(
                                   child: Center(
-                                    child: Text(
-                                      "Sektör",
+                                    child: Text("Sektör",
                                       style: TextStyle(
                                           color: Colors.blue.shade900,
                                           fontWeight: FontWeight.w700,
@@ -1017,30 +1027,30 @@ class _SatisTahsilatAnaliziSayfasiState
                       },
                       tileBuilder: (context, state) {
                         if (bolgeFiltreMi) {
-                          return Badge(
-                            position:
-                                BadgePosition.bottomEnd(bottom: 8, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text(
-                              "${_bolgeFiltreler.length}",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            child: InkWell(
-                                child: Container(
-                                  child: Center(
-                                    child: Text(
-                                      "Bölge",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade900,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18),
+                          return Stack(
+                            alignment: Alignment(8,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                              ),Text(
+                                "${_bolgeFiltreler.length}",
+                                style: TextStyle(color: Colors.white),
+                              ),InkWell(
+                                  child: Container(
+                                    child: Center(
+                                      child: Text("Bölge",
+                                        style: TextStyle(
+                                            color: Colors.blue.shade900,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 18),
+                                      ),
                                     ),
+                                    padding: EdgeInsets.only(bottom: 0),
                                   ),
-                                  padding: EdgeInsets.only(bottom: 0),
-                                ),
-                                onTap: () async {
-                                  state.showModal();
-                                }),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }),
+                            ],
                           );
                         } else {
                           return InkWell(
@@ -1069,55 +1079,55 @@ class _SatisTahsilatAnaliziSayfasiState
               ),
               Expanded(
                   child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Temizle",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18),
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Temizle",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18),
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _temsilciFiltreler = [];
+                              _sektorFiltreler = [];
+                              sektorFiltreMi = false;
+                              temsilciFiltreMi = false;
+                              _gridAra([], [], [], []);
+                            });
+                            Navigator.pop(context);
+                          },
                         ),
                       ),
-                      onTap: () {
-                        setState(() {
-                          _temsilciFiltreler = [];
-                          _sektorFiltreler = [];
-                          sektorFiltreMi = false;
-                          temsilciFiltreMi = false;
-                          _gridAra([], [], [], []);
-                        });
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: 1,
-                    color: Colors.grey.shade300,
-                  ),
-                  Expanded(
-                      child: InkWell(
-                    child: Container(
-                      child: Center(
-                        child: Text(
-                          "Tamam",
-                          style: TextStyle(
-                              color: Colors.green.shade800,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18),
-                        ),
+                      Container(
+                        width: 1,
+                        color: Colors.grey.shade300,
                       ),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                      Expanded(
+                          child: InkWell(
+                            child: Container(
+                              child: Center(
+                                child: Text(
+                                  "Tamam",
+                                  style: TextStyle(
+                                      color: Colors.green.shade800,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18),
+                                ),
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                          ))
+                    ],
                   ))
-                ],
-              ))
             ],
           ),
         ),
@@ -1156,18 +1166,18 @@ class SatisTahsilatlarAnaliziDataSource extends DataGridSource {
   void buildDataGridRows() {
     dataGridRows = satisTahsilatlarAnaliziGridList
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(columnName: 'cari', value: e.cari),
-              DataGridCell<String>(columnName: 'unvan', value: e.unvan),
-              DataGridCell<String>(columnName: 'sektor', value: e.sektor),
-              DataGridCell<String>(columnName: 'grup', value: e.grup),
-              DataGridCell<String>(columnName: 'temsilci', value: e.temsilci),
-              DataGridCell<String>(columnName: 'bolge', value: e.bolge),
-              DataGridCell<double>(columnName: 'netSatis', value: e.netSatis),
-              DataGridCell<double>(columnName: 'kdvDahil', value: e.kdvDahil),
-              DataGridCell<double>(columnName: 'nakitTahsilat', value: e.nakitTahsilat),
-              DataGridCell<double>(columnName: 'cekTah', value: e.cekTah),
-              DataGridCell<double>(columnName: 'senetTah', value: e.senetTah),
-              DataGridCell<double>(columnName: 'toplamTahsilat', value: e.toplamTahsilat),
+      DataGridCell<String>(columnName: 'cari', value: e.cari),
+      DataGridCell<String>(columnName: 'unvan', value: e.unvan),
+      DataGridCell<String>(columnName: 'sektor', value: e.sektor),
+      DataGridCell<String>(columnName: 'grup', value: e.grup),
+      DataGridCell<String>(columnName: 'temsilci', value: e.temsilci),
+      DataGridCell<String>(columnName: 'bolge', value: e.bolge),
+      DataGridCell<double>(columnName: 'netSatis', value: e.netSatis),
+      DataGridCell<double>(columnName: 'kdvDahil', value: e.kdvDahil),
+      DataGridCell<double>(columnName: 'nakitTahsilat', value: e.nakitTahsilat),
+      DataGridCell<double>(columnName: 'cekTah', value: e.cekTah),
+      DataGridCell<double>(columnName: 'senetTah', value: e.senetTah),
+      DataGridCell<double>(columnName: 'toplamTahsilat', value: e.toplamTahsilat),
     ])).toList();
   }
 

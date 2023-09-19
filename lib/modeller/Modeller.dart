@@ -247,7 +247,7 @@ class Foksiyonlar {
                 TextButton(
                   child: Text("Ayarlar"),
                   onPressed: () {
-                    AppSettings.openDataRoamingSettings();
+                    //AppSettings.openDataRoamingSettings();//
                   },
                 ),
                 TextButton(

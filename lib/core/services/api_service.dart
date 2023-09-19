@@ -13,7 +13,8 @@ class APIService {
 
 
   static initialize(String apiBaseURL) async {
-    _dio = Dio(BaseOptions(baseUrl: apiBaseURL, connectTimeout: 30000,receiveTimeout: 30000,headers: {"Content-Type": "application/json", "apikey": apiKey}));
+
+ _dio = Dio(BaseOptions(baseUrl: apiBaseURL, connectTimeout: Duration(milliseconds: 30000),receiveTimeout: Duration(milliseconds: 30000),headers: {"Content-Type": "application/json", "apikey": apiKey}));
   }
 
 
@@ -277,7 +278,7 @@ class APIService {
 
   static Future<ResponseModel<dynamic>> customRequest(String url) async {
     try{
-      var response = await Dio(BaseOptions(connectTimeout: 30000,receiveTimeout: 30000,headers: {"Content-Type": "application/json", "apikey": apiKey})).get(url);
+      var response = await Dio(BaseOptions(connectTimeout: Duration(milliseconds: 30000),receiveTimeout: Duration(milliseconds: 30000),headers: {"Content-Type": "application/json", "apikey": apiKey})).get(url);
       var responseBody = response.data;
       if(response.statusCode == HttpStatus.ok){
 

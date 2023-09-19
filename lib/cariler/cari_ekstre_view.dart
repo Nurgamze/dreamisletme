@@ -1,6 +1,5 @@
 
 import 'dart:io';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -11,26 +10,25 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:path_provider/path_provider.dart' as p;
-import 'package:sdsdream_flutter/cariler/models/cari_ekstre.dart';
-import 'package:sdsdream_flutter/modeller/Modeller.dart';
-import 'package:sdsdream_flutter/widgets/Dialoglar.dart';
-import 'package:sdsdream_flutter/widgets/DreamCogsGif.dart';
-import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
-import 'package:sdsdream_flutter/widgets/MailGondermePopUp.dart';
-import 'package:sdsdream_flutter/widgets/const_screen.dart';
-import 'package:sdsdream_flutter/core/models/base_data_grid_source.dart';
-import 'package:sdsdream_flutter/core/services/api_service.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
-
+import '../ZiyaretlerSayfasi.dart';
+import '../core/services/api_service.dart';
+import '../modeller/Modeller.dart';
+import '../stoklar/Dialoglar.dart';
+import '../stoklar/DreamCogsGif.dart';
+import '../stoklar/HorizontalPage.dart';
+import '../stoklar/MailGondermePopUp.dart';
+import '../stoklar/const_screen.dart';
 import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
 import '../widgets/select/src/widget.dart';
 import 'FaturaDetaySayfasi.dart';
 import 'models/cari.dart';
+import 'models/cari_ekstre.dart';
 
 
 class CariEkstreView extends StatefulWidget {
@@ -118,19 +116,20 @@ class _CariEkstreViewState extends State<CariEkstreView> {
               ),
               actions: <Widget>[
                 temsilciFiltreMi || sektorFiltreMi ||carikodFiltreMi || timeSelected ?
-                Badge(
-                  position: BadgePosition.topEnd(top: 0, end: 5),
-                  badgeColor: Colors.red,
-                  badgeContent: Text(
-                      "${_sektorFiltreler.length + _temsilciFiltreler.length + _carikodFiltreler.length + (_selectedTime == null ? 0 : 1)}",
-                      style: TextStyle(color: Colors.white)),
-                  child: IconButton(
-                      icon: const FaIcon(FontAwesomeIcons.filter),
-                      onPressed: () async {
-                        showDialog(
-                            context: context,
-                            builder: (context) => _filtreDialog()).then((value) => setState((){}));
-                      }),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(color: Colors.red,),
+                    Text("${_sektorFiltreler.length + _temsilciFiltreler.length + _carikodFiltreler.length + (_selectedTime == null ? 0 : 1)}", style: TextStyle(color: Colors.white)),
+                    IconButton(
+                        icon: const FaIcon(FontAwesomeIcons.filter),
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) => _filtreDialog()).then((value) => setState((){}));
+                        }),
+                  ],
+                  //position: BadgePosition.topEnd(top: 0, end: 5),
                 ) :
                 IconButton(
                     icon: const FaIcon(FontAwesomeIcons.filter),
@@ -370,7 +369,7 @@ class _CariEkstreViewState extends State<CariEkstreView> {
       timeSelected = false;
       loading = !loading;
       _cariEkstreDataSource = BaseDataGridSource(_dataGridController,CariEkstre.buildDataGridRows(_cariEkstreList));
-      
+
       setState(() {});
     }else{
       showDialog(context: context,builder: (context) => BilgilendirmeDialog("Cari hareketiniz bulunamamıştır")).then((value) {
@@ -876,27 +875,33 @@ class _CariEkstreViewState extends State<CariEkstreView> {
                       },
                       tileBuilder: (context, state) {
                         if (carikodFiltreMi) {
-                          return Badge(
-                            position: BadgePosition.topEnd(top: 5, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${_carikodFiltreler.length}",
-                                style: TextStyle(color: Colors.white)),
-                            child: InkWell(
-                                child: Container(
-                                  child: Center(
-                                    child: Text(
-                                      "Tip",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade900,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18),
+                          return Stack(
+                            alignment: Alignment(5, 20),
+
+                            children: [
+                              Container(
+                                color: Colors.red,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                              Text("${_carikodFiltreler.length}", style: TextStyle(color: Colors.white)),
+                              InkWell(
+                                  child: Container(
+                                    child: Center(
+                                      child: Text(
+                                        "Tip",
+                                        style: TextStyle(
+                                            color: Colors.blue.shade900,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 18),
+                                      ),
                                     ),
+                                    padding: EdgeInsets.only(top: 10),
                                   ),
-                                  padding: EdgeInsets.only(top: 10),
-                                ),
-                                onTap: () async {
-                                  state.showModal();
-                                }),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }),
+                            ],
                           );
                         } else {
                           return InkWell(
@@ -1022,26 +1027,33 @@ class _CariEkstreViewState extends State<CariEkstreView> {
                       },
                       tileBuilder: (context, state) {
                         if (temsilciFiltreMi) {
-                          return Badge(
-                            position: BadgePosition.topEnd(top: 8, end: 20),
-                            badgeColor: Colors.red,
-                            badgeContent: Text("${_temsilciFiltreler.length}",
-                                style: TextStyle(color: Colors.white)),
-                            child: InkWell(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Cins",
-                                    style: TextStyle(
-                                        color: Colors.blue.shade900,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 18),
+                          return Stack(
+                            alignment: Alignment(8,20),
+                            children: [
+                              Container(
+                                color: Colors.red,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                              Text("${_temsilciFiltreler.length}",
+                                  style: TextStyle(color: Colors.white)),
+                              InkWell(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Cins",
+                                      style: TextStyle(
+                                          color: Colors.blue.shade900,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 18),
+                                    ),
+                                    padding: EdgeInsets.only(top: 0),
                                   ),
-                                  padding: EdgeInsets.only(top: 0),
-                                ),
-                                onTap: () async {
-                                  state.showModal();
-                                }),
+                                  onTap: () async {
+                                    state.showModal();
+                                  }),
+                            ],
+
                           );
                         } else {
                           return InkWell(
@@ -1173,30 +1185,33 @@ class _CariEkstreViewState extends State<CariEkstreView> {
                         },
                         tileBuilder: (context, state) {
                           if (sektorFiltreMi) {
-                            return Badge(
-                              position:
-                              BadgePosition.bottomEnd(bottom: 8, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text(
-                                "${_sektorFiltreler.length}",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              child: InkWell(
-                                  child: Container(
-                                    child: Center(
-                                      child: Text(
-                                        "Evrak Tipi",
-                                        style: TextStyle(
-                                            color: Colors.blue.shade900,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18),
+                            return Stack(
+                              alignment: Alignment(8,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text(
+                                  "${_sektorFiltreler.length}",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                InkWell(
+                                    child: Container(
+                                      child: Center(
+                                        child: Text(
+                                          "Evrak Tipi",
+                                          style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18),
+                                        ),
                                       ),
+                                      padding: EdgeInsets.only(bottom: 0),
                                     ),
-                                    padding: EdgeInsets.only(bottom: 0),
-                                  ),
-                                  onTap: () async {
-                                    state.showModal();
-                                  }),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }),
+                              ],
                             );
                           } else {
                             return InkWell(
@@ -1240,28 +1255,33 @@ class _CariEkstreViewState extends State<CariEkstreView> {
                         )
                     ),
                   ) :
-                  Badge(
-                    position:
-                    BadgePosition.bottomEnd(bottom: 8, end: 20),
-                    badgeColor: Colors.red,
-                    badgeContent: Text(
-                      "1",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    child: InkWell(
-                      onTap: () => callDatePicker().then((value) => setState((){_selectedTime = value;if(value != null) timeSelected = true;})),
-                      child: Container(
-                          child:  Center(
-                            child: Text(
-                              "Tarih",
-                              style: TextStyle(
-                                  color: Colors.blue.shade900,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18),
-                            ),
-                          )
+                  Stack(
+                    alignment: Alignment(8,20),
+                    children: [
+                      Container(
+                        color:  Colors.red,
+                        width: double.infinity,
+                        height: double.infinity,
                       ),
-                    ) ,
+                      Text(
+                        "1",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      InkWell(
+                        onTap: () => callDatePicker().then((value) => setState((){_selectedTime = value;if(value != null) timeSelected = true;})),
+                        child: Container(
+                            child:  Center(
+                              child: Text(
+                                "Tarih",
+                                style: TextStyle(
+                                    color: Colors.blue.shade900,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18),
+                              ),
+                            )
+                        ),
+                      ) ,
+                    ],
                   )
               ),
               Container(

@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:sdsdream_flutter/widgets/const_screen.dart';
+import '../stoklar/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -48,8 +48,8 @@ class _SatisTahsilatOzetSayfasiState extends State<SatisTahsilatOzetSayfasi> {
 
 
   bool temsilciFiltreMi = false;
-  
-  
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -70,98 +70,101 @@ class _SatisTahsilatOzetSayfasiState extends State<SatisTahsilatOzetSayfasi> {
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
     return ConstScreen(
-      child: currentOrientation == Orientation.landscape && !TelefonBilgiler.isTablet ?
-      HorizontalPage(_grid()) :
-      Scaffold(
-        appBar: AppBar(
-          title: Container(
-              child: Image(image: AssetImage("assets/images/b2b_isletme_v3.png"),width: 150,)
-          ),
-          actions: [
-            temsilciFiltreMi ? Badge(
-              position: BadgePosition.topEnd(top: 0, end: 5),
-              badgeColor: Colors.red,
-              badgeContent: Text("${_sehirFiltreler.length}",style: TextStyle(color: Colors.white)),
-              child: IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
-                showDialog(context: context,builder: (context) => _filtreDialog());
-
-              }),
-            )
-                : IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: () async {
-              showDialog(context: context,builder: (context) => _filtreDialog());
-            }
+        child: currentOrientation == Orientation.landscape && !TelefonBilgiler.isTablet ?
+        HorizontalPage(_grid()) :
+        Scaffold(
+          appBar: AppBar(
+            title: Container(
+                child: Image(image: AssetImage("assets/images/b2b_isletme_v3.png"),width: 150,)
             ),
-          ],
-          centerTitle: true,
-          backgroundColor: Colors.blue.shade900,
-        ),
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                color: Colors.white,
-                height: 70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    InkWell(
-                      child:  Container(
-                          decoration: Sabitler.dreamBoxDecoration,
-                          margin: EdgeInsets.only(right: 1),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width/2.2-25,
-                          child: Center(
-                            child:Text("${DateFormat('dd-MM-yyyy').format(secilenTarih1)}",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.blue.shade900,fontWeight: FontWeight.bold))),
-                          )
+            actions: [
+              temsilciFiltreMi ? Stack(
+                alignment: Alignment(0,5),
+                children: [
+                  Container(
+                    color: Colors.red,
+                  ), Text("${_sehirFiltreler.length}",style: TextStyle(color: Colors.white)),
+                  IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: ()async {
+                    showDialog(context: context,builder: (context) => _filtreDialog());
+                  }),
+                ],
+
+              )
+                  : IconButton(icon: FaIcon(FontAwesomeIcons.filter), onPressed: () async {
+                showDialog(context: context,builder: (context) => _filtreDialog());
+              }
+              ),
+            ],
+            centerTitle: true,
+            backgroundColor: Colors.blue.shade900,
+          ),
+          body: Container(
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.white,
+                  height: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      InkWell(
+                        child:  Container(
+                            decoration: Sabitler.dreamBoxDecoration,
+                            margin: EdgeInsets.only(right: 1),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width/2.2-25,
+                            child: Center(
+                              child:Text("${DateFormat('dd-MM-yyyy').format(secilenTarih1)}",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.blue.shade900,fontWeight: FontWeight.bold))),
+                            )
+                        ),
+                        onTap: () => callDatePicker(1),
                       ),
-                      onTap: () => callDatePicker(1),
-                    ),
-                    InkWell(
-                      child: Container(
-                          decoration: Sabitler.dreamBoxDecoration,
-                          margin: EdgeInsets.only(right: 1),
-                          height: 50,
-                          width: MediaQuery.of(context).size.width/2.2-25,
-                          child: Center(
-                            child:Text("${DateFormat('dd-MM-yyyy').format(secilenTarih2)}",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.blue.shade900,fontWeight: FontWeight.bold))),
-                          )
-                      ),
-                      onTap: () => callDatePicker(2),
-                    ),
-                    InkWell(
+                      InkWell(
                         child: Container(
                             decoration: Sabitler.dreamBoxDecoration,
                             margin: EdgeInsets.only(right: 1),
                             height: 50,
-                            width: 50,
+                            width: MediaQuery.of(context).size.width/2.2-25,
                             child: Center(
-                                child: Icon(Icons.search,color: Colors.blue.shade900,)
+                              child:Text("${DateFormat('dd-MM-yyyy').format(secilenTarih2)}",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.blue.shade900,fontWeight: FontWeight.bold))),
                             )
                         ),
-                        onTap: () => _satisTahsilatAnaliziGetir()
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topRight: Radius.circular(5),topLeft: Radius.circular(5)),
-                    color: Colors.blue.shade900,
+                        onTap: () => callDatePicker(2),
+                      ),
+                      InkWell(
+                          child: Container(
+                              decoration: Sabitler.dreamBoxDecoration,
+                              margin: EdgeInsets.only(right: 1),
+                              height: 50,
+                              width: 50,
+                              child: Center(
+                                  child: Icon(Icons.search,color: Colors.blue.shade900,)
+                              )
+                          ),
+                          onTap: () => _satisTahsilatAnaliziGetir()
+                      ),
+                    ],
                   ),
-                  margin: EdgeInsets.symmetric(horizontal: 1),
-                  height: 30,
-                  width: MediaQuery.of(context).size.width,
-                  child: Center(child: Text("SATIŞ TAHSİLAT ÖZET",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.bold))),)
-              ),
-              !loading ? Container(child: DreamCogs(),margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/4),) :
-              Expanded(child: Container(
-                  margin: EdgeInsets.only(bottom: 1,left: 1,right: 1),
-                  child: _grid()
-              ))
-            ],
+                ),
+                Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(5),topLeft: Radius.circular(5)),
+                      color: Colors.blue.shade900,
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 1),
+                    height: 30,
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(child: Text("SATIŞ TAHSİLAT ÖZET",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.bold))),)
+                ),
+                !loading ? Container(child: DreamCogs(),margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/4),) :
+                Expanded(child: Container(
+                    margin: EdgeInsets.only(bottom: 1,left: 1,right: 1),
+                    child: _grid()
+                ))
+              ],
+            ),
           ),
-        ),
-      )
+        )
     );
   }
 
@@ -419,16 +422,19 @@ class _SatisTahsilatOzetSayfasiState extends State<SatisTahsilatOzetSayfasi> {
                         },
                         tileBuilder: (context, state) {
                           if(temsilciFiltreMi){
-                            return Badge(
-                              position: BadgePosition.topEnd(top: 15, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${_sehirFiltreler.length}",style: TextStyle(color: Colors.white)),
-                              child: InkWell(
-                                  child: Container(child: Center(child: Text("Şube",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(top: 10),),
-                                  onTap: () async {
-                                    state.showModal();
-                                  }
-                              ),
+                            return Stack(
+                              alignment: Alignment(15,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),Text("${_sehirFiltreler.length}",style: TextStyle(color: Colors.white)),
+                                InkWell(
+                                    child: Container(child: Center(child: Text("Şube",style: TextStyle(color: Colors.blue.shade900,fontWeight: FontWeight.w700,fontSize: 18),),),padding: EdgeInsets.only(top: 10),),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }
+                                ),
+                              ],
                             );
                           }else{
                             return InkWell(

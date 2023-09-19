@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
@@ -11,16 +10,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
-import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as sync;
-
 import '../modeller/GridModeller.dart';
 import '../modeller/Listeler.dart';
 import '../modeller/Modeller.dart';
+import '../stoklar/HorizontalPage.dart';
+import '../stoklar/const_screen.dart';
 import '../widgets/Dialoglar.dart';
 import '../widgets/DreamCogsGif.dart';
 import '../widgets/select/src/model/choice_item.dart';
@@ -104,37 +102,41 @@ class _ButceGerceklesenRaporuSayfasiState extends State<ButceGerceklesenRaporuSa
 
               }),
               donemFiltreMi || stokHizmetMi
-                  ? Badge(
-                position: BadgePosition.topEnd(top: 0, end: 5),
-                badgeColor: Colors.red,
-                badgeContent: Text(
-                    "${_stokHizmetFiltreler.length + _donemFiltreler.length}",
-                    style: TextStyle(color: Colors.white)),
-                child: IconButton(
-                    icon: const FaIcon(FontAwesomeIcons.filter),
-                    onPressed: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) => _filtreDialog()).then((value) {
-                        print(value);
-                        if (_donemFiltreler.isNotEmpty) {
-                          setState(() {
-                            donemFiltreMi = true;
-                          });
-                        } else {
-                          donemFiltreMi = false;
-                        }
+                  ? Stack(
+                alignment: Alignment(0,5),
+                children: [
+                  Container(
+                    color: Colors.red,
+                  ),
+                  Text(
+                      "${_stokHizmetFiltreler.length + _donemFiltreler.length}",
+                      style: TextStyle(color: Colors.white)),
+                  IconButton(
+                      icon: const FaIcon(FontAwesomeIcons.filter),
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) => _filtreDialog()).then((value) {
+                          print(value);
+                          if (_donemFiltreler.isNotEmpty) {
+                            setState(() {
+                              donemFiltreMi = true;
+                            });
+                          } else {
+                            donemFiltreMi = false;
+                          }
 
-                        if (_stokHizmetFiltreler.isNotEmpty) {
-                          setState(() {
-                            stokHizmetMi = true;
-                          });
-                        } else {
-                          stokHizmetMi = false;
-                        }
+                          if (_stokHizmetFiltreler.isNotEmpty) {
+                            setState(() {
+                              stokHizmetMi = true;
+                            });
+                          } else {
+                            stokHizmetMi = false;
+                          }
 
-                      });
-                    }),
+                        });
+                      }),
+                ],
               )
                   : IconButton(
                   icon: const FaIcon(FontAwesomeIcons.filter),
@@ -167,31 +169,31 @@ class _ButceGerceklesenRaporuSayfasiState extends State<ButceGerceklesenRaporuSa
             children: [
               InkWell(
                 child:  Container(
-                    decoration: Sabitler.dreamBoxDecoration,
-                    margin: EdgeInsets.symmetric(vertical: 8,horizontal: 8),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    alignment: Alignment.center,
-                    child: Text(secilenButce.isNotEmpty ? secilenButce : "Bütçe seçmek için dokunun",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.blue.shade900,fontWeight: FontWeight.bold))),
+                  decoration: Sabitler.dreamBoxDecoration,
+                  margin: EdgeInsets.symmetric(vertical: 8,horizontal: 8),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width,
+                  alignment: Alignment.center,
+                  child: Text(secilenButce.isNotEmpty ? secilenButce : "Bütçe seçmek için dokunun",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.blue.shade900,fontWeight: FontWeight.bold))),
                 ),
                 onTap: () {
                   Picker(
-                      adapter: PickerDataAdapter(
+                    adapter: PickerDataAdapter(
                         data: List.generate(butceler.length, (index) =>
                             PickerItem(text: Center(child: Text(butceler[index],style: TextStyle(fontSize: 18),),),value: butceler[index]))
-                      ),
-                      title: Text("Bütçe Seçiniz"),
-                      textAlign: TextAlign.right,
-                      onConfirm:  (Picker picker, List<int> selecteds) {
-                        secilenButce = picker.adapter.getSelectedValues().first;
-                        _butceDetayGetir(secilenButce);
-                        setState(() {});
-                      },
-                      selectedTextStyle: TextStyle(color: Colors.blue),
-                     cancelTextStyle: TextStyle(color: Colors.red),
-                      confirmText: "Onayla",
-                      cancelText: "İptal",
-                      hideHeader: true,
+                    ),
+                    title: Text("Bütçe Seçiniz"),
+                    textAlign: TextAlign.right,
+                    onConfirm:  (Picker picker, List<int> selecteds) {
+                      secilenButce = picker.adapter.getSelectedValues().first;
+                      _butceDetayGetir(secilenButce);
+                      setState(() {});
+                    },
+                    selectedTextStyle: TextStyle(color: Colors.blue),
+                    cancelTextStyle: TextStyle(color: Colors.red),
+                    confirmText: "Onayla",
+                    cancelText: "İptal",
+                    hideHeader: true,
 
                   ).showDialog(context);
                 },
@@ -461,27 +463,30 @@ class _ButceGerceklesenRaporuSayfasiState extends State<ButceGerceklesenRaporuSa
                         },
                         tileBuilder: (context, state) {
                           if (donemFiltreMi) {
-                            return Badge(
-                              position: BadgePosition.topEnd(top: 15, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text("${_donemFiltreler.length}",
-                                  style: TextStyle(color: Colors.white)),
-                              child: InkWell(
-                                  child: Container(
-                                    child: Center(
-                                      child: Text(
-                                        "Dönem",
-                                        style: TextStyle(
-                                            color: Colors.blue.shade900,
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18),
+                            return Stack(
+                              alignment: Alignment(15,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ), Text("${_donemFiltreler.length}",
+                                    style: TextStyle(color: Colors.white)),
+                                InkWell(
+                                    child: Container(
+                                      child: Center(
+                                        child: Text(
+                                          "Dönem",
+                                          style: TextStyle(
+                                              color: Colors.blue.shade900,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18),
+                                        ),
                                       ),
+                                      padding: EdgeInsets.only(top: 10),
                                     ),
-                                    padding: EdgeInsets.only(top: 10),
-                                  ),
-                                  onTap: () async {
-                                    state.showModal();
-                                  }),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }),
+                              ],
                             );
                           } else {
                             return InkWell(
@@ -611,32 +616,34 @@ class _ButceGerceklesenRaporuSayfasiState extends State<ButceGerceklesenRaporuSa
                         },
                         tileBuilder: (context, state) {
                           if (stokHizmetMi) {
-                            return Badge(
-                              position:
-                              BadgePosition.bottomEnd(bottom: 10, end: 20),
-                              badgeColor: Colors.red,
-                              badgeContent: Text(
-                                "${_stokHizmetFiltreler.length}",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              child: InkWell(
-                                  child: Container(
-                                    child: Center(
-                                      child: FittedBox(
-                                        child: Text(
-                                          "Stok Hizmet Detay Kodu",
-                                          style: TextStyle(
-                                              color: Colors.blue.shade900,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 18),
+                            return Stack(
+                              alignment: Alignment(10,20),
+                              children: [
+                                Container(
+                                  color: Colors.red,
+                                ),
+                                Text(
+                                  "${_stokHizmetFiltreler.length}",
+                                  style: TextStyle(color: Colors.white),
+                                ), InkWell(
+                                    child: Container(
+                                      child: Center(
+                                        child: FittedBox(
+                                          child: Text(
+                                            "Stok Hizmet Detay Kodu",
+                                            style: TextStyle(
+                                                color: Colors.blue.shade900,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 18),
+                                          ),
                                         ),
                                       ),
+                                      padding: EdgeInsets.only(bottom: 0),
                                     ),
-                                    padding: EdgeInsets.only(bottom: 0),
-                                  ),
-                                  onTap: () async {
-                                    state.showModal();
-                                  }),
+                                    onTap: () async {
+                                      state.showModal();
+                                    }),
+                              ],
                             );
                           } else {
                             return InkWell(
@@ -1022,8 +1029,6 @@ class ButceGerceklesenRaporuDataSource extends DataGridSource {
           );
         }).toList()
     );
-
-
   }
 
   void updateDataGridSource() {
