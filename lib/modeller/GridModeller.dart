@@ -604,6 +604,7 @@ class StoklarGridModel {
   double sdsIzmit;
   double sdsBodrum;
   double sdsKayseri;
+  double sdsSivas;
   double zenitled;
   double zenitledUretim;
   double zenitledMerkez;
@@ -612,6 +613,8 @@ class StoklarGridModel {
   double zenitledAntalya;
   double zenitledAnkara;
   double zenitledKonya;
+  double zenitledPerpa;
+  double zenitledETicaret;
   double D1SdsToplamStokMerkezDahil;
   double D1SdsMerkez;
   double D1SdsIzmir;
@@ -625,6 +628,7 @@ class StoklarGridModel {
   double D1SdsIzmit;
   double D1SdsBodrum;
   double D1SdsKayseri;
+  double D1SdsSivas;
   double D1Zenitled;
   double D1ZenitledUretim;
   double D1ZenitledMerkez;
@@ -633,6 +637,8 @@ class StoklarGridModel {
   double D1ZenitledAntalya;
   double D1ZenitledKonya;
   double D1ZenitledAnkara;
+  double D1ZenitledPerpa;
+  double D1ZenitledETicaret;
   String? stokAileKutugu;
   String? barKodu;
 
@@ -674,6 +680,7 @@ class StoklarGridModel {
       this.sdsIzmit,
       this.sdsBodrum,
       this.sdsKayseri,
+      this.sdsSivas,
       this.zenitled,
       this.zenitledUretim,
       this.zenitledMerkez,
@@ -682,6 +689,8 @@ class StoklarGridModel {
       this.zenitledAntalya,
       this.zenitledAnkara,
       this.zenitledKonya,
+      this.zenitledPerpa,
+      this.zenitledETicaret,
       this.D1SdsToplamStokMerkezDahil,
       this.D1SdsMerkez,
       this.D1SdsIzmir,
@@ -695,6 +704,7 @@ class StoklarGridModel {
       this.D1SdsIzmit,
       this.D1SdsBodrum,
       this.D1SdsKayseri,
+      this.D1SdsSivas,
       this.D1Zenitled,
       this.D1ZenitledUretim,
       this.D1ZenitledMerkez,
@@ -703,8 +713,12 @@ class StoklarGridModel {
       this.D1ZenitledAntalya,
       this.D1ZenitledAnkara,
       this.D1ZenitledKonya,
-      this.stokAileKutugu);
+      this.D1ZenitledPerpa,
+      this.D1ZenitledETicaret,
+      this.stokAileKutugu,);
+
 }
+
 
 class StokFiyatlariGridModel {
   String listeAdi;
@@ -725,6 +739,7 @@ class StokReferanslariGridModel {
   String? detay;
   int olusturan;
 
+
   StokReferanslariGridModel({
     required this.id,
     required this.cariUnvan,
@@ -735,6 +750,7 @@ class StokReferanslariGridModel {
     required this.olusturanAdi,
     required this.detay,
     required this.olusturan,
+
   });
 
   factory StokReferanslariGridModel.fromMap(Map<String, dynamic> map) {

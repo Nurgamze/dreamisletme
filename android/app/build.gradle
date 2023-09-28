@@ -28,7 +28,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.huawei.agconnect'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -49,8 +49,8 @@ android {
         applicationId "sds.dream"
         minSdkVersion 24
         targetSdkVersion 33
-        versionCode 3711
-        versionName "3.7.11"
+        versionCode 3714
+        versionName "3.7.14"
         multiDexEnabled true
     }
 
@@ -70,6 +70,6 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.huawei.agconnect:agconnect-core:1.5.2.300'
-    implementation platform('com.google.firebase:firebase-bom:26.0.0')
-    implementation 'com.google.firebase:firebase-analytics'
+    implementation platform('com.google.firebase:firebase-bom:32.3.1')
+    implementation 'com.google.firebase:firebase-analytics:21.3.0'
 }

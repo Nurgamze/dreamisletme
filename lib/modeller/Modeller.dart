@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -95,7 +94,7 @@ class CustomColumnSizer extends ColumnSizer {
 
 class Subeler {
   static var dbZenitSubelerTuzla = jsonDecode(
-      '[{"Tuzla" : "0","Keyap" : "1","Adana" : "2","Bursa" : "3","Antalya" : "4","Ankara" : "5","Konya" : "6"]');
+      '[{"Tuzla" : "0","Keyap" : "1","Adana" : "2","Bursa" : "3","Antalya" : "4","Ankara" : "5","Konya" : "6","Perpa" :"8",]');
   static List<String> zenitSubelerTuzla = [
     "Tuzla",
     "Keyap",
@@ -104,6 +103,7 @@ class Subeler {
     "Antalya",
     "Ankara",
     "Konya",
+    "Perpa",
   ];
   static List<String> zenitSubelerKodTuzla = [
     "0",
@@ -113,10 +113,11 @@ class Subeler {
     "4",
     "5",
     "6",
+    "8",
   ];
 
   static var dbZenitSubeler = jsonDecode(
-      '[{"Keyap" : "1","Adana" : "2","Bursa" : "3","Antalya" : "4","Ankara" : "5","Konya" : "6"]');
+      '[{"Keyap" : "1","Adana" : "2","Bursa" : "3","Antalya" : "4","Ankara" : "5","Konya" : "6", "Perpa" : "8",]');
   static List<String> zenitSubeler = [
     "Keyap",
     "Adana",
@@ -124,6 +125,7 @@ class Subeler {
     "Antalya",
     "Ankara",
     "Konya",
+    "Perpa",
   ];
   static List<String> zenitSubelerKod = [
     "1",
@@ -132,6 +134,7 @@ class Subeler {
     "4",
     "5",
     "6",
+    "8",
   ];
 
   static String dbSube(String subeAdi) {
@@ -451,8 +454,7 @@ class Foksiyonlar {
 
 class Sabitler {
   static String url = "http://api.sds.com.tr";
-  static String apiKey =
-      "l75pq03ejewq1qdkap1e19u9jwdk2qdm5dAsd321CnsfWWlosmCs123y";
+  static String apiKey = "l75pq03ejewq1qdkap1e19u9jwdk2qdm5dAsd321CnsfWWlosmCs123y";
 
   static BoxDecoration dreamBoxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(5),

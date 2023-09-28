@@ -38,6 +38,7 @@ class Stok extends BaseDataModel {
   double? sdsIzmit;
   double? sdsBodrum;
   double? sdsKayseri;
+  double? sdsSivas;
   double? zenitled;
   double? zenitledUretim;
   double? zenitledMerkez;
@@ -46,6 +47,8 @@ class Stok extends BaseDataModel {
   double? zenitledAntalya;
   double? zenitledAnkara;
   double? zenitledKonya;
+  double? zenitledETicaret;
+  double? zenitledPerpa;
   double? d1SdsToplamStokMerkezDahil;
   double? d1SdsMerkez;
   double? d1SdsIzmir;
@@ -59,6 +62,7 @@ class Stok extends BaseDataModel {
   double? d1SdsIzmit;
   double? d1SdsBodrum;
   double? d1SdsKayseri;
+  double? d1SdsSivas;
   double? d1Zenitled;
   double? d1ZenitledUretim;
   double? d1ZenitledMerkez;
@@ -67,6 +71,8 @@ class Stok extends BaseDataModel {
   double? d1ZenitledAntalya;
   double? d1ZenitledKonya;
   double? d1ZenitledAnkara;
+  double? d1ZenitledPerpa;
+  double? d1ZenitledETicaret;
   String? stokAileKutugu;
   String? barKodu;
 
@@ -107,6 +113,7 @@ class Stok extends BaseDataModel {
     this.sdsIzmit,
     this.sdsBodrum,
     this.sdsKayseri,
+    this.sdsSivas,
     this.zenitled,
     this.zenitledUretim,
     this.zenitledMerkez,
@@ -115,6 +122,8 @@ class Stok extends BaseDataModel {
     this.zenitledAntalya,
     this.zenitledAnkara,
     this.zenitledKonya,
+    this.zenitledETicaret,
+    this.zenitledPerpa,
     this.d1SdsToplamStokMerkezDahil,
     this.d1SdsMerkez,
     this.d1SdsIzmir,
@@ -128,6 +137,7 @@ class Stok extends BaseDataModel {
     this.d1SdsIzmit,
     this.d1SdsBodrum,
     this.d1SdsKayseri,
+    this.d1SdsSivas,
     this.d1Zenitled,
     this.d1ZenitledUretim,
     this.d1ZenitledMerkez,
@@ -136,6 +146,8 @@ class Stok extends BaseDataModel {
     this.d1ZenitledAntalya,
     this.d1ZenitledKonya,
     this.d1ZenitledAnkara,
+    this.d1ZenitledPerpa,
+    this.d1ZenitledETicaret,
     this.stokAileKutugu,
     this.barKodu,
   });
@@ -178,6 +190,7 @@ class Stok extends BaseDataModel {
       sdsIzmit: double.tryParse(map['sdsIzmit'].toString()),
       sdsBodrum: double.tryParse(map['sdsBodrum'].toString()),
       sdsKayseri: double.tryParse(map['sdsKayseri'].toString()),
+      sdsSivas: double.tryParse(map['sdsSivas'].toString()),
       zenitled: double.tryParse(map['zenitled'].toString()),
       zenitledUretim: double.tryParse(map['zenitledUretim'].toString()),
       zenitledMerkez: double.tryParse(map['zenitledMerkez'].toString()),
@@ -186,6 +199,8 @@ class Stok extends BaseDataModel {
       zenitledAntalya: double.tryParse(map['zenitledAntalya'].toString()),
       zenitledAnkara: double.tryParse(map['zenitledAnkara'].toString()),
       zenitledKonya: double.tryParse(map['zenitledKonya'].toString()),
+      zenitledPerpa: double.tryParse(map['zenitledPerpa'].toString()),
+      zenitledETicaret: double.tryParse(map['zenitledETicaret'].toString()),
       d1SdsToplamStokMerkezDahil: double.tryParse(map['D1SdsToplamStokMerkezDahil'].toString()),
       d1SdsMerkez: double.tryParse(map['D1SdsMerkez'].toString()),
       d1SdsIzmir: double.tryParse(map['D1SdsIzmir'].toString()),
@@ -207,6 +222,8 @@ class Stok extends BaseDataModel {
       d1ZenitledAntalya: double.tryParse(map['D1ZenitledAntalya'].toString()),
       d1ZenitledKonya: double.tryParse(map['D1ZenitledKonya'].toString()),
       d1ZenitledAnkara: double.tryParse(map['D1ZenitledAnkara'].toString()),
+      d1ZenitledPerpa: double.tryParse(map['D1ZenitledPerpa'].toString()),
+      d1ZenitledETicaret: double.tryParse(map['D1ZenitledETicaret'].toString()),
       stokAileKutugu: map['stokAileKutugu'],
       barKodu: map['barKodu'],
     );

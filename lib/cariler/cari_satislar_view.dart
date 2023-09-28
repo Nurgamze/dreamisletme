@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sdsdream_flutter/Stoklar/StoklarSayfasi.dart';
 import 'package:sdsdream_flutter/cariler/models/cari_satislar.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
 import 'package:sdsdream_flutter/Stoklar/models/stok.dart';
@@ -11,8 +14,11 @@ import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:sdsdream_flutter/core/models/base_data_grid_source.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
+import 'package:http/http.dart' as http;
+import '../Stoklar/StokDetaySayfasi.dart';
 import '../core/services/api_service.dart';
+import '../modeller/GridModeller.dart';
+import '../modeller/Listeler.dart';
 
 class CariSatislarView extends StatefulWidget {
   final cariKodu;
@@ -35,6 +41,11 @@ class _CariSatislarViewState extends State<CariSatislarView> {
   List<CariSatislar> aramaList = [];
   
   List<CariSatislar> _cariSatislarList = [];
+
+  List<StoklarGridModel> stoklarGridModel = [];
+
+  late final List<StoklarGridModel> data;
+
   @override
   void initState() {
     _satislarDataSource = BaseDataGridSource(dataGridController,CariSatislar.buildDataGridRows(_cariSatislarList));
@@ -192,12 +203,19 @@ class _CariSatislarViewState extends State<CariSatislarView> {
           dreamColumn(columnName: 'turu',  label:'TÜR',),
           dreamColumn(columnName: 'evrak',  label:'EVRAK',),
         ],
+
+        //burada getiriyor ama içi çalışmıyor
         onCellTap: (value) async {
           Future.delayed(Duration(milliseconds: 10), () async{
             FocusScope.of(context).requestFocus(new FocusNode());
             if(value.rowColumnIndex.rowIndex > 0){
+              print("if içindeyimmm ${value.rowColumnIndex.rowIndex}");
               var row = dataGridController.selectedRow!.getCells();
-              _stokGit(row[0].value.toString());
+              print("row ? $row");
+              setState(() {
+                _stokGit(row[0].value.toString());
+                print("setstate içinde ${row[0].value.toString()}");
+              });
             }
           });
         },
@@ -230,6 +248,7 @@ class _CariSatislarViewState extends State<CariSatislarView> {
       "AppVer" : TelefonBilgiler.userAppVersion,
       "UserId" : UserInfo.activeUserId,
     };
+
     var serviceData = await APIService.getDataWithModel<List<CariSatislar>,CariSatislar>("AlisSatislar", queryParameters, CariSatislar());
     if(serviceData.statusCode == 200){
       _cariSatislarList = serviceData.responseData ?? [];
@@ -246,7 +265,7 @@ class _CariSatislarViewState extends State<CariSatislarView> {
 
   _stokGit(String stokKodu) async {
     showDialog(context: context, builder: (_) => DreamCogs());
-    var postData = {
+    var body = jsonEncode({
       "VtIsim" : UserInfo.activeDB,
       "SubeNo" : UserInfo.aktifSubeNo,
       "Arama":stokKodu.replaceAll("*", "%").replaceAll("\'", "\''"),
@@ -270,17 +289,100 @@ class _CariSatislarViewState extends State<CariSatislarView> {
       "sezonlar" : "",
       "hammaddeler" : "",
       "kategoriler" : "",
-    };
-    var serviceData = await APIService.fetchData("StokV4", postData);
+    });
+
+    var responseStok = await http.post(Uri.parse( "${Sabitler.url}/api/StokV4"),
+        headers: {
+          "apiKey": Sabitler.apiKey,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body
+    ).timeout(Duration(seconds: 40));
     Navigator.pop(context);
-    if(serviceData.statusCode == 200) {
-      Stok stok = Stok.fromMap(serviceData.responseData[0]);
-      /*
+    if(responseStok.statusCode == 200) {
+      var stokDetay = jsonDecode(responseStok.body);
+      print(stokDetay[0]);
+      StoklarGridModel stoklarGridModel = StoklarGridModel(
+          stokDetay[0]['stokKodu'],
+          stokDetay[0]['stokIsim'],
+          stokDetay[0]['barKodu'],
+          stokDetay[0]['kisaIsim'],
+          stokDetay[0]['alternatifStokAdi'],
+          stokDetay[0]['alternatifStokKodu'],
+          stokDetay[0]['stokYabanciIsim'],
+          stokDetay[0]['anaGrup'],
+          stokDetay[0]['altGrup'],
+          stokDetay[0]['marka'],
+          stokDetay[0]['reyon'],
+          stokDetay[0]['depo1StokMiktar'],
+          stokDetay[0]['depo2StokMiktar'],
+          stokDetay[0]['depo3StokMiktar'],
+          stokDetay[0]['depo4StokMiktar'],
+          stokDetay[0]['tumDepolarStokMiktar'],
+          stokDetay[0]['stokBirim'],
+          stokDetay[0]['fiyat'],
+          stokDetay[0]['doviz'],
+          stokDetay[0]['alinanSiparisKalan'],
+          stokDetay[0]['verilenSiparisKalan'],
+          stokDetay[0]['son30GunSatis'],
+          stokDetay[0]['son3AyOrtalamaSatis'],
+          stokDetay[0]['son6AyOrtalamaSatis'],
+          stokDetay[0]['sdsToplamStokMerkezDahil'],
+          stokDetay[0]['sdsMerkez'],
+          stokDetay[0]['sdsizmir'],
+          stokDetay[0]['sdsAdana'],
+          stokDetay[0]['sdsAntalya'],
+          stokDetay[0]['sdsSeyrantepe'],
+          stokDetay[0]['sdsAnkara'],
+          stokDetay[0]['sdsEurasia'],
+          stokDetay[0]['sdsBursa'],
+          stokDetay[0]['sdsAnadolu'],
+          stokDetay[0]['sdsIzmit'],
+          stokDetay[0]['sdsBodrum'],
+          stokDetay[0]['sdsKayseri'],
+          stokDetay[0]['sdsSivas'],
+          stokDetay[0]['zenitled'],
+          stokDetay[0]['zenitledUretim'],
+          stokDetay[0]['zenitledMerkez'],
+          stokDetay[0]['zenitledAdana'],
+          stokDetay[0]['zenitledBursa'],
+          stokDetay[0]['zenitledAntalya'],
+          stokDetay[0]['zenitledAnkara'],
+          stokDetay[0]['zenitledKonya'],
+          stokDetay[0]['zenitledPerpa'],
+          stokDetay[0]['zenitledETicaret'],
+          stokDetay[0]['D1SdsToplamStokMerkezDahil'],
+          stokDetay[0]['D1SdsMerkez'],
+          stokDetay[0]['D1SdsIzmir'],
+          stokDetay[0]['D1SdsAdana'],
+          stokDetay[0]['D1SdsAntalya'],
+          stokDetay[0]['D1SdsSeyrantepe'],
+          stokDetay[0]['D1SdsAnkara'],
+          stokDetay[0]['D1SdsEurasia'],
+          stokDetay[0]['D1SdsBursa'],
+          stokDetay[0]['D1SdsAnadolu'],
+          stokDetay[0]['D1SdsIzmit'],
+          stokDetay[0]['D1SdsBodrum'],
+          stokDetay[0]['D1SdsKayseri'],
+          stokDetay[0]['D1SdsSivas'],
+          stokDetay[0]['D1Zenitled'],
+          stokDetay[0]['D1ZenitledUretim'],
+          stokDetay[0]['D1ZenitledMerkez'],
+          stokDetay[0]['D1ZenitledAdana'],
+          stokDetay[0]['D1ZenitledBursa'],
+          stokDetay[0]['D1ZenitledAntalya'],
+          stokDetay[0]['D1ZenitledAnkara'],
+          stokDetay[0]['D1ZenitledKonya'],
+          stokDetay[0]['D1ZenitledPerpa'],
+          stokDetay[0]['D1ZenitledETicaret'],
+          stokDetay[0]['stokAileKutugu']
+      );
       Navigator.push(context, MaterialPageRoute(
         builder: (context) => StokDetaySayfasi(data: stoklarGridModel,),
-      ));*/
+      ));
       return true;
     }else{
+      print("hata var ");
     }
   }
 }

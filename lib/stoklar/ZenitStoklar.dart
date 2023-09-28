@@ -1944,6 +1944,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
             stok['sdsIzmit'],
             stok['sdsBodrum'],
             stok['sdsKayseri'],
+            stok['sdsSivas'],
             stok['zenitled'],
             stok['zenitledUretim'],
             stok['zenitledMerkez'],
@@ -1952,6 +1953,8 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
             stok['zenitledAntalya'],
             stok['zenitledAnkara'],
             stok['zenitledKonya'],
+            stok['zenitledPerpa'],
+            stok['zenitledETicaret'],
             stok['D1SdsToplamStokMerkezDahil'],
             stok['D1SdsMerkez'],
             stok['D1SdsIzmir'],
@@ -1965,6 +1968,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
             stok['D1SdsIzmit'],
             stok['D1SdsBodrum'],
             stok['D1SdsKayseri'],
+            stok['D1SdsSivas'],
             stok['D1Zenitled'],
             stok['D1ZenitledUretim'],
             stok['D1ZenitledMerkez'],
@@ -1973,6 +1977,8 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
             stok['D1ZenitledAntalya'],
             stok['D1ZenitledAnkara'],
             stok['D1ZenitledKonya'],
+            stok['D1ZenitledPerpa'],
+            stok['D1ZenitledETicaret'],
             stok['stokAileKutugu']
         );
         stoklarGridList.add(stoklarGridModel);

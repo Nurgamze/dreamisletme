@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -11,7 +10,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sdsdream_flutter/GirisYapYeni.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
-
 import 'modeller/SplashScreen.dart';
 import 'core/services/api_service.dart';
 import 'core/services/hive_service.dart';

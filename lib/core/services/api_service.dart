@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-
 import '../constants/app_keys.dart';
 import '../models/base_data_model.dart';
 import '../models/base_response_model.dart';
@@ -89,13 +87,12 @@ class APIService {
 
   }
 
-
+//cari satışları getiriyor.
   static Future<ResponseModel<dynamic>> fetchData(String url,Map<String, dynamic> postData) async {
 
     try{
       var response = await _dio!.post(url,data: postData);
       var responseBody = response.data;
-
 
       if(response.statusCode == HttpStatus.ok){
 
@@ -149,7 +146,7 @@ class APIService {
 
   }
 
-
+//cari arama cari dönemsel bakiye getiriyor
   static Future<ResponseModel<dynamic>> getData(String url,Map<String, dynamic> queryParameters) async {
 
     try{

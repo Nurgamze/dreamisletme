@@ -2088,6 +2088,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
             stok['sdsIzmit'],
             stok['sdsBodrum'],
             stok['sdsKayseri'],
+            stok['sdsSivas'],
             stok['zenitled'],
             stok['zenitledUretim'],
             stok['zenitledMerkez'],
@@ -2096,6 +2097,8 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
             stok['zenitledAntalya'],
             stok['zenitledAnkara'],
             stok['zenitledKonya'],
+            stok['zenitledPerpa'],
+            stok['zenitledETicaret'],
             stok['D1SdsToplamStokMerkezDahil'],
             stok['D1SdsMerkez'],
             stok['D1SdsIzmir'],
@@ -2109,6 +2112,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
             stok['D1SdsIzmit'],
             stok['D1SdsBodrum'],
             stok['D1SdsKayseri'],
+            stok['D1SdsSivas'],
             stok['D1Zenitled'],
             stok['D1ZenitledUretim'],
             stok['D1ZenitledMerkez'],
@@ -2117,6 +2121,8 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
             stok['D1ZenitledAntalya'],
             stok['D1ZenitledAnkara'],
             stok['D1ZenitledKonya'],
+            stok['D1ZenitledPerpa'],
+            stok['D1ZenitledETicaret'],
             stok['stokAileKutugu']
         );
         stoklarGridList.add(stoklarGridModel);
@@ -2179,8 +2185,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
       var filtreler = jsonDecode(response.body);
       for(var filtre in filtreler){
         setState(() {
-          filtreList.add(
-              filtre);
+          filtreList.add(filtre);
         });
       }
     }else if(response.statusCode == 400){

@@ -8,11 +8,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:sdsdream_flutter/Stoklar/models/stok.dart';
 import 'package:sdsdream_flutter/modeller/GridModeller.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
 import 'package:sdsdream_flutter/Stoklar/StokAcikSiparislerSayfasi.dart';
 import 'package:sdsdream_flutter/widgets/const_screen.dart';
-
 import 'StokAlternatifleriSayfasi.dart';
 import 'StokFiyatlariSayfasi.dart';
 import 'StokKimlerdenAlinmis.dart';
@@ -21,7 +21,7 @@ import 'StokReferanslarSayfasi.dart';
 
 class StokDetaySayfasi extends StatefulWidget {
   final StoklarGridModel data;
-  const StokDetaySayfasi({super.key, required this.data});
+  const StokDetaySayfasi({super.key, required this.data,});
   @override
   _StokDetaySayfasiState createState() => _StokDetaySayfasiState();
 }
@@ -346,6 +346,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
     double izmit = depo1Mi ? widget.data.D1SdsIzmit : widget.data.sdsIzmit;
     double bodrum = depo1Mi ? widget.data.D1SdsBodrum: widget.data.sdsBodrum;
     double kayseri = depo1Mi ? widget.data.D1SdsKayseri: widget.data.sdsKayseri;
+    double? sivas = depo1Mi ? widget.data.D1SdsSivas: widget.data.sdsSivas;
     return Stack(
       children: [
         Align(
@@ -552,12 +553,32 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("İZMİT",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
-                        Text(formatter.format(izmit),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(kayseri)),)
+                        Text(formatter.format(izmit),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(izmit)),)
                       ],
                     ),
                   ),
                 ],
               ),
+              SizedBox(height: 7,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: Sabitler.dreamBoxDecoration,
+                    width: (MediaQuery.of(context).size.width-50)/2-15,
+                    height: 50,
+                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("SİVAS",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                        Text(formatter.format(sivas),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(sivas!)),)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
             ],
           ),
         ),
@@ -704,6 +725,18 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                         Text(formatter.format(widget.data.zenitledKonya),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(widget.data.zenitledKonya)),)
                       ],
                     ),
+                  ), Container(
+                    decoration: Sabitler.dreamBoxDecoration,
+                    width: (MediaQuery.of(context).size.width-50)/2-15,
+                    height: 50,
+                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("PERPA",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                        Text(formatter.format(widget.data.zenitledPerpa),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(widget.data.zenitledPerpa)),)
+                      ],
+                    ),
                   ),
                   Visibility(
                     child: Container(
@@ -721,6 +754,26 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                     ),
                     visible: UserInfo.zenitUretimYetki,
                   ),
+                ],
+              ),
+              SizedBox(height: 7,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: Sabitler.dreamBoxDecoration,
+                    width: (MediaQuery.of(context).size.width-50)/2-15,
+                    height: 50,
+                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("ETicaret",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                        Text(formatter.format(widget.data.zenitledETicaret),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(widget.data.zenitledETicaret)),)
+                      ],
+                    ),
+                  ),
+
                 ],
               ),
 

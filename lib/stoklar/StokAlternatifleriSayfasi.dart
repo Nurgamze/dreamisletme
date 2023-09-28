@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -281,6 +280,7 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
       "hammaddeler" : "",
       "kategoriler" : "",
     });
+
     var responseStok = await http.post(Uri.parse(
         "${Sabitler.url}/api/StokV4"),
         headers: {
@@ -331,6 +331,7 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
           stokDetay[0]['sdsIzmit'],
           stokDetay[0]['sdsBodrum'],
           stokDetay[0]['sdsKayseri'],
+          stokDetay[0]['sdsSivas'],
           stokDetay[0]['zenitled'],
           stokDetay[0]['zenitledUretim'],
           stokDetay[0]['zenitledMerkez'],
@@ -339,6 +340,8 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
           stokDetay[0]['zenitledAntalya'],
           stokDetay[0]['zenitledAnkara'],
           stokDetay[0]['zenitledKonya'],
+          stokDetay[0]['zenitledPerpa'],
+          stokDetay[0]['zenitledETicaret'],
           stokDetay[0]['D1SdsToplamStokMerkezDahil'],
           stokDetay[0]['D1SdsMerkez'],
           stokDetay[0]['D1SdsIzmir'],
@@ -352,6 +355,7 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
           stokDetay[0]['D1SdsIzmit'],
           stokDetay[0]['D1SdsBodrum'],
           stokDetay[0]['D1SdsKayseri'],
+          stokDetay[0]['D1SdsSivas'],
           stokDetay[0]['D1Zenitled'],
           stokDetay[0]['D1ZenitledUretim'],
           stokDetay[0]['D1ZenitledMerkez'],
@@ -360,6 +364,8 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
           stokDetay[0]['D1ZenitledAntalya'],
           stokDetay[0]['D1ZenitledAnkara'],
           stokDetay[0]['D1ZenitledKonya'],
+          stokDetay[0]['D1ZenitledPerpa'],
+          stokDetay[0]['D1ZenitledETicaret'],
           stokDetay[0]['stokAileKutugu']
       );
       Navigator.push(context, MaterialPageRoute(
