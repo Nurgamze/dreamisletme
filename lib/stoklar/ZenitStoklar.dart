@@ -444,10 +444,10 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
           dreamColumn(columnName: 'kisaIsim', label: 'KISA ADI'),
           dreamColumn(columnName: 'anaGrup', label: 'ANA GRUP'),
           dreamColumn(columnName: 'altGrup', label: 'ALT GRUP'),
+          dreamColumn(columnName: 'kategori', label: 'KATEGORİ KODU'),
           dreamColumn(columnName: 'alternatifStokKodu', label: "İLK ALTERNATİF STOK KODU",alignment: Alignment.centerLeft),
           dreamColumn(columnName: 'alternatifStokIsim', label: "İLK ALTERNATİF STOK ADI",alignment: Alignment.centerLeft),
           dreamColumn(columnName: 'barKodu', label: "BARKODU"),
-
         ],
         controller: this._dataGridController,
         onCellTap: (value) {
@@ -1858,6 +1858,16 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
       loading = false;
     });
     stoklarGridList.clear();
+
+
+    print("ZENİT STOKLAR POST İSTEĞİ BODYSİ");
+    print("VtIsim : ${UserInfo.activeDB}");
+    print("Arama : ${arananKelime.replaceAll("*", "%").replaceAll("\'", "\''")}");
+    print("SubeNo : ${UserInfo.aktifSubeNo}");
+    print("DevInfo : ${TelefonBilgiler.userDeviceInfo}");
+    print("AppVer : ${TelefonBilgiler.userAppVersion}");
+    print("UserId : ${UserInfo.activeUserId}");
+
     var body = jsonEncode({
       "VtIsim" : UserInfo.activeDB,
       "SubeNo" : UserInfo.aktifSubeNo,
@@ -1884,8 +1894,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
     });
     late http.Response response;
     try {
-      response = await http.post(Uri.parse(
-          "${Sabitler.url}/api/ZenitStoklar"),
+      response = await http.post(Uri.parse("${Sabitler.url}/api/ZenitStoklar"),
           headers: {
             "apiKey": Sabitler.apiKey,
             'Content-Type': 'application/json; charset=UTF-8',
@@ -1903,6 +1912,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
             return BilgilendirmeDialog("Sunucuya bağlanılamadı internetinizi kontrol ediniz");
           }).then((value) => Navigator.pop(context));
     }
+
     if(response.statusCode == 200) {
       var stokDetay = jsonDecode(response.body);
       for(var stok in stokDetay){
@@ -1916,6 +1926,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
             stok['stokYabanciIsim'],
             stok['anaGrup'],
             stok['altGrup'],
+            stok['kategori'],  //kategorikodu eklendi
             stok['marka'],
             stok['reyon'],
             stok['depo1StokMiktar'],
@@ -2194,6 +2205,7 @@ class StoklarDataSource extends DataGridSource {
           DataGridCell<String>(columnName: 'kisaIsim',value: e.kisaIsim),
           DataGridCell<String>(columnName: 'anaGrup',value: e.anaGrup),
           DataGridCell<String>(columnName: 'altGrup',value: e.altGrup),
+          DataGridCell<String>(columnName: 'kategori',value: e.kategori),
           DataGridCell<String>(columnName: 'alternatifStokKodu',value: e.stokAlternatifKod),
           DataGridCell<String>(columnName: 'alternatifStokIsim',value: e.stokAlternatifIsim),
           DataGridCell<String>(columnName: 'barKodu',value: e.barKodu),

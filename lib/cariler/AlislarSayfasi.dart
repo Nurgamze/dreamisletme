@@ -254,6 +254,7 @@ class _AlislarSayfasiState extends State<AlislarSayfasi> {
           stokDetay[0]['stokYabanciIsim'],
           stokDetay[0]['anaGrup'],
           stokDetay[0]['altGrup'],
+          stokDetay[0]['kategoriKodu'],
           stokDetay[0]['marka'],
           stokDetay[0]['reyon'],
           stokDetay[0]['depo1StokMiktar'],

@@ -4,60 +4,73 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8322d450-00f4-4515-8944-ddc690cc0746" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="5b43c641-035b-4229-92ed-ccd07ea3ff32" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/libraries/Dart_SDK.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Dart_SDK.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/app-release.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/app-release.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/output-metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/output-metadata.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sdsdream_flutter_android.iml" beforeDir="false" afterPath="$PROJECT_DIR$/sdsdream_flutter_android.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/keystore/upload_certificate.pem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/GirisYapYeni.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/GirisYapYeni.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/cariler/AlislarSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/AlislarSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/cariler/cari_satislar_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/cari_satislar_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/services/api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/services/api_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/modeller/GridModeller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/modeller/GridModeller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/modeller/Modeller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/modeller/Modeller.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokAlternatifleriSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokAlternatifleriSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokDetaySayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokDetaySayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/StoklarSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StoklarSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/ZenitStoklar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/ZenitStoklar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/models/stok.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/models/stok.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../sdsdream_flutter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../sdsdream_flutter.iml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[882HAEVRJDAAK]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="KEY_STORE_PATH" value="C:\repos\SdsDreamV3\android\keystore\SdsDream.keystore.jks" />
+    <option name="KEY_ALIAS" value="sdsdream" />
+    <option name="REMEMBER_PASSWORDS" value="true" />
+    <option name="BUILD_TARGET_KEY" value="apk" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectId" id="2W1sFrrHT3CnVYfYDN6SYNh8en4" />
+  <component name="ProjectId" id="2Xte5DArHTHx3pmKYMpyhY0NcPh" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ApkExportedModule": "android.app",
+    "ExportApk.ApkPathForandroid.app": "C:\\repos\\SdsDreamV3\\android\\app",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
+    "last_opened_file_path": "C:/repos/SdsDreamV3/android/keystore/SdsDream.keystore.jks",
     "show.migrate.to.gradle.popup": "false"
+  },
+  "keyToStringList": {
+    "ExportApk.BuildVariants": [
+      "release"
+    ]
   }
 }]]></component>
   <component name="RunManager">
@@ -131,11 +144,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="8322d450-00f4-4515-8944-ddc690cc0746" name="Changes" comment="" />
-      <created>1695911319916</created>
+      <changelist id="5b43c641-035b-4229-92ed-ccd07ea3ff32" name="Changes" comment="" />
+      <created>1699452618039</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1695911319916</updated>
+      <updated>1699452618039</updated>
     </task>
     <servers />
   </component>

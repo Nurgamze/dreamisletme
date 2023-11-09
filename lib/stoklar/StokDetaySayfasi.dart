@@ -138,14 +138,14 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                                 ),
                                 SizedBox(height: 10,),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  //crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Expanded(child: Container(
                                       child: Column(
                                         children: [
                                           Text("TOPLAM",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500))),
-                                          Text(formatter.format(toplam),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 17,color: Foksiyonlar.moneyColor(toplam),fontWeight: FontWeight.w500))),
+                                          Text(formatter.format(toplam),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Foksiyonlar.moneyColor(toplam),fontWeight: FontWeight.w500))),
                                         ],
                                       ),
                                     ),),
@@ -153,7 +153,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                                       child: Column(
                                         children: [
                                           Text("ŞUBE",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500))),
-                                          Text(formatter.format(sube),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 17,color: Foksiyonlar.moneyColor(sube),fontWeight: FontWeight.w500))),
+                                          Text(formatter.format(sube),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Foksiyonlar.moneyColor(sube),fontWeight: FontWeight.w500))),
                                         ],
                                       ),
                                     ),),
@@ -179,7 +179,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             Text("SİPARİŞ",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500))),
-                                            Text(formatter.format(widget.data.alinanSiparisKalan),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 17,color: Foksiyonlar.moneyColor(widget.data.alinanSiparisKalan),fontWeight: FontWeight.w500))),
+                                            Text(formatter.format(widget.data.alinanSiparisKalan),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Foksiyonlar.moneyColor(widget.data.alinanSiparisKalan),fontWeight: FontWeight.w500))),
                                           ],
                                         ),
                                       ),
@@ -347,6 +347,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
     double bodrum = depo1Mi ? widget.data.D1SdsBodrum: widget.data.sdsBodrum;
     double kayseri = depo1Mi ? widget.data.D1SdsKayseri: widget.data.sdsKayseri;
     double? sivas = depo1Mi ? widget.data.D1SdsSivas: widget.data.sdsSivas;
+
     return Stack(
       children: [
         Align(
@@ -369,7 +370,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("MERKEZ ",style: GoogleFonts.roboto(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500),),
+                                Text(" MERKEZ ",style: GoogleFonts.roboto(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500),),
                                 FaIcon(FontAwesomeIcons.infoCircle,size: 15,color: Colors.blue.shade900,)
                               ],
                             ),
@@ -539,14 +540,14 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("KAYSERİ",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                        Text( "KAYSERİ",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
                         Text(formatter.format(kayseri),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(kayseri)),)
                       ],
                     ),
                   ),
                   Container(
                     decoration: Sabitler.dreamBoxDecoration,
-                    width: (MediaQuery.of(context).size.width-50)/2-15,
+                    width: ( MediaQuery.of(context).size.width-50 )/2-15,
                     height: 50,
                     padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
                     child: Column(
@@ -559,26 +560,27 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                   ),
                 ],
               ),
-              SizedBox(height: 7,),
+              SizedBox (height: 7),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     decoration: Sabitler.dreamBoxDecoration,
-                    width: (MediaQuery.of(context).size.width-50)/2-15,
+                    width: ( MediaQuery.of(context).size.width-50 )/2-15,
                     height: 50,
                     padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("SİVAS",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                        Text("SİVAS", style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
                         Text(formatter.format(sivas),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(sivas!)),)
                       ],
                     ),
                   ),
                 ],
               ),
-
+              SizedBox(height: 7,),
+              SizedBox(height: 7,),
             ],
           ),
         ),
@@ -738,6 +740,25 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                       ],
                     ),
                   ),
+                ],
+              ),
+              SizedBox(height: 7,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: Sabitler.dreamBoxDecoration,
+                    width: (MediaQuery.of(context).size.width-50)/2-15,
+                    height: 50,
+                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("E-TİCARET",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                        Text(formatter.format(widget.data.zenitledETicaret),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(widget.data.zenitledETicaret)),)
+                      ],
+                    ),
+                  ),
                   Visibility(
                     child: Container(
                       decoration: Sabitler.dreamBoxDecoration,
@@ -756,27 +777,6 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                   ),
                 ],
               ),
-              SizedBox(height: 7,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    decoration: Sabitler.dreamBoxDecoration,
-                    width: (MediaQuery.of(context).size.width-50)/2-15,
-                    height: 50,
-                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("ETicaret",style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
-                        Text(formatter.format(widget.data.zenitledETicaret),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(widget.data.zenitledETicaret)),)
-                      ],
-                    ),
-                  ),
-
-                ],
-              ),
-
             ],
           ),
         ),

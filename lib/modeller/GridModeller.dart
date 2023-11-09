@@ -534,6 +534,7 @@ class AcikSiparislerGridModel {
   String? birim;
   double? birimFiyat;
   String? dovizCinsi;
+
   AcikSiparislerGridModel(
       this.sipCins,
       this.sipTip,
@@ -576,6 +577,7 @@ class StoklarGridModel {
   String? stokYabanciIsim;
   String anaGrup;
   String altGrup;
+  String kategori;  //kategorikodu eklendi
   String? marka;
   String? reyon;
   double depo1StokMiktar;
@@ -652,6 +654,7 @@ class StoklarGridModel {
       this.stokYabanciIsim,
       this.anaGrup,
       this.altGrup,
+      this.kategori, //kategorikodu eklendi
       this.marka,
       this.reyon,
       this.depo1StokMiktar,
@@ -769,46 +772,51 @@ class StokReferanslariGridModel {
 }
 
 class StokAlternatifleriGridModel {
-  String? stokKodu;
-  String? stokAdi;
-  double? miktar;
-  String? urunTipi;
-  String? ipRate;
-  String? marka;
-  String? kasaTipi;
-  String? tip;
-  String? ekOzellik;
-  String? sinifi;
-  String? renk;
-  String? ledSayisi;
-  String? volt;
-  String? guc;
-  String? kelvin;
-  String? akim;
-  String? garantiSuresi;
-  String? satisPotansiyeli;
-  String? aileKutugu;
+  String? dep_adi;
+  String? sto_kod;
+  String? sto_isim;
+  double? Miktar;
+
+ // String? urunTipi;
+ // String? ipRate;
+ //  String? marka;
+ //  String? kasaTipi;
+ // String? tip;
+ // String? ekOzellik;
+ // String? sinifi;
+ // String? renk;
+ // String? ledSayisi;
+ // String? volt;
+ // String? guc;
+ //  String? kelvin;
+ // String? akim;
+ // String? garantiSuresi;
+ // String? satisPotansiyeli;
+ //  String? aileKutugu;
 
   StokAlternatifleriGridModel(
-      this.stokKodu,
-      this.stokAdi,
-      this.miktar,
-      this.urunTipi,
-      this.ipRate,
-      this.marka,
-      this.kasaTipi,
-      this.tip,
-      this.ekOzellik,
-      this.sinifi,
-      this.renk,
-      this.ledSayisi,
-      this.volt,
-      this.guc,
-      this.kelvin,
-      this.akim,
-      this.garantiSuresi,
-      this.satisPotansiyeli,
-      this.aileKutugu);
+      this.dep_adi,
+      this.sto_kod,
+      this.sto_isim,
+      this.Miktar,
+
+      // this.urunTipi,
+      // this.ipRate,
+      // this.marka,
+      // this.kasaTipi,
+      // this.tip,
+      // this.ekOzellik,
+      // this.sinifi,
+      // this.renk,
+      // this.ledSayisi,
+      // this.volt,
+      // this.guc,
+      // this.kelvin,
+      // this.akim,
+      // this.garantiSuresi,
+      // this.satisPotansiyeli,
+      // this.aileKutugu
+      );
 }
 
 class PortalTalepleriGridModel {

@@ -25,6 +25,7 @@ Future<void> init() async{
   await HiveService.initialize();
   await APIService.initialize("http://api.sds.com.tr/api/");
 }
+
 Future<void> main() async {
   await init();
   return runApp(
@@ -87,6 +88,7 @@ class _MyAppState extends State<MyApp> {
       loaderColor: Colors.white,
     );
   }
+
   _getVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     TelefonBilgiler.appVersion = packageInfo.version;

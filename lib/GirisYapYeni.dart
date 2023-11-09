@@ -178,8 +178,7 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
                             ),
                           ),
                           onFieldSubmitted: (value) async {
-                            if (await Foksiyonlar.internetDurumu(context) ==
-                                true) {
+                            if (await Foksiyonlar.internetDurumu(context) == true) {
                               if (_mailAdresiController.text == "" ||
                                   _sifreController.text == "") {
                                 showDialog(
@@ -1903,24 +1902,26 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
     }
   }
 
+
   _checkLogin(String userName, String password, String platform) async {
     showDialog(
         context: context,
         builder: (context) => Dialog(
             backgroundColor: Colors.transparent,
-            insetPadding:
-                EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 3),
+            insetPadding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height / 3),
             elevation: 0,
             child: Container(
               height: MediaQuery.of(context).size.width / 2,
               width: MediaQuery.of(context).size.width / 2,
               child: Image.asset("assets/images/sdsLoading.gif"),
             )));
+
+    //String girisBilgisi = userName.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').trimRight();
+   // password.trimRight();
     late http.Response response;
     var body = jsonEncode({"userName": userName, "password": password});
     try {
-      response = await http
-          .post(Uri.parse("${Sabitler.url}/api/GetUserInfo"),
+      response = await http.post(Uri.parse("${Sabitler.url}/api/GetUserInfo"),
               headers: {
                 "apiKey": Sabitler.apiKey,
                 'Content-Type': 'application/json; charset=UTF-8',
@@ -1985,11 +1986,8 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
         } catch (e) {
           UserInfo.aktifSubeNo = "";
         }
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AnaEkranSayfasi(),
-            ));
+
+        Navigator.push(context, MaterialPageRoute( builder: (context) => AnaEkranSayfasi(),));
       } else {
         if (rememberMe) {
           pref.setBool("_rememberMe", true);
@@ -2007,11 +2005,7 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
           UserInfo.aktifSubeNo = "";
         }
         UserInfo.activeDB = null;
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AnaEkranSayfasi(),
-            ));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AnaEkranSayfasi(),));
       }
     } else if (response.statusCode == 404) {
       Navigator.pop(context);
@@ -2037,8 +2031,7 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
       "kullaniciBilgisi": _kullaniciBilgiController.text,
       "telefonBilgi" : TelefonBilgiler.userDeviceInfo
     });
-    var response =
-        await http.post(Uri.parse("${Sabitler.url}/api/DreamSifremiUnuttum"),
+    var response = await http.post(Uri.parse("${Sabitler.url}/api/DreamSifremiUnuttum"),
             headers: {
               "apiKey": Sabitler.apiKey,
               'Content-Type': 'application/json; charset=UTF-8',
@@ -2092,10 +2085,8 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
       String deviceName = await platform.invokeMethod("deviceName");
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       TelefonBilgiler.userDevicePlatform = "SDSDreamFAndroid";
-      TelefonBilgiler.userDeviceInfo =
-          "${androidInfo.brand}  | ${androidInfo.model} | ${androidInfo.version.release} | ${deviceName.replaceAll("'", "''")}";
-      TelefonBilgiler.userAppVersion =
-          packageInfo.version + " | " + packageInfo.buildNumber + " | F";
+      TelefonBilgiler.userDeviceInfo = "${androidInfo.brand}  | ${androidInfo.model} | ${androidInfo.version.release} | ${deviceName.replaceAll("'", "''")}";
+      TelefonBilgiler.userAppVersion = packageInfo.version + " | " + packageInfo.buildNumber + " | F";
     } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       String model = "";
@@ -2227,10 +2218,8 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
           break;
       }
       TelefonBilgiler.userDevicePlatform = "SDSDreamFXiOS";
-      TelefonBilgiler.userDeviceInfo =
-          "Apple | $model | ${iosInfo.systemVersion} | ${iosInfo.name?.replaceAll("'", "''")}";
-      TelefonBilgiler.userAppVersion =
-          packageInfo.version + " | " + packageInfo.buildNumber + " | F";
+      TelefonBilgiler.userDeviceInfo = "Apple | $model | ${iosInfo.systemVersion} | ${iosInfo.name?.replaceAll("'", "''")}";
+      TelefonBilgiler.userAppVersion = packageInfo.version + " | " + packageInfo.buildNumber + " | F";
     }
   }
 }

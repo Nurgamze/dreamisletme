@@ -202,8 +202,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                                 FocusScope.of(context).requestFocus(new FocusNode());
                               },
                               decoration: InputDecoration(
-                                  hintText:
-                                  'Stok arayın',
+                                  hintText: 'Stok arayın',
                                   border: InputBorder.none,
                                   suffixIcon: IconButton(
                                     icon: Icon(Icons.cancel,color: Colors.blue.shade900,),
@@ -229,10 +228,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                                 ),
                                 height: 40,
                                 child: Center(
-                                  child: Text(
-                                    "Sonuç bulunamadı",
-                                    style: TextStyle(color: Colors.redAccent),
-                                  ),
+                                  child: Text("Sonuç bulunamadı", style: TextStyle(color: Colors.redAccent),),
                                 ),
                               );
                             },
@@ -451,6 +447,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
           dreamColumn(columnName: 'kisaIsim', label: 'KISA ADI'),
           dreamColumn(columnName: 'anaGrup', label: 'ANA GRUP'),
           dreamColumn(columnName: 'altGrup', label: 'ALT GRUP'),
+          dreamColumn(columnName: 'kategori', label: 'KATEGORİ KODU'),
           dreamColumn(columnName: 'alternatifStokKodu', label: "İLK ALTERNATİF STOK KODU",alignment: Alignment.centerLeft),
           dreamColumn(columnName: 'alternatifStokIsim', label: "İLK ALTERNATİF STOK ADI",alignment: Alignment.centerLeft),
           dreamColumn(columnName: 'barKodu', label: "BARKODU"),
@@ -1995,7 +1992,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
     setState(() {
       loading = false;
     });
-    print("UserInfo.aktifSubeNo");
+    print("VtIsim : ${UserInfo.activeDB}");
     print(UserInfo.aktifSubeNo);
     stoklarGridList.clear();
     var body = jsonEncode({
@@ -2006,6 +2003,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
       "AltGrup" : "",
       "Marka" : "",
       "Reyon" : "",
+      "kategori" : "",
       "Mobile":true,
       "DevInfo":TelefonBilgiler.userDeviceInfo,
       "AppVer":TelefonBilgiler.userAppVersion,
@@ -2025,8 +2023,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
     });
     late http.Response response;
     try {
-      response = await http.post(Uri.parse(
-          "${Sabitler.url}/api/StokV4"),
+      response = await http.post(Uri.parse ("${Sabitler.url}/api/StokV4"),
           headers: {
             "apiKey": Sabitler.apiKey,
             'Content-Type': 'application/json; charset=UTF-8',
@@ -2060,6 +2057,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
             stok['stokYabanciIsim'],
             stok['anaGrup'],
             stok['altGrup'],
+            stok['kategori'], //kategorikodu eklendi
             stok['marka'],
             stok['reyon'],
             stok['depo1StokMiktar'],
@@ -2344,6 +2342,7 @@ class StoklarDataSource extends DataGridSource {
           DataGridCell<String>(columnName: 'kisaIsim',value: e.kisaIsim),
           DataGridCell<String>(columnName: 'anaGrup',value: e.anaGrup),
           DataGridCell<String>(columnName: 'altGrup',value: e.altGrup),
+          DataGridCell<String>(columnName: 'kategori',value: e.kategori),
           DataGridCell<String>(columnName: 'alternatifStokKodu',value: e.stokAlternatifKod),
           DataGridCell<String>(columnName: 'alternatifStokIsim',value: e.stokAlternatifIsim),
           DataGridCell<String>(columnName: 'barKodu',value: e.barKodu),

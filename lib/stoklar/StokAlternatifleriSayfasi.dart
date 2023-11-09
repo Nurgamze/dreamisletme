@@ -3,6 +3,7 @@ import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:sdsdream_flutter/modeller/GridModeller.dart';
 import 'package:sdsdream_flutter/modeller/Listeler.dart';
@@ -12,10 +13,10 @@ import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
 import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import 'StokDetaySayfasi.dart';
 
 class StokAlternatifleriSayfasi extends StatefulWidget {
+
   final StoklarGridModel data;
   StokAlternatifleriSayfasi({required this.data});
   @override
@@ -32,13 +33,16 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
   bool loading = false;
   List<StokAlternatifleriGridModel> aramaList = [];
 
+  bool active = false;
+
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _stokAlternatifleriDataSource = StokAlternatifleriDataSource(dataGridController);
-    _alternatifleriGetir();
+    _alternatifleriGetir(-1);
 
     AutoOrientation.fullAutoMode();
   }
@@ -49,6 +53,8 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
     stokAlternatifleriGridList.clear();
     if(!TelefonBilgiler.isTablet) AutoOrientation.portraitAutoMode();
   }
+
+
   @override
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
@@ -65,6 +71,7 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
             backgroundColor: Colors.blue.shade900,
           ),
         body: !loading ? DreamCogs() :
+
         Column(
           children: [
             Row(
@@ -87,6 +94,8 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
                   child: Center(child: TextFormField(
                     decoration: InputDecoration(
                         border: InputBorder.none,
+                        hintText: "Depo adı veya Stok adı",
+                        contentPadding: EdgeInsets.only(top: 15),
                         suffixIcon: IconButton(
                           icon: Icon(Icons.cancel,color: Colors.blue.shade900,),
                           onPressed: () {
@@ -140,17 +149,50 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
                   color: Colors.blue.shade900,
                 ),
                 margin: EdgeInsets.symmetric(horizontal: 1),
-                height: 40,
+                height:45,
                 width: MediaQuery.of(context).size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text("ALTERNATİFLER",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold)),textAlign: TextAlign.center,),
-                    Text("${widget.data.stokKodu}",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14,color: Colors.white,fontWeight: FontWeight.bold)),textAlign: TextAlign.center,maxLines: 1,),
-                  ],)
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 3,top: 0,bottom: 0),
+                  child: Row(
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     Column(
+                        //crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                              child: Text("ALTERNATİFLER",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold)),textAlign: TextAlign.left,)),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                              child: Text("${widget.data.stokKodu}",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.bold)),textAlign: TextAlign.left,maxLines: 1,)),
+                        ],),
+                      Switch(
+                        value: active,
+                           onChanged: (value){
+                             setState(() {
+                               active=value;
+                               print("active:::: ${active}");
+                               setState(() {
+                                 active ? _alternatifleriGetir(0) : _alternatifleriGetir(-1);
+                               });
+                             });
+                           },
+                           activeTrackColor: Colors.white, //buton içi
+                           activeColor: Colors.green,      //üstteki düğm
+                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            width: 90,
+                              child: active ? Text("Stokta Olanlar",style: TextStyle(color: Colors.white,fontSize: 14),) : Text("Tüm Stoklar",style: TextStyle(color: Colors.white,fontSize: 14),)),
+                        ),
+                    ],
+                  ),
+                )
             ),
-            Expanded(child: Container(
+            Expanded(
+                child: Container(
               margin: EdgeInsets.only(bottom: 1,left: 1,right: 1),
               child: _grid(),
             ))
@@ -176,25 +218,11 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
          rowHeight: 35,
          source: _stokAlternatifleriDataSource,
          columns: <GridColumn> [
-           dreamColumn(columnName: 'stokKodu', label: 'STOK KODU',alignment: Alignment.centerLeft),
-           dreamColumn(columnName: 'stokAdi', label: 'STOK ADI',alignment: Alignment.centerLeft),
-           dreamColumn(columnName: 'miktar', label: 'MİKTAR',),
-           dreamColumn(columnName: 'urunTipi', label: 'ÜRÜN TİPİ',),
-           dreamColumn(columnName: 'ipRate', label: 'IP RATE',),
-           dreamColumn(columnName: 'marka', label: 'MARKA',),
-           dreamColumn(columnName: 'kasaTipi', label: 'KATA TİPİ',),
-           dreamColumn(columnName: 'tip', label: 'TİP',),
-           dreamColumn(columnName: 'ekOzellik', label: 'EK ÖZELLİK',),
-           dreamColumn(columnName: 'sinifi', label: 'SINIFI',),
-           dreamColumn(columnName: 'renk', label: 'RENK',),
-           dreamColumn(columnName: 'ledSayisi', label: 'LED SAYISI',),
-           dreamColumn(columnName: 'volt', label: 'VOLD',),
-           dreamColumn(columnName: 'guc', label: 'GÜÇ',),
-           dreamColumn(columnName: 'kelvin', label: 'KELVİN',),
-           dreamColumn(columnName: 'akim', label: 'AKIM',),
-           dreamColumn(columnName: 'garantiSuresi', label: 'GARANTİ SÜRESİ',),
-           dreamColumn(columnName: 'satisPotansiyeli', label: 'SATIŞ POTANSİYELİ',),
-           dreamColumn(columnName: 'aileKutugu', label: 'AİLE KÜTÜĞÜ',),
+           dreamColumn(columnName: 'dep_adi', label: 'DEPO ADI',alignment: Alignment.centerLeft),
+           dreamColumn(columnName: 'sto_kod', label: 'STOK KODU',alignment: Alignment.centerLeft),
+           dreamColumn(columnName: 'sto_isim', label: 'STOK ADI',alignment: Alignment.centerLeft),
+           dreamColumn(columnName: 'Miktar', label: 'MİKTAR',),
+
          ],
          onCellTap: (v) {
            Future.delayed(Duration(milliseconds: 50), () async{
@@ -213,7 +241,7 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
   _satisAra() async {
     List<StokAlternatifleriGridModel> arananlarList = [];
     for(var stok in aramaList){
-      if(stok.stokKodu!.toLowerCase().contains(_aramaController.text) || stok.stokAdi!.toLowerCase().contains(_aramaController.text)){
+      if(stok.dep_adi!.toLowerCase().contains(_aramaController.text) || stok.sto_isim!.toLowerCase().contains(_aramaController.text)){
         arananlarList.add(stok);
       }
     }
@@ -222,38 +250,58 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
       _stokAlternatifleriDataSource = StokAlternatifleriDataSource(dataGridController);
     });
   }
-  _alternatifleriGetir() async {
+
+
+   void _alternatifleriGetir(int stokMiktar) async {
+
     print(widget.data.stokKodu);
-    var response = await http.get(Uri.parse("${Sabitler.url}/api/StokAlternatifleri?VtIsim=${UserInfo.activeDB}&StokKodu=${widget.data.stokKodu}&Mobile=true&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),headers: {"apiKey" : Sabitler.apiKey});
-    print(response.body);
+
+    stokAlternatifleriGridList.clear();
+
+    var response = await http.get(Uri.parse("${Sabitler.url}/api/StokAlternatifleri?VtIsim=${UserInfo.activeDB}&StokKodu=${widget.data.stokKodu}&StokMiktar=${stokMiktar}" ),
+        headers: {"apiKey" : Sabitler.apiKey});
+
     if(response.statusCode == 200){
-      print(response.body);
+
       var alternatiflerJson = jsonDecode(response.body);
       for(var alternatifler in alternatiflerJson) {
-        StokAlternatifleriGridModel alternatif = StokAlternatifleriGridModel(alternatifler['stokKodu'], alternatifler['stokAdi'],alternatifler['miktar'], alternatifler['urunTipi'], alternatifler['ipRate'],
-            alternatifler['marka'],alternatifler['kasaTipi'],alternatifler['tip'],alternatifler['ekOzellik'],alternatifler['sinifi'],alternatifler['renk'],alternatifler['ledSayisi'],alternatifler['volt'],
-            alternatifler['guc'],alternatifler['kelvin'],alternatifler['akim'],alternatifler['garantiSuresi'],alternatifler['satisPotansiyeli'],alternatifler['aileKutugu']);
-        print(alternatif);
-        setState(() {
+
+        StokAlternatifleriGridModel alternatif = StokAlternatifleriGridModel(
+            alternatifler['dep_adi'],
+            alternatifler['sto_kod'],
+            alternatifler['sto_isim'],
+            alternatifler['Miktar'],
+        );
+        setState((){
           stokAlternatifleriGridList.add(alternatif);
         });
       }
       setState(() {
-        _stokAlternatifleriDataSource = StokAlternatifleriDataSource(dataGridController);
+        _stokAlternatifleriDataSource.updateDataGridSource();
         aramaList = stokAlternatifleriGridList;
         loading = true;
       });
     }else{
       setState(() {
-        _stokAlternatifleriDataSource = StokAlternatifleriDataSource(dataGridController);
         stokAlternatifleriGridList.clear();
+        _stokAlternatifleriDataSource = StokAlternatifleriDataSource(dataGridController);
         loading = true;
       });
     }
   }
 
 
+
   _stokGit(String stokKodu) async {
+    stokKodu=widget.data.stokKodu;
+    print("VtIsim ${UserInfo.activeDB}");
+    print("SubeNo ${UserInfo.aktifSubeNo}");
+    print("Arama ${stokKodu.replaceAll("*", "%").replaceAll("\'", "\''")}");
+    print("DevInfo ${TelefonBilgiler.userDeviceInfo}");
+    print("AppVer ${TelefonBilgiler.userAppVersion}");
+    print("UserId ${UserInfo.activeUserId}");
+
+
     showDialog(context: context, builder: (_) => DreamCogs());
     var body = jsonEncode({
       "VtIsim" : UserInfo.activeDB,
@@ -263,6 +311,7 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
       "AltGrup" : "",
       "Marka" : "",
       "Reyon" : "",
+      "kategori" : "",
       "Mobile":true,
       "DevInfo":TelefonBilgiler.userDeviceInfo,
       "AppVer":TelefonBilgiler.userAppVersion,
@@ -279,10 +328,10 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
       "sezonlar" : "",
       "hammaddeler" : "",
       "kategoriler" : "",
+      "uygulama":" "
     });
 
-    var responseStok = await http.post(Uri.parse(
-        "${Sabitler.url}/api/StokV4"),
+    var responseStok = await http.post(Uri.parse("${Sabitler.url}/api/StokV4"),
         headers: {
           "apiKey": Sabitler.apiKey,
           'Content-Type': 'application/json; charset=UTF-8',
@@ -303,6 +352,7 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
           stokDetay[0]['stokYabanciIsim'],
           stokDetay[0]['anaGrup'],
           stokDetay[0]['altGrup'],
+          stokDetay[0]['kategori'],  //kategorikodu eklendi
           stokDetay[0]['marka'],
           stokDetay[0]['reyon'],
           stokDetay[0]['depo1StokMiktar'],
@@ -387,31 +437,15 @@ class StokAlternatifleriDataSource extends DataGridSource {
   @override
   List<DataGridRow> get rows => dataGridRows;
 
-
-
   void buildDataGridRows() {
+    print("build Datanın içindeyim");
     dataGridRows = stokAlternatifleriGridList.map<DataGridRow>((e) => DataGridRow(
         cells: [
-          DataGridCell<String>(columnName: 'stokKodu',value: e.stokKodu),
-          DataGridCell<String>(columnName: 'stokAdi',value: e.stokAdi),
-          DataGridCell<double>(columnName: 'miktar',value: e.miktar),
-          DataGridCell<String>(columnName: 'urunTipi',value: e.urunTipi),
-          DataGridCell<String>(columnName: 'ipRate',value: e.ipRate),
-          DataGridCell<String>(columnName: 'marka',value: e.marka),
-          DataGridCell<String>(columnName: 'kasaTipi',value: e.kasaTipi),
-          DataGridCell<String>(columnName: 'tip',value: e.tip),
-          DataGridCell<String>(columnName: 'ekOzellik',value: e.ekOzellik),
-          DataGridCell<String>(columnName: 'sinifi',value: e.sinifi),
-          DataGridCell<String>(columnName: 'renk',value: e.renk),
-          DataGridCell<String>(columnName: 'ledSayisi',value: e.ledSayisi),
-          DataGridCell<String>(columnName: 'volt',value: e.volt),
-          DataGridCell<String>(columnName: 'guc',value: e.guc),
-          DataGridCell<String>(columnName: 'kelvin',value: e.kelvin),
-          DataGridCell<String>(columnName: 'akim',value: e.akim),
-          DataGridCell<String>(columnName: 'garantiSuresi',value: e.garantiSuresi),
-          DataGridCell<String>(columnName: 'satisPotansiyeli',value: e.satisPotansiyeli),
-          DataGridCell<String>(columnName: 'aileKutugu',value: e.aileKutugu),
-        ]
+          DataGridCell<String>(columnName: 'dep_adi',value: e.dep_adi),
+          DataGridCell<String>(columnName: 'sto_kod',value: e.sto_kod),
+          DataGridCell<String>(columnName: 'sto_isim',value: e.sto_isim),
+          DataGridCell<double>(columnName: 'Miktar',value: e.Miktar),
+      ]
     )).toList();
   }
 
@@ -447,11 +481,10 @@ class StokAlternatifleriDataSource extends DataGridSource {
           );
         }).toList()
     );
-
-
   }
 
   void updateDataGridSource() {
+    buildDataGridRows();
     notifyListeners();
   }
 }
