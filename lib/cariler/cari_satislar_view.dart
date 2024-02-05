@@ -1,13 +1,10 @@
 import 'dart:convert';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sdsdream_flutter/Stoklar/StoklarSayfasi.dart';
 import 'package:sdsdream_flutter/cariler/models/cari_satislar.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
-import 'package:sdsdream_flutter/Stoklar/models/stok.dart';
 import 'package:sdsdream_flutter/widgets/DreamCogsGif.dart';
 import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
 import 'package:sdsdream_flutter/widgets/const_screen.dart';
@@ -18,7 +15,6 @@ import 'package:http/http.dart' as http;
 import '../Stoklar/StokDetaySayfasi.dart';
 import '../core/services/api_service.dart';
 import '../modeller/GridModeller.dart';
-import '../modeller/Listeler.dart';
 
 class CariSatislarView extends StatefulWidget {
   final cariKodu;
@@ -250,8 +246,8 @@ class _CariSatislarViewState extends State<CariSatislarView> {
     };
 
     var serviceData = await APIService.getDataWithModel<List<CariSatislar>,CariSatislar>("AlisSatislar", queryParameters, CariSatislar());
-    if(serviceData.statusCode == 200){
-      _cariSatislarList = serviceData.responseData ?? [];
+    if(serviceData?.statusCode == 200){
+      _cariSatislarList = serviceData?.responseData ?? [];
       _satislarDataSource = BaseDataGridSource(dataGridController,CariSatislar.buildDataGridRows(_cariSatislarList));
       loading = true;
       aramaList = _cariSatislarList;
@@ -312,7 +308,7 @@ class _CariSatislarViewState extends State<CariSatislarView> {
           stokDetay[0]['stokYabanciIsim'],
           stokDetay[0]['anaGrup'],
           stokDetay[0]['altGrup'],
-          stokDetay[0]['kategoriKodu'],
+          stokDetay[0]['kategori'],
           stokDetay[0]['marka'],
           stokDetay[0]['reyon'],
           stokDetay[0]['depo1StokMiktar'],
@@ -342,6 +338,8 @@ class _CariSatislarViewState extends State<CariSatislarView> {
           stokDetay[0]['sdsBodrum'],
           stokDetay[0]['sdsKayseri'],
           stokDetay[0]['sdsSivas'],
+          stokDetay[0]['sdsDenizli'],
+          stokDetay[0]['sdsManisa'],
           stokDetay[0]['zenitled'],
           stokDetay[0]['zenitledUretim'],
           stokDetay[0]['zenitledMerkez'],
@@ -366,6 +364,8 @@ class _CariSatislarViewState extends State<CariSatislarView> {
           stokDetay[0]['D1SdsBodrum'],
           stokDetay[0]['D1SdsKayseri'],
           stokDetay[0]['D1SdsSivas'],
+          stokDetay[0]['D1SdsDenizli'],
+          stokDetay[0]['D1SdsManisa'],
           stokDetay[0]['D1Zenitled'],
           stokDetay[0]['D1ZenitledUretim'],
           stokDetay[0]['D1ZenitledMerkez'],

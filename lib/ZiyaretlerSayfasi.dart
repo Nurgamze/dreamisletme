@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:sdsdream_flutter/widgets/Dialoglar.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import 'cariler/models/cari.dart';
 import 'modeller/GridModeller.dart';
 import 'modeller/Listeler.dart';
@@ -81,8 +79,7 @@ class _ZiyaretlerSayfasiState extends State<ZiyaretlerSayfasi> {
             Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(topRight: Radius.circular(5),topLeft: Radius.circular(5)),
-                  color: Colors.blue.shade900,
-                ),
+                  color: Colors.blue.shade900,),
                 margin: EdgeInsets.symmetric(horizontal: 1),
                 height: 30,
                 width: MediaQuery.of(context).size.width,
@@ -228,8 +225,9 @@ class BaseDataGridSource extends DataGridSource {
 
 
 
-class ZiyaretlerDataSource extends DataGridSource {
 
+
+class ZiyaretlerDataSource extends DataGridSource {
 
   final DataGridController dataGridController;
   ZiyaretlerDataSource(this.dataGridController) {

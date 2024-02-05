@@ -365,8 +365,8 @@ class _CariRiskFoyuViewState extends State<CariRiskFoyuView> {
       "UserId" : UserInfo.activeUserId,
     };
     var serviceData = await APIService.getDataWithModel<List<CariRiskFoyu>,CariRiskFoyu>("CariRiskFoyu", queryParameters, CariRiskFoyu());
-    if(serviceData.statusCode == 200) {
-      _cariRiskFoyuList = serviceData.responseData ?? [];
+    if(serviceData?.statusCode == 200) {
+      _cariRiskFoyuList = serviceData?.responseData ?? [];
       for(var _riskFoyu in _cariRiskFoyuList){
         String tipi = _riskFoyu.tipi.toString();
         if(keys.any((element) => tipi.contains(element))){
@@ -389,8 +389,8 @@ class _CariRiskFoyuViewState extends State<CariRiskFoyuView> {
 
       });
     }else{
-      print(serviceData.statusCode);
-      print(serviceData.errorMessage);
+      print(serviceData?.statusCode);
+      print(serviceData?.errorMessage);
     }
   }
 }

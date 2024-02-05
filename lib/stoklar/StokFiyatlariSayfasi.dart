@@ -118,7 +118,8 @@ class _StokFiyatlariSayfasiState extends State<StokFiyatlariSayfasi> {
   }
 
   _stokFiyatlariGetir() async {
-    var response = await http.get(Uri.parse("${Sabitler.url}/api/StokSatisFiyatlari?VtIsim=${UserInfo.activeDB}&stokKodu=${widget.stokKodu}&AlisFiyatlari=${UserInfo.alisDetayYetkisi}&Mobile=true&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),headers: {"apiKey" : Sabitler.apiKey});
+    var response = await http.get(Uri.parse("${Sabitler.url}/api/StokSatisFiyatlari?VtIsim=${UserInfo.activeDB}&stokKodu=${widget.stokKodu}&AlisFiyatlari=${UserInfo.alisDetayYetkisi}&Mobile=true&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),
+        headers: {"apiKey" : Sabitler.apiKey});
     if(response.statusCode == 200){
       var fiyatlarJson = jsonDecode(response.body);
       for(var fiyatlar in fiyatlarJson) {

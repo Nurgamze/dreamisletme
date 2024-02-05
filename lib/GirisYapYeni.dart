@@ -1792,42 +1792,28 @@ class _GirisYapSayfasiState extends State<GirisYapSayfasi> {
                   )),
                   Container(
                     child: Center(
-                      child: AutoSizeText(
-                        "$gunYazisi,",
-                        style: GoogleFonts.comfortaa(
-                          fontWeight: FontWeight.w900,
-                        ),
+                      child: AutoSizeText("$gunYazisi,",
+                        style: GoogleFonts.comfortaa(fontWeight: FontWeight.w900,),
                         minFontSize: 40,
                         maxFontSize: 50,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5,),
                   Container(
                     child: Center(
-                      child: AutoSizeText(
-                        kullaniciIsmi,
-                        style: GoogleFonts.comfortaa(
-                          fontWeight: FontWeight.w900,
-                        ),
+                      child: AutoSizeText(kullaniciIsmi, style: GoogleFonts.comfortaa(fontWeight: FontWeight.w900,),
                         minFontSize: 40,
                         maxFontSize: 50,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: screenHeight / 18,
-                  ),
+                  SizedBox(height: screenHeight / 18,),
                   InkWell(
                     child: Container(
                       child: Center(
-                        child: AutoSizeText(
-                          "Yoksa $kullaniciIsmi değil misin?",
-                          style: GoogleFonts.comfortaa(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.blue.shade900),
+                        child: AutoSizeText("Yoksa $kullaniciIsmi değil misin?",
+                          style: GoogleFonts.comfortaa(fontWeight: FontWeight.w600, color: Colors.blue.shade900),
                           minFontSize: 15,
                           maxFontSize: 20,
                         ),

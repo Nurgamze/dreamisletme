@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "sds.dream",
+  "variantName": "release",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 3718,
+      "versionName": "3.7.18",
+      "outputFile": "app-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

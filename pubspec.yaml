@@ -81,6 +81,10 @@ dependencies:
   flutter_mailer:
   permission_handler:
   syncfusion_flutter_xlsio:
+  input_history_text_field:
+  provider:
+  sqflite:
+  info_popup:
 
 
 dev_dependencies:

@@ -1,4 +1,4 @@
-
+/*
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
@@ -27,6 +27,10 @@ class SiparislerView extends StatefulWidget {
 class _SiparislerViewState extends State<SiparislerView> {
 
 
+  DataGridController _dataGridController = DataGridController();
+  late BaseDataGridSource _siparisDataSource;
+  List<Siparis> _siparisList = [];
+  bool _loading = false;
 
 
   @override
@@ -42,15 +46,12 @@ class _SiparislerViewState extends State<SiparislerView> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _siparisList.clear();
     if(!TelefonBilgiler.isTablet) AutoOrientation.portraitAutoMode();
   }
 
 
-  DataGridController _dataGridController = DataGridController();
-  late BaseDataGridSource _siparisDataSource;
-  List<Siparis> _siparisList = [];
-  bool _loading = false;
-  
+
   @override
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
@@ -80,18 +81,23 @@ class _SiparislerViewState extends State<SiparislerView> {
 
 
   _siparisleriGetir() async {
+    print("sipariş getir fonk içindeyim");
+
     var queryParameters = {
       "vt" : UserInfo.activeDB,
       "devInfo" : TelefonBilgiler.userDeviceInfo,
       "appVer" : TelefonBilgiler.userAppVersion,
       "userId" : UserInfo.activeUserId,
     };
-    var serviceData = await APIService.getDataWithModel<List<Siparis>,Siparis>("Siparisler", queryParameters, Siparis());
-    print(serviceData.statusCode);
-    print(serviceData.responseData);
-    if(serviceData.statusCode == 200) {
+    print("queryparameters ,$queryParameters");
 
-      _siparisList = serviceData.responseData ?? [];
+    var serviceData = await APIService.getDataWithModel<List<Siparis>,Siparis>("Siparisler", queryParameters, Siparis());
+
+    print("serviceData.statusCode ${serviceData?.statusCode}");
+    print("serviceData.responseData ${serviceData?.responseData}");
+    if(serviceData.statusCode == 200) {
+      print("servicedata if içindeyim  , $serviceData " );
+      _siparisList = serviceData?.responseData ?? [];
 
       _loading = !_loading;
       _siparisDataSource = BaseDataGridSource(_dataGridController,Siparis.buildDataGridRows(_siparisList));
@@ -150,3 +156,4 @@ class _SiparislerViewState extends State<SiparislerView> {
   }
 }
 
+*/

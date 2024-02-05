@@ -1,10 +1,6 @@
-
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,7 +12,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as sync;
-
 import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
@@ -41,27 +36,19 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
   final DataGridController  _dataGridController = DataGridController();
   late ZiyaretPlaniDataSource _ziyaretPlaniDataSource = ZiyaretPlaniDataSource(_dataGridController);
 
-
-
   bool loading = false;
   String gosterilecekTarih2= DateFormat('dd-MM-yyyy').format(DateTime.now());
   DateTime now = DateTime.now();
   String gosterilecekTarih1 = "";
   late DateTime secilenTarih1;
   DateTime secilenTarih2 = DateTime.now();
-
   bool planlilar = false;
   bool biteniGizle = false;
   bool banaAit = false;
   bool tapSending = false;
-
-
-
   bool cariKodFiltreMi = false;
   bool ilgiliFiltreMi = false;
   bool sehirFiltreMi = false;
-
-
 
   final List<Map<String,dynamic>> cariKodFiltreList = [];
   List<String?> cariKodFiltreler = [];
@@ -69,19 +56,9 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
   final List<Map<String,dynamic>> ilgiliFiltreList = [];
   List<String?> ilgiliFiltreler = [];
 
-
-
   final List<Map<String,dynamic>> sehirFiltreList = [];
   List<String?> sehirFiltreler = [];
-
-
-
-
-
   List<ZiyaretPlaniGridModel> yedekGridList = [];
-
-
-
   List<ZiyaretPlaniGridModel> aramaList = [];
 
   @override
@@ -124,7 +101,6 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
               ),
             ],
           ),
-          /*
           floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             backgroundColor: Colors.blue.shade900,
@@ -133,7 +109,6 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
             },
           ),
 
-           */
           body: Column(
             children: [
               Container(
@@ -286,8 +261,8 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
                   width: MediaQuery.of(context).size.width,
                   child: Center(child: Text("ZİYARETLER",style: GoogleFonts.roboto(textStyle: const TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.bold))),)
               ),
-              !loading ? Expanded(child: Container(child: DreamCogs())) :
-              Expanded(child: Container(
+              !loading ? Expanded(child: Container( child: DreamCogs())) :
+              Expanded( child: Container(
                   margin: const EdgeInsets.only(bottom: 1,left: 1,right: 1),
                   child: _grid()
               ),)
@@ -296,47 +271,6 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
         )
     );
   }
-  Future<DateTime?> getDate(String helpText,DateTime seciliTarih) {
-    return showDatePicker(
-      locale: const Locale('tr',''),
-      helpText: helpText,
-      confirmText: "TAMAM",
-      cancelText: "İPTAL",
-      context: context,
-      initialDate: seciliTarih,
-      firstDate: DateTime(2005),
-      lastDate: DateTime.now(),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.from(colorScheme: ColorScheme.light(background: Colors.white,onSurface: Colors.black,primary: Colors.blue.shade900)),
-          child: child!,
-        );
-      },
-    );
-  }
-  void callDatePicker(int secilenTarih) async {
-    if(secilenTarih == 1) {
-      var order = await getDate("Plan Başlangıç Tarihi Seçiniz",secilenTarih1);
-      if(order != null){
-        setState(() {
-          gosterilecekTarih1 = DateFormat('dd-MM-yyyy').format(order);
-          secilenTarih1 = order;
-        });
-      }
-    }else{
-      var order = await getDate("Plan Bitiş Tarihi Seçiniz",secilenTarih2);
-      if(order != null){
-        setState(() {
-          gosterilecekTarih2 = DateFormat('dd-MM-yyyy').format(order);
-          secilenTarih2 = order;
-        });
-      }
-      setState(() {
-
-      });
-    }
-  }
-
   Widget _grid() {
     return SfDataGridTheme(
       data: myGridTheme,
@@ -380,9 +314,73 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
             }
           });
         },
+        onCellLongPress: (args){
+          if(ziyaretPlaniGridList[args.rowColumnIndex.rowIndex].ilgili == UserInfo.mikroPersonelKod){
+
+            print("ziyaret yetiştirme yetkin var ");
+            //updateZiyaretNotu();
+
+
+          }else{
+
+            print("ziyaret yetiştirme yetkin yoooook ");
+          }
+
+
+
+
+        },
       ),
     );
   }
+
+  Future <void> updateZiyaretNotu(int ZiyaretID ,String yeniNot) async{
+    //
+
+  }
+
+  Future<DateTime?> getDate(String helpText,DateTime seciliTarih) {
+    return showDatePicker(
+      locale: const Locale('tr',''),
+      helpText: helpText,
+      confirmText: "TAMAM",
+      cancelText: "İPTAL",
+      context: context,
+      initialDate: seciliTarih,
+      firstDate: DateTime(2005),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.from(colorScheme: ColorScheme.light(background: Colors.white,onSurface: Colors.black,primary: Colors.blue.shade900)),
+          child: child!,
+        );
+      },
+    );
+  }
+  void callDatePicker(int secilenTarih) async {
+    if(secilenTarih == 1) {
+      var order = await getDate("Plan Başlangıç Tarihi Seçiniz",secilenTarih1);
+      if(order != null){
+        setState(() {
+          gosterilecekTarih1 = DateFormat('dd-MM-yyyy').format(order);
+          secilenTarih1 = order;
+        });
+      }
+    }else{
+      var order = await getDate("Plan Bitiş Tarihi Seçiniz",secilenTarih2);
+      if(order != null){
+        setState(() {
+          gosterilecekTarih2 = DateFormat('dd-MM-yyyy').format(order);
+          secilenTarih2 = order;
+        });
+      }
+      setState(() {
+
+      });
+    }
+  }
+
+
 
   _aramaYap() {
 
@@ -415,9 +413,13 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
     });
     late http.Response response;
     try {
-      response  = await http.get(Uri.parse("${Sabitler.url}/api/PlanliZiyaretler?vtName=${UserInfo.activeDB}&"
-          "sadecePlanli=false&basZaman=$gosterilecekTarih1&sonZaman=$gosterilecekTarih2&Mobile=true&"
-          "DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),
+
+      // print("PlanliZiyaretler?vtName=${UserInfo.activeDB}");
+      // print("basZaman=$gosterilecekTarih1&sonZaman=$gosterilecekTarih2");
+      // print("DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}");
+      // print("UserId=${UserInfo.activeUserId}");
+
+      response  = await http.get(Uri.parse("${Sabitler.url}/api/PlanliZiyaretler?vtName=${UserInfo.activeDB}&sadecePlanli=false&basZaman=$gosterilecekTarih1&sonZaman=$gosterilecekTarih2&Mobile=true&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),
           headers: {"apiKey" : Sabitler.apiKey}).timeout(const Duration(seconds: 30));
     } on TimeoutException {
       showDialog(context: context,
@@ -1103,6 +1105,7 @@ class ZiyaretPlaniDataSource extends DataGridSource {
         ]
     )).toList();
   }
+
 
   final DataGridController dataGridController;
   ZiyaretPlaniDataSource(this.dataGridController) {

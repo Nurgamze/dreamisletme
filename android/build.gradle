@@ -12,7 +12,6 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.5'
         classpath 'com.huawei.agconnect:agcp:1.5.2.300'
         classpath files('libs/kotlin-gradle-plugin-1.5.1.jar')
-
     }
 }
 

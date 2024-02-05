@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:auto_orientation/auto_orientation.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:sdsdream_flutter/modeller/Listeler.dart';
+import '../DovizKurlariSayfasi.dart';
+import '../modeller/ProviderHelper.dart';
 import '../stoklar/HorizontalPage.dart';
 import '../stoklar/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import '../modeller/GridModeller.dart';
-import '../modeller/Listeler.dart';
 import '../modeller/Modeller.dart';
 import '../widgets/Dialoglar.dart';
 import '../widgets/DreamCogsGif.dart';
@@ -21,8 +22,7 @@ import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
 import '../widgets/select/src/widget.dart';
-
-
+import 'package:intl/intl.dart';
 
 
 class SatisCiroKaybiSayfasi extends StatefulWidget {
@@ -40,29 +40,40 @@ List<String?> _sektorFiltreler = [];
 
 class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
   bool loading = false;
-
+  bool active = false;
   bool temsilciFiltreMi = false;
   bool sektorFiltreMi = false;
 
   List<SatisCiroKaybiGridModel> aramaList = [];
   final DataGridController _dataGridController = DataGridController();
   late SatisCiroKaybiDataSource _satisCiroKaybiDataSource;
+//doviz içinnn
+  String secilenTarih = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  DateTime now = DateTime.now();
+  String dateYear = DateTime.now().year.toString();
+  String dateMonth = new DateFormat.MMMM('tr').format(DateTime.now());
+  String dateDay = DateTime.now().day.toString();
+  final DataGridController _dataGridController2 = DataGridController();
+  late DovizKurlariDataSource _dovizKurlariDataSource = DovizKurlariDataSource(_dataGridController2);
+  double euroKuru=0;
 
   @override
   void initState() {
     super.initState();
     AutoOrientation.fullAutoMode();
-    _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(_dataGridController);
+    _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(active, euroKuru, _dataGridController,);
     Fluttertoast.showToast(
         msg: "İstediğiniz satıra çift dokunarak cari kodu kopyalayabilirsiniz.",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         textColor: Colors.white,
         backgroundColor: Colors.blue.shade900,
-        fontSize: 14.0);
+        fontSize: 14.0 );
     satisCiroKaybiGetir();
     _temsilciFiltreler.clear();
     _sektorFiltreler.clear();
+    updateDataSource();
+    _dovizKurGetir();
   }
 
   @override
@@ -70,62 +81,80 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
     super.dispose();
     if (!TelefonBilgiler.isTablet) AutoOrientation.portraitAutoMode();
     portfoydekiCeklerGridList.clear();
+    _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(active, euroKuru,_dataGridController);
+  }
+
+
+  void updateDataSource(){
+    setState(() {
+      _satisCiroKaybiDataSource=SatisCiroKaybiDataSource(active, euroKuru, _dataGridController);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
     return ConstScreen(
-        child: currentOrientation == Orientation.landscape &&
-            !TelefonBilgiler.isTablet
-            ? HorizontalPage(_grid())
-            : Scaffold(
+        child: currentOrientation == Orientation.landscape && !TelefonBilgiler.isTablet ? HorizontalPage(_grid()) : Scaffold(
           appBar: AppBar(
-            title: const Text("Satış/Ciro Kaybı"),
-            centerTitle: true,
+            title: const Text("Satış / Ciro\n     Kaybı",style: TextStyle(fontSize: 20),),
             backgroundColor: Colors.blue.shade900,
+              toolbarHeight: kToolbarHeight + 14.0,
             actions: [
-              temsilciFiltreMi || sektorFiltreMi
-                  ? Stack(
+              temsilciFiltreMi || sektorFiltreMi ? Stack(
                 alignment: Alignment(0,5),
                 children: [
-                  Container(
-                    color: Colors.red,
-                  ),
-                  Text(
-                      "${_sektorFiltreler.length + _temsilciFiltreler.length}",
-                      style: TextStyle(color: Colors.white)),
+                  Container(color: Colors.red,),
+                  Text("${_sektorFiltreler.length + _temsilciFiltreler.length}", style: TextStyle(color: Colors.white)),
                   IconButton(
                       icon: const FaIcon(FontAwesomeIcons.filter),
                       onPressed: () async {
                         showDialog(
                             context: context,
                             builder: (context) => _filtreDialog());
-                      }),
+                   }),
                 ],
-              )
-                  : IconButton(
+              ) : Column(
+                children: [
+                  Switch(
+                    value: active,
+                    onChanged: (value){
+                      setState(() {
+                        active=value;
+                        _satisCiroKaybiDataSource.isActive=active;
+                        SatisCiroKaybiDataSource(active, euroKuru,_dataGridController );
+                      });
+                      updateDataSource();
+                    },
+                    activeTrackColor: Colors.white,
+                    activeColor: Colors.green,
+                  ),
+
+                  Flexible(
+                      child: active ? Text("EUR=${euroKuru}€",style: TextStyle(color: Colors.white,fontSize: 14),) : Text("TL",style: TextStyle(color: Colors.white,fontSize: 14),),
+                  ),
+                ],
+              ),
+              IconButton(
                   icon: const FaIcon(FontAwesomeIcons.filter),
-                  onPressed: () async {
-                    showDialog(
+                    onPressed: () async {
+                     showDialog(
                         context: context,
                         builder: (context) => _filtreDialog());
                   }),
             ],
           ),
-          body: !loading
-              ? Container(
+          body: !loading ? Container(
             child: DreamCogs(),
-            margin: EdgeInsets.only(
-                top: MediaQuery.of(context).size.height / 4),
-          )
-              : Container(
+            margin: EdgeInsets.only( top: MediaQuery.of(context).size.height / 4),
+          ) : Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: _grid(),
           ),
         ));
   }
+
 
   _grid() {
     return SfDataGridTheme(
@@ -142,58 +171,19 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
         headerRowHeight: 35,
         rowHeight: 35,
         columns: <GridColumn>[
-          dreamColumn(
-              columnName: 'CARİ KOD',
-              label: "CARİ KODU",
-              alignment: Alignment.centerLeft),
-          dreamColumn(
-              columnName: 'CARI ISMI',
-              label: "CARİ ÜNVAN",
-              alignment: Alignment.centerLeft),
-          dreamColumn(
-              columnName: 'TEMSİLCİ',
-              label: "CARİ TEMSİLCİ",
-              alignment: Alignment.centerLeft),
-          dreamColumn(
-              columnName: 'SEKTÖR KODU',
-              label: "SEKTÖR KODU",
-              alignment: Alignment.centerLeft),
-          dreamColumn(
-            columnName: 'CİRO',
-            label: "CİRO",
-          ),
-          dreamColumn(
-            columnName: 'HareketliAySayisi',
-            label: "HAREKETLİ AY SAYISI",
-          ),
-          dreamColumn(
-            columnName: 'Hareketli Aylar Ortalaması',
-            label: "HAREKETLİ AYLAR ORTALAMASI",
-          ),
-          dreamColumn(
-            columnName: 'Hareket Bağımsız 12 Aylık Ortalama',
-            label: "HAREKET BAĞIMSIZ 12 AYLIK ORTALAMA",
-          ),
-          dreamColumn(
-            columnName: 'Ağırlıklı Ortalama Ciro Beklentisi',
-            label: "AĞIRLIKLI ORTALAMA CİRO BEKLENTİSİ",
-          ),
-          dreamColumn(
-            columnName: 'Son3AylıkOrtalamaCiro',
-            label: "SON 3 AYLIK ORTALAMA CİRO",
-          ),
-          dreamColumn(
-              columnName: 'Ciro Kaybı %',
-              label: "SON 3 AYLIK CİRO KAYBI % YÜZDE",
-              minWidth: 210),
-          dreamColumn(
-            columnName: 'Son6AylıkOrtalamaCiro',
-            label: "SON 6 AYLIK ORTALAMA CİRO",
-          ),
-          dreamColumn(
-              columnName: 'Ciro Kaybı % 6Ay',
-              label: "SON 6 AYLIK CİRO KAYBI % YÜZDE",
-              minWidth: 210),
+          dreamColumn(columnName: 'CARİ KOD', label: "CARİ KODU", alignment: Alignment.centerLeft),
+          dreamColumn(columnName: 'CARI ISMI', label: "CARİ ÜNVAN", alignment: Alignment.centerLeft),
+          dreamColumn(columnName: 'TEMSİLCİ', label: "CARİ TEMSİLCİ", alignment: Alignment.centerLeft),
+          dreamColumn(columnName: 'SEKTÖR KODU', label: "SEKTÖR KODU", alignment: Alignment.centerLeft),
+          dreamColumn(columnName: 'CİRO', label: "CİRO",),
+          dreamColumn(columnName: 'HareketliAySayisi', label: "HAREKETLİ AY SAYISI",),
+          dreamColumn(columnName: 'Hareketli Aylar Ortalaması', label: "HAREKETLİ AYLAR ORTALAMASI",),
+          dreamColumn(columnName: 'Hareket Bağımsız 12 Aylık Ortalama', label: "HAREKET BAĞIMSIZ 12 AYLIK ORTALAMA",),
+          dreamColumn(columnName: 'Ağırlıklı Ortalama Ciro Beklentisi', label: "AĞIRLIKLI ORTALAMA CİRO BEKLENTİSİ",),
+          dreamColumn(columnName: 'Son3AylıkOrtalamaCiro', label: "SON 3 AYLIK ORTALAMA CİRO",),
+          dreamColumn(columnName: 'Ciro Kaybı %', label: "SON 3 AYLIK CİRO KAYBI % YÜZDE", minWidth: 210),
+          dreamColumn(columnName: 'Son6AylıkOrtalamaCiro', label: "SON 6 AYLIK ORTALAMA CİRO",),
+          dreamColumn(columnName: 'Ciro Kaybı % 6Ay', label: "SON 6 AYLIK CİRO KAYBI % YÜZDE", minWidth: 210),
         ],
         controller: this._dataGridController,
         onCellTap: (v) {
@@ -236,15 +226,13 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
       showDialog(
           context: context,
           builder: (BuildContext context) {
-            return BilgilendirmeDialog(
-                "Sunucuya bağlanılamadı internetinizi kontrol ediniz");
+            return BilgilendirmeDialog("Sunucuya bağlanılamadı internetinizi kontrol ediniz");
           }).then((value) => Navigator.pop(context));
     } on Error catch (e) {
       showDialog(
           context: context,
           builder: (BuildContext context) {
-            return BilgilendirmeDialog(
-                "Sunucuya bağlanılamadı internetinizi kontrol ediniz");
+            return BilgilendirmeDialog("Sunucuya bağlanılamadı internetinizi kontrol ediniz");
           }).then((value) => Navigator.pop(context));
     }
     if (response.statusCode == 200) {
@@ -267,7 +255,8 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
               detay["Son3AylıkOrtalamaCiro"],
               detay["Ciro Kaybı %"],
               detay["Son6AylıkOrtalamaCiro"],
-              detay["Ciro Kaybı % 6Ay"]));
+              detay["Ciro Kaybı % 6Ay"]),
+          );
           bool addT = true;
           bool addS = true;
           for (var map in temsilciFiltreList) {
@@ -286,9 +275,9 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
           }
         }
         aramaList = satisCiroKaybiGridList;
-        _satisCiroKaybiDataSource =
-            SatisCiroKaybiDataSource(_dataGridController);
+        _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(active, euroKuru,_dataGridController);
         loading = !loading;
+
       });
     }
   }
@@ -441,15 +430,8 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
                             return InkWell(
                                 child: Container(
                                   child: Center(
-                                    child: Text(
-                                      "Temsilci",
-                                      style: TextStyle(
-                                          color: Colors.blue.shade900,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 18),
-                                    ),
-                                  ),
-                                  padding: EdgeInsets.only(top: 10),
+                                    child: Text("Temsilci", style: TextStyle(color: Colors.blue.shade900, fontWeight: FontWeight.w700, fontSize: 18),),
+                                  ), padding: EdgeInsets.only(top: 10),
                                 ),
                                 onTap: () async {
                                   state.showModal();
@@ -460,8 +442,7 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
                 ),
               ),
               Container(
-                height: 1,
-                color: Colors.grey.shade300,
+                height: 1, color: Colors.grey.shade300,
               ),
               Expanded(
                 child: InkWell(
@@ -496,8 +477,7 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
                                     ),
                                   ], color: Colors.red),
                                   child: Center(
-                                    child: Text("Temizle",
-                                        style: TextStyle(color: Colors.white)),
+                                    child: Text("Temizle", style: TextStyle(color: Colors.white)),
                                   ),
                                 ),
                                 onTap: () async {
@@ -528,10 +508,7 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
                                     ),
                                   ], color: Colors.grey.shade500),
                                   child: Center(
-                                    child: Text(
-                                      "Filtreyle Arama Yap",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
+                                    child: Text("Filtreyle Arama Yap", style: TextStyle(color: Colors.white),),
                                   ),
                                 ),
                                 onTap: () async {
@@ -544,8 +521,7 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
                                     }
                                   });
                                   v.closeModal();
-                                  _gridAra(
-                                      _temsilciFiltreler, _sektorFiltreler);
+                                  _gridAra(_temsilciFiltreler, _sektorFiltreler);
                                   Navigator.pop(context);
                                 },
                               )
@@ -686,9 +662,7 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
       print(aramaList);
       setState(() {
         satisCiroKaybiGridList = aramaList;
-
-        _satisCiroKaybiDataSource =
-            SatisCiroKaybiDataSource(_dataGridController);
+        _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(active, euroKuru,_dataGridController);
       });
       return;
     }
@@ -702,8 +676,7 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
       setState(() {
         satisCiroKaybiGridList = arananlarList;
 
-        _satisCiroKaybiDataSource =
-            SatisCiroKaybiDataSource(_dataGridController);
+        _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(active, euroKuru,_dataGridController );
       });
       return;
     }
@@ -715,9 +688,7 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
       }
       setState(() {
         satisCiroKaybiGridList = arananlarList;
-
-        _satisCiroKaybiDataSource =
-            SatisCiroKaybiDataSource(_dataGridController);
+        _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(active, euroKuru,_dataGridController);
       });
       return;
     }
@@ -729,55 +700,91 @@ class _SatisCiroKaybiSayfasiState extends State<SatisCiroKaybiSayfasi> {
     }
     setState(() {
       satisCiroKaybiGridList = arananlarList;
+      _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(active,euroKuru,_dataGridController);
+    });
+  }
 
-      _satisCiroKaybiDataSource = SatisCiroKaybiDataSource(_dataGridController);
+  _dovizKurGetir() async {
+    loading=false;
+    // if(!widget.userMi){
+    //   UserInfo.fullAccess = false;
+    //   UserInfo.activeUserId = 0;
+    // }
+    dovizKurlariGridList.clear();
+    late http.Response response;
+    try {
+      response  = await http.get(Uri.parse("${Sabitler.url}/api/DovizKurlari?tarih=${secilenTarih}&FullAccess=${UserInfo.fullAccess}&"
+          "Mobile=true&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),headers: {"apiKey" : Sabitler.apiKey}).timeout(Duration(seconds: 20));
+    } on TimeoutException catch (e) {
+      showDialog(context: context,
+          builder: (BuildContext context ){
+            return BilgilendirmeDialog("Sunucuya bağlanılamadı internetinizi kontrol ediniz");
+          }).then((value) => Navigator.pop(context));
+    } on Error catch (e) {
+      showDialog(context: context,
+          builder: (BuildContext context ){
+            return BilgilendirmeDialog("Sunucuya bağlanılamadı internetinizi kontrol ediniz");
+          }).then((value) => Navigator.pop(context));
+    }
+    if(response.statusCode == 200) {
+      setState(() {
+        var kurDetay = jsonDecode(response.body);
+        for(var kur in kurDetay){
+          DovizKurlariGridModel gridDovizKurlari = new DovizKurlariGridModel(kur['kur'],kur['alis'],kur['satis'],
+              kur['efAlis'],kur['efSatis'],DateTime.parse(kur['tarih']));
+          dovizKurlariGridList.add(gridDovizKurlari);
+          if (kur['kur'] == 'Euro') {
+            euroKuru = kur['efSatis'];
+          }
+          print("Euro Kurunennn = $euroKuru");
+          _satisCiroKaybiDataSource.euro=euroKuru;
+        }
+         //loading = !loading;
+        _dovizKurlariDataSource = DovizKurlariDataSource(_dataGridController);
+      });
+    }
+    Future.delayed(Duration(milliseconds: 50), () async{
+      FocusScope.of(context).requestFocus(new FocusNode());
     });
   }
 }
 
+
 class SatisCiroKaybiDataSource extends DataGridSource {
   List<DataGridRow> dataGridRows = [];
 
+  bool isActive;
+  double euro;
   @override
   List<DataGridRow> get rows => dataGridRows;
 
   void buildDataGridRows() {
-    dataGridRows = satisCiroKaybiGridList
-        .map<DataGridRow>((e) => DataGridRow(cells: [
+    dataGridRows = satisCiroKaybiGridList.map<DataGridRow>((e) {
+      return DataGridRow(cells: [
       DataGridCell<String>(columnName: 'CARİ KOD', value: e.cariKod),
       DataGridCell<String>(columnName: 'CARI ISMI', value: e.cariUnvan),
-      DataGridCell<String>(
-          columnName: 'TEMSİLCİ', value: e.cariTemsilci),
+      DataGridCell<String>(columnName: 'TEMSİLCİ', value: e.cariTemsilci),
       DataGridCell<String>(columnName: 'SEKTÖR KODU', value: e.sektor),
-      DataGridCell<double>(columnName: 'CİRO', value: e.ciro),
-      DataGridCell<int>(
-          columnName: 'HareketliAySayisi', value: e.hareketliAySayisi),
-      DataGridCell<double>(
-          columnName: 'Hareketli Aylar Ortalaması',
-          value: e.hareketliAylarOrt),
-      DataGridCell<double>(
-          columnName: 'Hareket Bağımsız 12 Aylık Ortalama',
-          value: e.hareketBagimsiz12AyOrt),
-      DataGridCell<double>(
-          columnName: 'Ağırlıklı Ortalama Ciro Beklentisi',
-          value: e.agirlikliOrtCiroBeklentisi),
-      DataGridCell<double>(
-          columnName: 'Son3AylıkOrtalamaCiro',
-          value: e.son3AylikOrtCiro),
-      DataGridCell<double>(
-          columnName: 'Ciro Kaybı %', value: e.son3AylikCiroKaybi),
-      DataGridCell<double>(
-          columnName: 'Son6AylıkOrtalamaCiro',
-          value: e.son6AylikOrtCiro),
-      DataGridCell<double>(
-          columnName: 'Ciro Kaybı % 6Ay', value: e.son6AylikCiroKaybi),
-    ]))
-        .toList();
+      DataGridCell<double>(columnName: 'CİRO', value: isActive ? e.ciro / euro : e.ciro),
+      DataGridCell<int>(columnName: 'HareketliAySayisi', value: e.hareketliAySayisi),
+      DataGridCell<double>(columnName: 'Hareketli Aylar Ortalaması', value: isActive ? e.hareketliAylarOrt / euro : e.hareketliAylarOrt),
+      DataGridCell<double>(columnName: 'Hareket Bağımsız 12 Aylık Ortalama', value: isActive ? e.hareketBagimsiz12AyOrt / euro : e.hareketBagimsiz12AyOrt),
+      DataGridCell<double>(columnName: 'Ağırlıklı Ortalama Ciro Beklentisi', value: isActive ? e.agirlikliOrtCiroBeklentisi / euro : e.agirlikliOrtCiroBeklentisi),
+      DataGridCell<double>(columnName: 'Son3AylıkOrtalamaCiro', value:  isActive ? e.son3AylikOrtCiro / euro : e.son3AylikOrtCiro),
+      DataGridCell<double>(columnName: 'Ciro Kaybı %', value: isActive ? e.son3AylikCiroKaybi/ euro : e.son3AylikCiroKaybi),
+      DataGridCell<double>(columnName: 'Son6AylıkOrtalamaCiro', value:  isActive ? e.son6AylikOrtCiro /euro : e.son6AylikOrtCiro),
+      DataGridCell<double>(columnName: 'Ciro Kaybı % 6Ay', value: isActive ? e.son6AylikCiroKaybi/ euro : e.son6AylikCiroKaybi),
+    ]);}
+    ).toList();
   }
 
+
   final DataGridController dataGridController;
-  SatisCiroKaybiDataSource(this.dataGridController) {
+  SatisCiroKaybiDataSource(this.isActive,this.euro,this.dataGridController) {
+
     buildDataGridRows();
+    print("isactiveeee $isActive");
+
   }
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
@@ -815,6 +822,7 @@ class SatisCiroKaybiDataSource extends DataGridSource {
           );
         }).toList());
   }
+
 
   void updateDataGridSource() {
     notifyListeners();

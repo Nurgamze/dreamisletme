@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class AdayCarilerGridModel {
   final String? Sektor;
   final String? KayID;
@@ -534,6 +536,9 @@ class AcikSiparislerGridModel {
   String? birim;
   double? birimFiyat;
   String? dovizCinsi;
+  DateTime? sip_tarih;
+  DateTime? sip_teslim_tarih;
+
 
   AcikSiparislerGridModel(
       this.sipCins,
@@ -550,7 +555,22 @@ class AcikSiparislerGridModel {
       this.tutar,
       this.birim,
       this.birimFiyat,
-      this.dovizCinsi);
+      this.dovizCinsi,
+      this.sip_tarih,
+      this.sip_teslim_tarih,
+      );
+}
+
+class DepoMiktarlariGridModel{
+   String? subeKodu;
+   String? subeAdi;
+   String? depoAdi;
+   String? depoKodu;
+   String? stokKodu;
+   String? stokAdi;
+   double? stokMiktar;
+
+   DepoMiktarlariGridModel(this.subeKodu,this.subeAdi,this.depoAdi,this.depoKodu,this.stokKodu,this.stokAdi,this.stokMiktar);
 }
 
 class ZiyaretlerGridModel {
@@ -607,6 +627,8 @@ class StoklarGridModel {
   double sdsBodrum;
   double sdsKayseri;
   double sdsSivas;
+  double sdsDenizli;
+  double sdsManisa;
   double zenitled;
   double zenitledUretim;
   double zenitledMerkez;
@@ -631,6 +653,8 @@ class StoklarGridModel {
   double D1SdsBodrum;
   double D1SdsKayseri;
   double D1SdsSivas;
+  double D1SdsDenizli;
+  double D1SdsManisa;
   double D1Zenitled;
   double D1ZenitledUretim;
   double D1ZenitledMerkez;
@@ -684,6 +708,8 @@ class StoklarGridModel {
       this.sdsBodrum,
       this.sdsKayseri,
       this.sdsSivas,
+      this.sdsDenizli,
+      this.sdsManisa,
       this.zenitled,
       this.zenitledUretim,
       this.zenitledMerkez,
@@ -708,6 +734,8 @@ class StoklarGridModel {
       this.D1SdsBodrum,
       this.D1SdsKayseri,
       this.D1SdsSivas,
+      this.D1SdsDenizli,
+      this.D1SdsManisa,
       this.D1Zenitled,
       this.D1ZenitledUretim,
       this.D1ZenitledMerkez,
@@ -719,7 +747,6 @@ class StoklarGridModel {
       this.D1ZenitledPerpa,
       this.D1ZenitledETicaret,
       this.stokAileKutugu,);
-
 }
 
 
@@ -969,4 +996,274 @@ class ButceGerceklesenRapor {
       altDovizSatisFarki: double.tryParse(map['altDovizSatisFarki'].toString()),
     );
   }
+
 }
+
+
+class StokMiktarPopUpGrid{
+  String depoAdi;
+  double miktar;
+
+  StokMiktarPopUpGrid(this.depoAdi,this.miktar);
+}
+
+class StokFiyatPopUpGrid{
+  String aciklama;
+  String fiyat;
+
+  StokFiyatPopUpGrid(this.aciklama,this.fiyat);
+}
+
+class SayimlarSayfasiDataGrid{
+  int? id;
+  String? evrakAdi;
+  int? depoKod;
+  String? depoAdi;
+  String? basTarihi;
+  String? sonIslemTarihi;
+  int? aktarildiMi;
+  String? userId;
+
+  SayimlarSayfasiDataGrid(this.id,this.evrakAdi,this.depoKod,this.depoAdi,this.basTarihi,this.sonIslemTarihi,this.userId);
+}
+
+class SayimEvrakSayfasiDataGrid{
+  int id;
+  int evrakId;
+  String raf;
+  String miktar;
+  String stokKodu;
+  String stokAdi;
+  String birim;
+
+  SayimEvrakSayfasiDataGrid(this.id,this.evrakId,this.raf,this.miktar,this.stokKodu,this.stokAdi,this.birim);
+}
+
+class PlansizNakliyeDataGrid{
+  int? id;
+  int? cikisDepoNo;
+  int? girisDepoNo;
+  int? satir;
+  String? seri;
+  String? cikisDepoAdi;
+  String? girisDepoAdi;
+  String? tarih;
+  String? aciklama;
+  int? aktarildiMi;
+  PlansizNakliyeDataGrid(this.id,this.cikisDepoNo,this.girisDepoNo,this.satir,this.seri,this.cikisDepoAdi,this.girisDepoAdi,this.tarih,this.aciklama);
+}
+class PlansizNakliyeEvrakDataGrid{
+  int id;
+  int evrakId;
+  String miktar;
+  String stokKodu;
+  String stokAdi;
+  String birim;
+
+  PlansizNakliyeEvrakDataGrid(this.id,this.evrakId,this.miktar,this.stokKodu,this.stokAdi,this.birim);
+}
+
+
+class DepolarArasiSiparisFisiDataGrid{
+  int? id;
+  int? cikisDepoNo;
+  int? girisDepoNo;
+  int? satir;
+  String? seri;
+  String? cikisDepoAdi;
+  String? girisDepoAdi;
+  String? tarih;
+  String? aciklama;
+  int? aktarildiMi;
+  DepolarArasiSiparisFisiDataGrid(this.id,this.cikisDepoNo,this.girisDepoNo,this.satir,this.seri,this.cikisDepoAdi,this.girisDepoAdi,this.tarih,this.aciklama);
+}
+class DepolarArasiSiparisFisiDetayDataGrid{
+  int id;
+  int evrakId;
+  String miktar;
+  String stokKodu;
+  String stokAdi;
+  String birim;
+
+  DepolarArasiSiparisFisiDetayDataGrid(this.id,this.evrakId,this.miktar,this.stokKodu,this.stokAdi,this.birim);
+}
+
+class AlternatiflerGrid{
+  String kodu;
+  String stokAdi;
+  String urunTipi;
+  String ipRate;
+  String marka;
+  String kasaTipi;
+  String tip;
+  String ekOzellik;
+  String sinif;
+  String renk;
+  String levin;
+  String ledSayisi;
+  String lens;
+  String guc;
+  String volt;
+  String akim;
+  String ebat;
+  String kilo;
+  String recete1;
+  String koli;
+  String yeniAlan13;
+  String recete2;
+  String ongoruMasraf;
+  String marka2;
+  String kilif;
+  String kelvin;
+  String vfBin;
+  String renkBin;
+  String lumenBin;
+  String satisPotansiyeli;
+  String aileKutugu;
+  String garantiSuresi;
+  String binKodu;
+
+  AlternatiflerGrid(this.kodu,this.stokAdi,this.urunTipi,this.ipRate,this.marka,this.kasaTipi,this.tip,this.ekOzellik,this.sinif,this.renk,this.levin,this.ledSayisi,this.lens,this.guc,this.volt,this.akim,this.ebat,this.kilo,this.recete1,this.koli,this.yeniAlan13,this.recete2,this.ongoruMasraf,this.marka2,this.kilif,this.kelvin,this.vfBin,this.renkBin,this.lumenBin,this.satisPotansiyeli,this.aileKutugu,this.garantiSuresi,this.binKodu);
+}
+
+
+//VERİ TABANI MODELLERİ
+
+class StokSatisFiyatListesiInfo{
+  String? stokKodu;
+  String? aciklama;
+  double? satisFiyati;
+  String? paraBirimi;
+  StokSatisFiyatListesiInfo({this.stokKodu,this.aciklama,this.satisFiyati,this.paraBirimi});
+}
+
+class DepolarInfo{
+  int? depNo;
+  String? depoAdi;
+  DepolarInfo({this.depNo,this.depoAdi});
+}
+
+class BarkodTanimlariInfo{
+  String? barStokKodu;
+  String? barKodu;
+  BarkodTanimlariInfo({this.barStokKodu,this.barKodu});
+}
+
+class DeponunStoklariInfo{
+  int? depNo;
+  String? depoAdi;
+  String? stokKodu;
+  double? miktar;
+  DeponunStoklariInfo({this.depNo,this.depoAdi,this.stokKodu,this.miktar});
+}
+
+
+
+
+class Stoklar{
+  String? sto_kod;
+  String? sto_isim;
+  String? sto_max_stok;
+  String? sto_birim1_ad;
+  String? sto_anagrup_kod;
+  String? sto_altgrup_kod;
+  String? sto_marka_kodu;
+  String? sto_reyon_kodu;
+  Stoklar(this.sto_kod,this.sto_isim,this.sto_max_stok,this.sto_birim1_ad,this.sto_anagrup_kod,this.sto_altgrup_kod,this.sto_marka_kodu,this.sto_reyon_kodu);
+
+  dynamic operator [](String key) {
+    switch (key) {
+      case "sto_kod":
+        return sto_kod;
+      case "sto_isim":
+        return sto_isim;
+      case "sto_max_stok":
+        return sto_max_stok;
+      case "sto_birim1_ad":
+        return sto_birim1_ad;
+      case "sto_anagrup_kod":
+        return sto_anagrup_kod;
+      case "sto_altgrup_kod":
+        return sto_altgrup_kod;
+      case "sto_marka_kodu":
+        return sto_marka_kodu;
+      case "sto_reyon_kodu":
+        return sto_reyon_kodu;
+      default:
+        throw Exception("Bilinmeyen özellik");
+    }
+  }
+
+}
+
+
+//benim eklediklerim
+class Depolar{
+  int? depSubeNo;
+  String? depAdi;
+  int? depNo;
+  Depolar({this.depSubeNo,this.depAdi,this.depNo});
+
+  factory Depolar.fromJson(Map<String, dynamic> json) {
+    return Depolar(
+      depSubeNo: json['dep_subeno'],
+      depAdi: json['dep_adi'],
+      depNo: json['dep_no'],
+    );
+  }
+
+}
+
+
+class GonderilecekVeriModel {
+  String evrakId;
+  String evrakAdi;
+  String depoKodu;
+  String basTarih;
+  String sonTarih;
+  String stokKodu;
+  String miktar;
+  String raf;
+
+  GonderilecekVeriModel(this.evrakId, this.evrakAdi, this.depoKodu, this.basTarih, this.sonTarih, this.stokKodu, this.miktar, this.raf);
+}
+
+
+
+
+// class ZenitStoklar{
+//   String? stokKodu;
+//   String? stokAdi;
+//   String? listeAdi;
+//   String? fiyat;
+//   String? birim;
+//   String? anaGrup;
+//   String? altGrup;
+//   String? marka;
+//   String? reyon;
+//   String? kisaIsmi;
+//   String? paraBirimi;
+//   String? miktar;
+//
+//   ZenitStoklar(this.stokKodu,this.stokAdi,this.miktar,this.birim,this.anaGrup,this.altGrup,this.marka,this.reyon,this.listeAdi,this.fiyat,this.paraBirimi,this.kisaIsmi);
+//
+// }
+
+//
+// class DataGridModel{
+//   String stokKodu;
+//   String stokAdi;
+//   String barKodu;
+//   String birim;
+//   String anaGrup;
+//   String altGrup;
+//   String marka;
+//   String reyon;
+//   String renk;
+//   String beden;
+//   String sezon;
+//   String hamMadde;
+//   String kategori;
+//
+//   DataGridModel(this.stokKodu,this.stokAdi,this.barKodu,this.birim,this.anaGrup,this.altGrup,this.marka,this.reyon,this.renk,this.beden,this.sezon,this.hamMadde,this.kategori);
+// }

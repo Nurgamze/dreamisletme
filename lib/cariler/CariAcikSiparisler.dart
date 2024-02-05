@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
 import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
+import '../Stoklar/StokDetaySayfasi.dart';
 import 'models/cari.dart';
 
 class CariAcikSiparislerSayfasi extends StatefulWidget {
@@ -37,14 +36,14 @@ class _CariAcikSiparislerSayfasiState extends State<CariAcikSiparislerSayfasi> {
     // TODO: implement initState
     super.initState();
     _cariAcikSiparislerGridSource = CariAcikSiparislerGridSource(dataGridController);
-    _acilSiparisleriGetir();
+    _acikSiparisleriGetir();
     AutoOrientation.fullAutoMode();
   }
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    acikSiparislerGridList.clear();
+    acikSiparisGridList.clear();
     if(!TelefonBilgiler.isTablet) AutoOrientation.portraitAutoMode();
   }
   @override
@@ -160,6 +159,8 @@ class _CariAcikSiparislerSayfasiState extends State<CariAcikSiparislerSayfasi> {
     );
   }
 
+
+
   Widget _grid(){
     return  SfDataGridTheme(
       data: myGridTheme,
@@ -189,14 +190,26 @@ class _CariAcikSiparislerSayfasiState extends State<CariAcikSiparislerSayfasi> {
           dreamColumn(columnName: 'dovizCinsi', label : 'DÖVİZ CİNSİ',),
           dreamColumn(columnName: 'tutar', label : 'TUTAR',),
         ],
-        onCellTap: (value) async {
-          Future.delayed(Duration(milliseconds: 10), () async{
-            FocusScope.of(context).requestFocus(new FocusNode());
-          });
-        },
+          onCellTap: (value) {
+          print("data gridiçine tıkladım");
+            Future.delayed(Duration(milliseconds: 50), () {
+              FocusScope.of(context).requestFocus(new FocusNode());
+              if(value.rowColumnIndex.rowIndex > 0){
+                print("if içindeyimmm ${value.rowColumnIndex.rowIndex}");
+                var row = dataGridController.selectedRow!.getCells();
+                print("row ? $row");
+                setState(() {
+                   _stokGit(row[0].value.toString());
+                   print("setstate içinde ${row[0].value.toString()}");
+                });
+              }
+            });
+          }
       ),
     );
   }
+
+
 
   _satisAra() async {
     List<AcikSiparislerGridModel> arananlarList = [];
@@ -206,12 +219,12 @@ class _CariAcikSiparislerSayfasiState extends State<CariAcikSiparislerSayfasi> {
       }
     }
     setState(() {
-      acikSiparislerGridList = arananlarList;
+      acikSiparisGridList = arananlarList;
       _cariAcikSiparislerGridSource = CariAcikSiparislerGridSource(dataGridController);
     });
   }
 
-  _acilSiparisleriGetir() async {
+  _acikSiparisleriGetir() async {
     print(widget.data);
     var response = await http.get(Uri.parse("${Sabitler.url}/api/AcikSiparisler?vtIsim=${UserInfo.activeDB}&cariKod=${widget.data.kod}&stokKod=&caridenMi=true&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),
         headers: {"apiKey" : Sabitler.apiKey});
@@ -224,36 +237,166 @@ class _CariAcikSiparislerSayfasiState extends State<CariAcikSiparislerSayfasi> {
         print(siparisler);
         AcikSiparislerGridModel siparis = AcikSiparislerGridModel(siparisler['sip_cins'], siparisler['sip_tip'], siparisler['sip_evrakno_seri'],siparisler['sip_evrakno_sira']
             ,siparisler['sip_stok_kod'],siparisler['sto_isim'],siparisler['cari_unvan'],siparisler['sip_musteri_kod'],siparisler['sip_miktar'],siparisler['sip_teslim_miktar'],siparisler['kalan'],siparisler['tutar'],
-          siparisler['birim'],
-          siparisler['birimFiyat'],
-          siparisler['dovizCinsi'],);
-        acikSiparislerGridList.add(siparis);
+          siparisler['birim'], siparisler['birimFiyat'], siparisler['dovizCinsi'], DateTime.parse(siparisler['sip_tarih'].toString()),
+            DateTime.parse(siparisler['sip_teslim_tarih'].toString())
+
+        );
+        acikSiparisGridList.add(siparis);
       }
-      if(acikSiparislerGridList.length == 1) acikSiparislerGridList.clear();
-      if(acikSiparislerGridList.length == 2){
+      if(acikSiparisGridList.length == 1) acikSiparisGridList.clear();
+      if(acikSiparisGridList.length == 2){
         late AcikSiparislerGridModel first;
         late AcikSiparislerGridModel last;
-        for(var data in acikSiparislerGridList)
+        for(var data in acikSiparisGridList)
         {
           if(data.sipStokKod == "TOPLAM") last = data;
           else first = data;
         }
         List<AcikSiparislerGridModel> newList = [first,last];
-        acikSiparislerGridList = newList;
+        acikSiparisGridList = newList;
 
       }
       setState(() {
         loading = true;
         _cariAcikSiparislerGridSource = CariAcikSiparislerGridSource(dataGridController);
-        aramaList = acikSiparislerGridList;
+        aramaList = acikSiparisGridList;
       });
     }else{
       setState(() {
-        acikSiparislerGridList.clear();
+        acikSiparisGridList.clear();
         loading = true;
       });
     }
   }
+
+  _stokGit(String stokKodu) async {
+    showDialog(context: context, builder: (_) => DreamCogs());
+    var body = jsonEncode({
+      "VtIsim" : UserInfo.activeDB,
+      "SubeNo" : UserInfo.aktifSubeNo,
+      "Arama":stokKodu.replaceAll("*", "%").replaceAll("\'", "\''"),
+      "AnaGrup":"",
+      "AltGrup" : "",
+      "Marka" : "",
+      "Reyon" : "",
+      "Mobile":true,
+      "DevInfo":TelefonBilgiler.userDeviceInfo,
+      "AppVer":TelefonBilgiler.userAppVersion,
+      "UserId":UserInfo.activeUserId,
+      "altGruplar": "",
+      "anaGruplar": "",
+      "markalar": "",
+      "reyonlar": "",
+      "ureticiler" : "",
+      "ambalajlar" : "",
+      "sektorler" : "",
+      "kalitekontrol" : "",
+      "modeller" : "",
+      "sezonlar" : "",
+      "hammaddeler" : "",
+      "kategoriler" : "",
+    });
+
+    var responseStok = await http.post(Uri.parse( "${Sabitler.url}/api/StokV4"),
+        headers: {
+          "apiKey": Sabitler.apiKey,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body
+    ).timeout(Duration(seconds: 40));
+    Navigator.pop(context);
+    if(responseStok.statusCode == 200) {
+      var stokDetay = jsonDecode(responseStok.body);
+      print(stokDetay[0]);
+      StoklarGridModel stoklarGridModel = StoklarGridModel(
+          stokDetay[0]['stokKodu'],
+          stokDetay[0]['stokIsim'],
+          stokDetay[0]['barKodu'],
+          stokDetay[0]['kisaIsim'],
+          stokDetay[0]['alternatifStokAdi'],
+          stokDetay[0]['alternatifStokKodu'],
+          stokDetay[0]['stokYabanciIsim'],
+          stokDetay[0]['anaGrup'],
+          stokDetay[0]['altGrup'],
+          stokDetay[0]['kategori'],
+          stokDetay[0]['marka'],
+          stokDetay[0]['reyon'],
+          stokDetay[0]['depo1StokMiktar'],
+          stokDetay[0]['depo2StokMiktar'],
+          stokDetay[0]['depo3StokMiktar'],
+          stokDetay[0]['depo4StokMiktar'],
+          stokDetay[0]['tumDepolarStokMiktar'],
+          stokDetay[0]['stokBirim'],
+          stokDetay[0]['fiyat'],
+          stokDetay[0]['doviz'],
+          stokDetay[0]['alinanSiparisKalan'],
+          stokDetay[0]['verilenSiparisKalan'],
+          stokDetay[0]['son30GunSatis'],
+          stokDetay[0]['son3AyOrtalamaSatis'],
+          stokDetay[0]['son6AyOrtalamaSatis'],
+          stokDetay[0]['sdsToplamStokMerkezDahil'],
+          stokDetay[0]['sdsMerkez'],
+          stokDetay[0]['sdsizmir'],
+          stokDetay[0]['sdsAdana'],
+          stokDetay[0]['sdsAntalya'],
+          stokDetay[0]['sdsSeyrantepe'],
+          stokDetay[0]['sdsAnkara'],
+          stokDetay[0]['sdsEurasia'],
+          stokDetay[0]['sdsBursa'],
+          stokDetay[0]['sdsAnadolu'],
+          stokDetay[0]['sdsIzmit'],
+          stokDetay[0]['sdsBodrum'],
+          stokDetay[0]['sdsKayseri'],
+          stokDetay[0]['sdsSivas'],
+          stokDetay[0]['sdsDenizli'],
+          stokDetay[0]['sdsManisa'],
+          stokDetay[0]['zenitled'],
+          stokDetay[0]['zenitledUretim'],
+          stokDetay[0]['zenitledMerkez'],
+          stokDetay[0]['zenitledAdana'],
+          stokDetay[0]['zenitledBursa'],
+          stokDetay[0]['zenitledAntalya'],
+          stokDetay[0]['zenitledAnkara'],
+          stokDetay[0]['zenitledKonya'],
+          stokDetay[0]['zenitledPerpa'],
+          stokDetay[0]['zenitledETicaret'],
+          stokDetay[0]['D1SdsToplamStokMerkezDahil'],
+          stokDetay[0]['D1SdsMerkez'],
+          stokDetay[0]['D1SdsIzmir'],
+          stokDetay[0]['D1SdsAdana'],
+          stokDetay[0]['D1SdsAntalya'],
+          stokDetay[0]['D1SdsSeyrantepe'],
+          stokDetay[0]['D1SdsAnkara'],
+          stokDetay[0]['D1SdsEurasia'],
+          stokDetay[0]['D1SdsBursa'],
+          stokDetay[0]['D1SdsAnadolu'],
+          stokDetay[0]['D1SdsIzmit'],
+          stokDetay[0]['D1SdsBodrum'],
+          stokDetay[0]['D1SdsKayseri'],
+          stokDetay[0]['D1SdsSivas'],
+          stokDetay[0]['D1SdsDenizli'],
+          stokDetay[0]['D1SdsManisa'],
+          stokDetay[0]['D1Zenitled'],
+          stokDetay[0]['D1ZenitledUretim'],
+          stokDetay[0]['D1ZenitledMerkez'],
+          stokDetay[0]['D1ZenitledAdana'],
+          stokDetay[0]['D1ZenitledBursa'],
+          stokDetay[0]['D1ZenitledAntalya'],
+          stokDetay[0]['D1ZenitledAnkara'],
+          stokDetay[0]['D1ZenitledKonya'],
+          stokDetay[0]['D1ZenitledPerpa'],
+          stokDetay[0]['D1ZenitledETicaret'],
+          stokDetay[0]['stokAileKutugu']
+      );
+      Navigator.push(context, MaterialPageRoute(
+        builder: (context) => StokDetaySayfasi(data: stoklarGridModel,),
+      ));
+      return true;
+    }else{
+      print("hata var ");
+    }
+  }
+
 }
 
 
@@ -270,7 +413,7 @@ class CariAcikSiparislerGridSource extends DataGridSource {
     buildDataGridRows();
   }
   void buildDataGridRows() {
-    dataGridRows = acikSiparislerGridList.map<DataGridRow>((e) => DataGridRow(
+    dataGridRows = acikSiparisGridList.map<DataGridRow>((e) => DataGridRow(
         cells: [
           DataGridCell<String>(columnName: 'sipStokKod',value: e.sipStokKod),
           DataGridCell<String>(columnName: 'sipStokIsim',value: e.sipStokIsim),

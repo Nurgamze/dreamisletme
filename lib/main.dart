@@ -8,8 +8,10 @@ import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:sdsdream_flutter/GirisYapYeni.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
+import 'package:sdsdream_flutter/modeller/ProviderHelper.dart';
 import 'modeller/SplashScreen.dart';
 import 'core/services/api_service.dart';
 import 'core/services/hive_service.dart';
@@ -29,22 +31,27 @@ Future<void> init() async{
 Future<void> main() async {
   await init();
   return runApp(
-      MaterialApp(
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+    MultiProvider(
+      providers: [
+         ChangeNotifierProvider(create: (context) => StateHelper())
         ],
-        supportedLocales: const [
-          Locale('en', ''),Locale('tr', '')
-        ],
-        debugShowCheckedModeBanner: false,
-        title: "Dream İşletme",
-        theme: ThemeData(brightness: Brightness.light),
-        home: SafeArea(
-          child: MyApp(),
-        ),
-      )
+      child: MaterialApp(
+       localizationsDelegates: const [
+         GlobalMaterialLocalizations.delegate,
+         GlobalCupertinoLocalizations.delegate,
+         GlobalWidgetsLocalizations.delegate,
+       ],
+       supportedLocales: const [
+         Locale('en', ''),Locale('tr', '')
+       ],
+       debugShowCheckedModeBanner: false,
+       title: "Dream İşletme",
+       theme: ThemeData(brightness: Brightness.light),
+       home: SafeArea(
+         child: MyApp(),
+       ),
+      ),
+    )
   );
 }
 
@@ -57,7 +64,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if(Device.get().isTablet ){
       TelefonBilgiler.isTablet = true;
@@ -65,8 +71,6 @@ class _MyAppState extends State<MyApp> {
       AutoOrientation.portraitAutoMode();
     }
     _getVersion();
-
-
   }
   @override
   Widget build(BuildContext context) {

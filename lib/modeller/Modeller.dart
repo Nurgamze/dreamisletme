@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:app_settings/app_settings.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,7 +10,6 @@ import 'package:sdsdream_flutter/widgets/Dialoglar.dart';
 import 'package:store_redirect/store_redirect.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import '../GirisYapYeni.dart';
 import '../widgets/beautiful_popup/beautiful_popup.dart';
 
@@ -117,8 +115,9 @@ class Subeler {
   ];
 
   static var dbZenitSubeler = jsonDecode(
-      '[{"Keyap" : "1","Adana" : "2","Bursa" : "3","Antalya" : "4","Ankara" : "5","Konya" : "6", "Perpa" : "8",]');
+      '[{"Tuzla" : "0","Keyap" : "1","Adana" : "2","Bursa" : "3","Antalya" : "4","Ankara" : "5","Konya" : "6", "Perpa" : "8",]');
   static List<String> zenitSubeler = [
+    "Tuzla",
     "Keyap",
     "Adana",
     "Bursa",
@@ -128,6 +127,7 @@ class Subeler {
     "Perpa",
   ];
   static List<String> zenitSubelerKod = [
+    "0",
     "1",
     "2",
     "3",
@@ -330,14 +330,9 @@ class Foksiyonlar {
     var message = "Sizler için uygulamamızı sürekli güncelleştiriyoruz.\n" +
         "Yeni özellikleri edinmek ve daha iyi bir SDS B2B İşletme deneyimi için uygulamayı son sürümüne yükseltiniz.";
     if (UserInfo.showDescription!)
-      message =
-          "Son Geliştirmeler:\n${UserInfo.description}\n--------------------\n" +
-              message;
+      message = "Son Geliştirmeler:\n${UserInfo.description}\n--------------------\n" + message;
     if (UserInfo.force!) {
-      message =
-          "Uygulamayı kullanmaya devam edebilmek için güncellemelisiniz.\n--------------------\n" +
-              message +
-              "\n--------------------\n";
+      message = "Uygulamayı kullanmaya devam edebilmek için güncellemelisiniz.\n--------------------\n" + message + "\n--------------------\n";
       firstPopup.show(
         title: Text("Güncelleme Gerekli",
             style: GoogleFonts.roboto(
@@ -455,6 +450,7 @@ class Foksiyonlar {
 class Sabitler {
   static String url = "http://api.sds.com.tr";
   static String apiKey = "l75pq03ejewq1qdkap1e19u9jwdk2qdm5dAsd321CnsfWWlosmCs123y";
+  static String apikey = "l75pq03ejewq1qdkap1e19u9jwdk2qdm5dAsd321CnsfWWlosmCs123y";
 
   static BoxDecoration dreamBoxDecoration = BoxDecoration(
       borderRadius: BorderRadius.circular(5),

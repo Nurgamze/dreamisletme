@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:animated_widgets/widgets/rotation_animated.dart';
 import 'package:animated_widgets/widgets/shake_animated_widget.dart';
 import 'package:auto_orientation/auto_orientation.dart';
@@ -8,6 +7,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +20,7 @@ import 'package:sdsdream_flutter/Raporlar/SatisTahsilatAnaliziSayfasi.dart';
 import 'package:sdsdream_flutter/Raporlar/SatisTahsilatOzet.dart';
 import 'package:sdsdream_flutter/Raporlar/StokSatisKarlilikRaporuSayfasi.dart';
 import 'package:sdsdream_flutter/Raporlar/TahsilatBakiyeAnaliziSayfasi.dart';
+import 'package:sdsdream_flutter/lojistik/LojistikAnaEkran.dart';
 import 'package:sdsdream_flutter/widgets/Dialoglar.dart';
 import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:sdsdream_flutter/Yagiz/YagizOzelSayfa.dart';
@@ -31,7 +32,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'aday_cariler/AdayCarilerSayfasi.dart';
 import 'BilisimTalepleriSayfasi.dart';
-import 'cariler/cari_arama_view.dart';
+import 'cariler/cariler.dart';
 import 'modeller/Modeller.dart';
 import 'OnlineHesabimSayfasi.dart';
 import 'Raporlar/ButceGerceklesenRaporu.dart';
@@ -59,10 +60,14 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
       btnCiroTablosu,
       btnStokSatisKarlilikRaporu,
       btnTahsilatlarKonsolide;
+
+  DovizKurlariSayfasi dd =DovizKurlariSayfasi(true);
+
   @override
   void initState() {
     if (UserInfo.activeDB == "MikroDB_V16_Z17_YAGIZ") {
       yagizGoster = true;
+
     }
     print("init aktif ${UserInfo.aktifSubeNo}");
     UserInfo.aktifSubeNo ??= "0";
@@ -483,16 +488,15 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
   bool enabled = false;
   _getDatabases() async {
     var response = await http.get(
-        Uri.parse(
-            "${Sabitler.url}/api/GetUserDatabases?userId=${UserInfo.activeUserId}"),
+        Uri.parse("${Sabitler.url}/api/GetUserDatabases?userId=${UserInfo.activeUserId}"),
         headers: {"apiKey": Sabitler.apiKey});
     veriTabanlariList.clear();
     if (response.statusCode == 200) {
       var veriTabanlariJson = jsonDecode(response.body);
+      print("veritabanaları $veriTabanlariJson");
 
       for (var veriTabanlari in veriTabanlariJson) {
-        VeriTabanlari veriTabani =
-            VeriTabanlari(veriTabanlari['vtIsim'], veriTabanlari['vtAciklama'],veriTabanlari['vtSubeKod']);
+        VeriTabanlari veriTabani = VeriTabanlari(veriTabanlari['vtIsim'], veriTabanlari['vtAciklama'],veriTabanlari['vtSubeKod']);
         setState(() {
           veriTabanlariList.add(veriTabani);
         });
@@ -852,7 +856,8 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
       zenitSubelerKod = Subeler.zenitSubelerKod;
     }
     String aktifZenitSube = "";
-    print(UserInfo.aktifSubeNo);
+
+    print("şube numarası ${UserInfo.aktifSubeNo}");
     for (int i = 0; i < zenitSubeler.length; i++) {
       print("iiii ${zenitSubelerKod[i]}");
       if (zenitSubelerKod[i] == UserInfo.aktifSubeNo) {
@@ -966,8 +971,9 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                               pref.setString("zenitSubeKod", zenitSubelerKod[zenitScrollController!.selectedItem]);
                               activeZenitSube = zenitSubeler[zenitScrollController!.selectedItem];
                               UserInfo.aktifSubeNo = zenitSubelerKod[zenitScrollController!.selectedItem];
-                              print("UserInfo.aktifSubeNo");
-                              print(UserInfo.aktifSubeNo);
+
+                              print("UserInfo.aktifSubeNo ,${UserInfo.aktifSubeNo}");
+
                               if (noDatabase) {
                                 showDialog(
                                     context: context,
@@ -2094,7 +2100,6 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                 context, MaterialPageRoute(builder: (context) => OVHSayfasi()));
           }),
     );
-
     menuList.add(
       InkWell(
           child: Container(
@@ -2142,10 +2147,77 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
           onTap: () async {
             bool? checkAll = await Foksiyonlar.checkAppEngine(context, false);
             if (checkAll == false) return;
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => SiparislerView()));
+            else{
+              Fluttertoast.showToast(
+                  msg: "Modül geliştirme aşamasındadır!",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.grey,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
+              return;
+            }
+            //Navigator.push(context, MaterialPageRoute(builder: (context) => SiparislerView()));
           }),
     );
+    menuList.add(
+      InkWell(
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(2, 5),
+                  ),
+                ],
+                color: Colors.white),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 10, top: 10),
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text( "Lojistik", style: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.grey.shade800),)),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 15, bottom: 10),
+                  child: Align(
+                    alignment: Alignment.bottomRight,
+                    child: FaIcon(
+                      FontAwesomeIcons.truck,
+                      color: Colors.blue.shade900,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            height: 80,
+            width: (MediaQuery.of(context).size.width - 50) / 2 - 10,
+          ),
+          onTap: () async {
+            bool? checkAll = await Foksiyonlar.checkAppEngine(context, false);
+            if (checkAll == false) return;
+            else{
+              Fluttertoast.showToast(
+                  msg: "Modül geliştirme aşamasındadır!",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.grey,
+                  textColor: Colors.white,
+                  fontSize: 16.0
+              );
+              return;
+            }
+           // Navigator.push(context, MaterialPageRoute(builder: (context) => LojistikSayfasi()));
+          }),
+          );
 
     return menuList;
   }

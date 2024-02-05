@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:auto_orientation/auto_orientation.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../modeller/GridModeller.dart';
 import '../modeller/Listeler.dart';
 import '../modeller/Modeller.dart';
@@ -137,9 +137,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                     Stack(
                       alignment: Alignment(0,5),
                       children: [
-                        Container(
-                          color: Colors.red,
-                        ),
+                        Container(color: Colors.red,),
                         Text("${_filtreler.length + filtreMarkalarList.length + filtreReyonlarList.length +
                             filtreUreticilerList.length + filtreAmbalajlarList.length +
                             filtreSektorlerList.length + filtreKalitekontrolList.length +
@@ -217,8 +215,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                             ),
                             suggestionsCallback: (pattern) {
                               arananKelime = pattern;
-                              if(pattern == "")
-                                return [];
+                              if(pattern == "") return SearchHistoryHelper.getSearchHistory();
                               return getSuggestions(pattern);
                             },
                             noItemsFoundBuilder: (context) {
@@ -234,12 +231,17 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                             },
                             itemBuilder: (context, suggestion) {
                               if (arananKelime != "") {
-                                var mySuggestion = suggestion
-                                    .toString()
-                                    .replaceAll(arananKelime.toUpperCase(), '=');
+                                var mySuggestion = suggestion.toString().replaceAll(arananKelime.toUpperCase(), '=');
                                 for (var i = 0; i < mySuggestion.toString().length; i++) {
                                   aramaHelperList.add(mySuggestion[i]);
                                 }
+                              }else{
+                                return Container(
+                                  //color: suggestion == _stokAramaController.text ? Colors.yellow : Colors.white,
+                                  child: ListTile(
+                                    title: Text(suggestion.toString()),
+                                  ),
+                                );
                               }
                               return ListTile(
                                   title: RichText(
@@ -283,18 +285,25 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                                 (context, suggestionsBox, controller) {
                               return suggestionsBox;
                             },
-                            onSuggestionSelected: (suggestion) async {
-                              this._stokAramaController.text = suggestion.toString();
-                              if(await Foksiyonlar.internetDurumu(context)){
+                              onSuggestionSelected: (suggestion) async {
+                                // Seçilen öğeyi arama geçmişinin en üstüne ekleyin
                                 setState(() {
-                                  arananKelime = _stokAramaController.text;
+                                  arananKelime = suggestion.toString();
+                                  stoklarGridList = [];
+                                  _stokAramaController.text = suggestion.toString();
+                                  _stoklariGetir(false);
                                 });
-                                stoklarGridList = [];
-                                _stoklariGetir(false);
-                              }
-                            },
+                                // Geçmişe ekleyin
+                                setState(() {
+                                  List<String> searchHistory = aramaHelperList.toList(); // Geçmiş listesini kopyalayın
+                                  searchHistory.remove(suggestion); // Öğeyi listeden kaldırın (en üstte olacak)
+                                  searchHistory.insert(0, suggestion.toString()); // Öğeyi listenin en başına ekleyin
+                                  aramaHelperList = searchHistory; // Güncellenmiş geçmişi kaydedin
+                                });
+                                },
                             onSaved: (value) => this._stokAramaController.text = value!,
                           ),
+
                         ),
                         InkWell(
                           child: Padding(
@@ -2067,7 +2076,7 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
             stok['tumDepolarStokMiktar'],
             stok['stokBirim'],
             stok['fiyat'],
-            stok['doviz'],
+            stok['doviz']  ,
             stok['alinanSiparisKalan'],
             stok['verilenSiparisKalan'],
             stok['son30GunSatis'],
@@ -2087,6 +2096,8 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
             stok['sdsBodrum'],
             stok['sdsKayseri'],
             stok['sdsSivas'],
+            stok['sdsDenizli'],
+            stok['sdsManisa'],
             stok['zenitled'],
             stok['zenitledUretim'],
             stok['zenitledMerkez'],
@@ -2111,6 +2122,8 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
             stok['D1SdsBodrum'],
             stok['D1SdsKayseri'],
             stok['D1SdsSivas'],
+            stok['D1SdsDenizli'],
+            stok['D1SdsManisa'],
             stok['D1Zenitled'],
             stok['D1ZenitledUretim'],
             stok['D1ZenitledMerkez'],
@@ -2304,6 +2317,22 @@ final List<Map<String,dynamic>> filtreSecSezonlarList = [];
 final List<Map<String,dynamic>> filtreSecHammaddelerList = [];
 final List<Map<String,dynamic>> filtreSecKategorilerList = [];
 
+class SearchHistoryHelper{
+  static const String _searchkey = 'search_history';
+
+  static Future<List<String>> getSearchHistory() async{
+    final SharedPreferences prefs =await SharedPreferences.getInstance();
+    return prefs.getStringList(_searchkey) ?? [];
+  }
+
+  static Future<void> addToSearchHistory(String searchTerm) async{
+    final SharedPreferences prefs=await SharedPreferences.getInstance();
+    List<String> searchHistory=prefs.getStringList(_searchkey) ??[];
+    searchHistory.remove(searchTerm.toLowerCase());
+    searchHistory.insert(0, searchTerm.toLowerCase());
+    prefs.setStringList(_searchkey, searchHistory);
+  }
+}
 
 
 

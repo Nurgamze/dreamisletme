@@ -145,11 +145,11 @@ class _CariDonemselBakiyeViewState extends State<CariDonemselBakiyeView> {
       "UserId" : UserInfo.activeUserId,
     };
     var serviceData = await APIService.getDataWithModel<List<CariDonemselBakiye>,CariDonemselBakiye>("DonemselBakiyelerRaporu", queryParameters, CariDonemselBakiye());
-    print(serviceData.statusCode);
-    if(serviceData.statusCode == 200){
-      _cariDonemselBakiyeList = serviceData.responseData ?? [];
+    print(serviceData?.statusCode);
+    if(serviceData?.statusCode == 200){
+      _cariDonemselBakiyeList = serviceData?.responseData ?? [];
       
-    }else if(serviceData.statusCode == 404) {
+    }else if(serviceData?.statusCode == 404) {
       _cariDonemselBakiyeList.clear();
     }
     loading = true;

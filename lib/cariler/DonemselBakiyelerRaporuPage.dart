@@ -20,7 +20,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'CariEkstreSayfasi.dart';
+import 'IPTALCariEkstreSayfasi.dart';
 import 'cari_ekstre_view.dart';
 import 'models/cari.dart';
 

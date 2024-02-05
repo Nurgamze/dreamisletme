@@ -8,10 +8,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:sdsdream_flutter/Stoklar/models/stok.dart';
 import 'package:sdsdream_flutter/modeller/GridModeller.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
 import 'package:sdsdream_flutter/Stoklar/StokAcikSiparislerSayfasi.dart';
+import 'package:sdsdream_flutter/stoklar/DepoMiktarDetaySayfas%C4%B1.dart';
 import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'StokAlternatifleriSayfasi.dart';
 import 'StokFiyatlariSayfasi.dart';
@@ -21,7 +21,7 @@ import 'StokReferanslarSayfasi.dart';
 
 class StokDetaySayfasi extends StatefulWidget {
   final StoklarGridModel data;
-  const StokDetaySayfasi({super.key, required this.data,});
+  const StokDetaySayfasi({super.key,required this.data, });
   @override
   _StokDetaySayfasiState createState() => _StokDetaySayfasiState();
 }
@@ -74,9 +74,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
   Widget build(BuildContext context) {
     double toplam = depo1Mi ? widget.data.D1SdsToplamStokMerkezDahil : widget.data.sdsToplamStokMerkezDahil;
     double sube = depo1Mi ? widget.data.depo1StokMiktar : widget.data.tumDepolarStokMiktar;
-    
-    
-    
+
     controller = PageController(initialPage: seciliButon);
 
     return ConstScreen(
@@ -99,7 +97,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                   child: Column(
                     children: [
                       Container(
-                          height: MediaQuery.of(context).size.height*4/25,
+                          //height: MediaQuery.of(context).size.height*4/25,
                           width: MediaQuery.of(context).size.width-50,
                           padding: EdgeInsets.only(left: 10,top: 15),
                           child: SingleChildScrollView(
@@ -121,7 +119,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                                     );
                                   },
                                 ),
-                                SizedBox(height: 2,),
+                                //SizedBox(height: 2,),
                                 InkWell(
                                   child: Text(widget.data.stokIsim,style: GoogleFonts.roboto(fontSize: 15,color: Colors.black),maxLines: 1,overflow: TextOverflow.ellipsis,),
                                   onTap: () {
@@ -136,19 +134,47 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                                     );
                                   },
                                 ),
-                                SizedBox(height: 10,),
+                                SizedBox(height: 1,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   //crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Expanded(child: Container(
-                                      child: Column(
-                                        children: [
-                                          Text("TOPLAM",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500))),
-                                          Text(formatter.format(toplam),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Foksiyonlar.moneyColor(toplam),fontWeight: FontWeight.w500))),
-                                        ],
+                                    // Expanded(child: Container(
+                                    //   child: Column(
+                                    //     children: [
+                                    //       Text("TOPLAM",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500))),
+                                    //       Text(formatter.format(toplam),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Foksiyonlar.moneyColor(toplam),fontWeight: FontWeight.w500))),
+                                    //     ],
+                                    //   ),
+                                    // ),),
+                                    InkWell(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.red),
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(5),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.red.shade500.withOpacity(0.2),
+                                              spreadRadius: 2,
+                                              blurRadius: 3,
+                                              offset: Offset(0, 0.5),
+                                            ),
+                                          ],
+                                        ),
+                                        margin: EdgeInsets.only(right: (MediaQuery.of(context).size.width-50)/500,),
+                                        width: (MediaQuery.of(context).size.width-50)/4+20,
+                                        height: 50,
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text("TOPLAM",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500))),
+                                            Text(formatter.format(toplam),style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Foksiyonlar.moneyColor(toplam),fontWeight: FontWeight.w500))),
+                                          ],
+                                        ),
                                       ),
-                                    ),),
+                                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => DepodakiMiktarlarDetaySayfasi(false, data: widget.data,))),
+                                    ),
                                     Expanded(child: Container(
                                       child: Column(
                                         children: [
@@ -160,12 +186,12 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                                     InkWell(
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.grey),
+                                          border: Border.all(color: Colors.red),
                                           color: Colors.white,
                                           borderRadius: BorderRadius.circular(5),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.shade500.withOpacity(0.2),
+                                              color: Colors.red.shade500.withOpacity(0.2),
                                               spreadRadius: 2,
                                               blurRadius: 3,
                                               offset: Offset(0, 0.5),
@@ -186,15 +212,17 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                                       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => StokAcikSiparislerSayfasi(false, data: widget.data,))),
                                     )
                                   ],
-                                )
+                                ),
                               ],
                             ),
                           )
                       ),
+                      SizedBox(height: 3,),
                       Container(
                         color: Colors.grey.shade800,
                         height: 1,
                       ),
+                     // SizedBox(height: 10,),
                       Container(
                         height: MediaQuery.of(context).size.height*12/25+50,
                         width: MediaQuery.of(context).size.width-50,
@@ -211,10 +239,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                           ],
                         ),
                       ),
-                      Container(
-                        color: Colors.grey.shade800,
-                        height: 1,
-                      ),
+                      Container(color: Colors.grey.shade800, height: 1,),
                       Expanded(child:
                       Container(
                           height:MediaQuery.of(context).size.height*7/25-30,
@@ -264,9 +289,10 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                                 ),
                               ],
                             ),
-                            height: MediaQuery.of(context).size.height*4/25,
+                            height: MediaQuery.of(context).size.height*4/26,
                             width: 50,
                           ),
+                          //SizedBox(height: 3,),
                           Container(
                             color: Colors.grey.shade800,
                             height: 1,
@@ -347,6 +373,8 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
     double bodrum = depo1Mi ? widget.data.D1SdsBodrum: widget.data.sdsBodrum;
     double kayseri = depo1Mi ? widget.data.D1SdsKayseri: widget.data.sdsKayseri;
     double? sivas = depo1Mi ? widget.data.D1SdsSivas: widget.data.sdsSivas;
+    double? denizli = depo1Mi ? widget.data.D1SdsDenizli: widget.data.sdsDenizli;
+    double? manisa = depo1Mi ? widget.data.D1SdsManisa: widget.data.sdsManisa;
 
     return Stack(
       children: [
@@ -379,9 +407,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                         ),
                       ),
                       onTap: () {
-                        if(UserInfo.fullAccess){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StokAcikSiparislerSayfasi(true,data: widget.data)));
-                        }
+                        if(UserInfo.fullAccess){Navigator.push(context, MaterialPageRoute(builder: (context) => StokAcikSiparislerSayfasi(true,data: widget.data)));}
                       }
                   ),
                   Container(
@@ -576,9 +602,54 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
                         Text(formatter.format(sivas),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(sivas!)),)
                       ],
                     ),
+                  ), Container(
+                    decoration: Sabitler.dreamBoxDecoration,
+                    width: ( MediaQuery.of(context).size.width-50 )/2-15,
+                    height: 50,
+                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("DENİZLİ", style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                        Text(formatter.format(denizli),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(denizli!)),)
+                      ],
+                    ),
                   ),
                 ],
               ),
+              SizedBox(height: 7,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    decoration: Sabitler.dreamBoxDecoration,
+                    width: ( MediaQuery.of(context).size.width-50 )/2-15,
+                    height: 50,
+                    padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("MANİSA", style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                        Text(formatter.format(manisa),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(manisa!)),)
+                      ],
+                    ),
+                  ),
+                  // Container(
+                  //   decoration: Sabitler.dreamBoxDecoration,
+                  //   width: ( MediaQuery.of(context).size.width-50 )/2-15,
+                  //   height: 50,
+                  //   padding: EdgeInsets.symmetric(vertical: 5,horizontal: 5),
+                  //   child: Column(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Text("DENİZLİ", style: GoogleFonts.roboto(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w500),),
+                  //       Text(formatter.format(denizli),style: GoogleFonts.roboto(fontSize: 16,color: Foksiyonlar.moneyColor(denizli!)),)
+                  //     ],
+                  //   ),
+                  // ),
+                ],
+              ),
+              SizedBox(height: 7,),
               SizedBox(height: 7,),
               SizedBox(height: 7,),
             ],
@@ -779,6 +850,28 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
               ),
             ],
           ),
+        ),
+        Align(
+          child: Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: CupertinoSlidingSegmentedControl(
+              onValueChanged: (value) {
+                setState(() {
+                  _currentSelection = int.parse(value.toString());
+                  if(value ==1){
+                    setState(() {
+                      depo1Mi = true;
+                    });
+                  }else{
+                    depo1Mi = false;
+                  }
+                });
+              },
+              groupValue: _currentSelection,
+              children: _children,
+            ),
+          ),
+          alignment: Alignment.bottomRight,
         ),
       ],
     );
@@ -1022,6 +1115,7 @@ class _StokDetaySayfasiState extends State<StokDetaySayfasi> {
     0: Text('Hepsi'),
     1: Text('Depo 1'),
   };
-  
-  
+
+
 }
+

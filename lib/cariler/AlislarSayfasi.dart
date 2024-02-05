@@ -233,8 +233,7 @@ class _AlislarSayfasiState extends State<AlislarSayfasi> {
       "hammaddeler" : "",
       "kategoriler" : "",
     });
-    var responseStok = await http.post(Uri.parse(
-        "${Sabitler.url}/api/StokV4"),
+    var responseStok = await http.post(Uri.parse("${Sabitler.url}/api/StokV4"),
         headers: {
           "apiKey": Sabitler.apiKey,
           'Content-Type': 'application/json; charset=UTF-8',
@@ -284,6 +283,8 @@ class _AlislarSayfasiState extends State<AlislarSayfasi> {
           stokDetay[0]['sdsBodrum'],
           stokDetay[0]['sdsKayseri'],
           stokDetay[0]['sdsSivas'],
+          stokDetay[0]['sdsDenizli'],
+          stokDetay[0]['sdsManisa'],
           stokDetay[0]['zenitled'],
           stokDetay[0]['zenitledUretim'],
           stokDetay[0]['zenitledMerkez'],
@@ -308,6 +309,8 @@ class _AlislarSayfasiState extends State<AlislarSayfasi> {
           stokDetay[0]['D1SdsBodrum'],
           stokDetay[0]['D1SdsKayseri'],
           stokDetay[0]['D1SdsSivas'],
+          stokDetay[0]['D1SdsDenizli'],
+          stokDetay[0]['D1SdsManisa'],
           stokDetay[0]['D1Zenitled'],
           stokDetay[0]['D1ZenitledUretim'],
           stokDetay[0]['D1ZenitledMerkez'],

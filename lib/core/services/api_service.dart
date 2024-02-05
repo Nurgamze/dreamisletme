@@ -33,7 +33,6 @@ class APIService {
               statusCode: 200
           );
         }else if(response is Map) {
-
           return ResponseModel<R>(
 
               responseData: model.fromMap(responseBody) as R,
@@ -212,6 +211,7 @@ class APIService {
     try{
       var response = await _dio!.get(url,queryParameters: queryParameters);
 
+
       if(response.statusCode == HttpStatus.ok){
 
         var responseBody = response.data;
@@ -259,10 +259,17 @@ class APIService {
       );
     } on DioError catch(error) {
       var errorResponseData = error.response?.data;
+      print('DioError: ${error.message}, Status Code: ${error.response?.statusCode}');
 
+      if (error.response?.statusCode == 404) {
+        return ResponseModel<R>(
+          errorMessage: 'Resource not found',
+          statusCode: 404,
+        );
+      }
       return ResponseModel<R>(
           errorMessage: errorResponseData.toString(),
-          statusCode: 400
+         statusCode: error.response?.statusCode ?? 400,
       );
     }
 
@@ -272,6 +279,8 @@ class APIService {
     );
 
   }
+
+
 
   static Future<ResponseModel<dynamic>> customRequest(String url) async {
     try{

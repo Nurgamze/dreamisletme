@@ -1,7 +1,5 @@
-
 import 'dart:io';
 import 'package:auto_orientation/auto_orientation.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -310,6 +308,15 @@ class _CariEkstreViewState extends State<CariEkstreView> {
     );
   }
   _ekstreGetir() async {
+
+    print("vtisim: ${UserInfo.activeDB}");
+    print("cariKod: ${widget.data.kod}");
+    print("ekstreTarihi: ${widget.ekstreTarihi.month}.${widget.ekstreTarihi.day}.${widget.ekstreTarihi.year}");
+    print("ekstreSonTarihi: ${widget.ekstreSonTarihi}");
+    print("DevInfo: ${TelefonBilgiler.userDeviceInfo}");
+    print("AppVer: ${TelefonBilgiler.userAppVersion}");
+    print("DevInfo: ${UserInfo.activeUserId}");
+
     var queryParameters = {
       "VtIsim" : UserInfo.activeDB,
       "Customer" : false,
@@ -322,10 +329,14 @@ class _CariEkstreViewState extends State<CariEkstreView> {
       "AppVer" : TelefonBilgiler.userAppVersion,
       "UserId" : UserInfo.activeUserId,
     };
-    var serviceData = await APIService.getDataWithModel<List<CariEkstre>,CariEkstre>("CariHesapEkstresi", queryParameters, CariEkstre());
-    if(serviceData.statusCode == 200) {
 
-      _cariEkstreList = serviceData.responseData ?? [];
+    var serviceData = await APIService.getDataWithModel<List<CariEkstre>,CariEkstre>("CariHesapEkstresi", queryParameters, CariEkstre());
+    print("cari extre servicedata , $serviceData " );
+    print("cari extre  serviceData.statusCode ${serviceData?.statusCode}");
+    print("cari extre  serviceData.responseData ${serviceData?.responseData}");
+    if(serviceData?.statusCode == 200) {
+
+      _cariEkstreList = serviceData?.responseData ?? [];
 
       alacak = _cariEkstreList[_cariEkstreList.length-3].cinsi ?? "";
       borc = _cariEkstreList[_cariEkstreList.length-2].cinsi ?? "";

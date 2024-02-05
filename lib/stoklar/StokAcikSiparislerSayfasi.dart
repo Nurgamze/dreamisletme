@@ -1,6 +1,4 @@
-import 'dart:convert';
-
-import 'package:auto_orientation/auto_orientation.dart';
+import 'dart:convert';import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,8 +13,10 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class StokAcikSiparislerSayfasi extends StatefulWidget {
+
   final bool merkezMi;
   final StoklarGridModel data;
+
   StokAcikSiparislerSayfasi(this.merkezMi,{required this.data});
   @override
   _StokAcikSiparislerSayfasiState createState() => _StokAcikSiparislerSayfasiState();
@@ -43,7 +43,7 @@ class _StokAcikSiparislerSayfasiState extends State<StokAcikSiparislerSayfasi> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    acikSiparislerGridList.clear();
+    acikSiparisGridList.clear();
     if(!TelefonBilgiler.isTablet) AutoOrientation.portraitAutoMode();
   }
   @override
@@ -185,6 +185,8 @@ class _StokAcikSiparislerSayfasiState extends State<StokAcikSiparislerSayfasi> {
           dreamColumn(columnName: 'birimFiyat', label : 'BİRİM FİYAT',),
           dreamColumn(columnName: 'dovizCinsi', label : 'DÖVİZ CİNSİ',),
           dreamColumn(columnName: 'tutar', label : 'TUTAR',),
+          dreamColumn(columnName: 'sip_tarih', label : 'SİPARİŞ TARİHİ',),
+          dreamColumn(columnName: 'sip_teslim_tarih', label : 'SİPARİŞ TESLİM TARİHİ',),
         ],
         onCellTap: (value) async {
           Future.delayed(Duration(milliseconds: 10), () async{
@@ -203,55 +205,72 @@ class _StokAcikSiparislerSayfasiState extends State<StokAcikSiparislerSayfasi> {
       }
     }
     setState(() {
-      acikSiparislerGridList = arananlarList;
+      acikSiparisGridList = arananlarList;
       _stokAcikSiparislerGridSource = StokAcikSiparislerGridSource(dataGridController);
     });
   }
 
   _acikSiparisleriGetir() async {
     String? gidecekVt = widget.merkezMi ? "MikroDB_V16_01" : UserInfo.activeDB;
-    var response = await http.get(Uri.parse("${Sabitler.url}/api/AcikSiparisler?vtIsim=$gidecekVt&cariKod=&stokKod=${widget.data.stokKodu}&caridenMi=false&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),headers: {"apiKey" : Sabitler.apiKey});
+    var response = await http.get(Uri.parse("${Sabitler.url}/api/AcikSiparisler?vtIsim=$gidecekVt&cariKod=&stokKod=${widget.data.stokKodu}&caridenMi=false&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),
+        headers: {"apiKey" : Sabitler.apiKey});
     print(response.statusCode);
     print(response.body);
     if(response.statusCode == 200){
       var siparislerJson = jsonDecode(response.body);
       for(var siparisler in siparislerJson) {
-        AcikSiparislerGridModel siparis = AcikSiparislerGridModel(siparisler['sip_cins'], siparisler['sip_tip'], siparisler['sip_evrakno_seri'],siparisler['sip_evrakno_sira']
-            ,siparisler['sip_stok_kod'],siparisler['sto_isim'],siparisler['cari_unvan'],siparisler['sip_musteri_kod'],siparisler['sip_miktar'],siparisler['sip_teslim_miktar'],siparisler['kalan'],siparisler['tutar'],
+        AcikSiparislerGridModel bbbb = AcikSiparislerGridModel(
+          siparisler['sip_cins'],
+          siparisler['sip_tip'],
+          siparisler['sip_evrakno_seri'],
+          siparisler['sip_evrakno_sira'],
+          siparisler['sip_stok_kod'],
+          siparisler['sto_isim'],
+          siparisler['cari_unvan'] ?? " ",
+          siparisler['sip_musteri_kod'],
+          siparisler['sip_miktar'],
+          siparisler['sip_teslim_miktar'],
+          siparisler['kalan'],
+          siparisler['tutar'],
           siparisler['birim'],
           siparisler['birimFiyat'],
-          siparisler['dovizCinsi'],);
-        acikSiparislerGridList.add(siparis);
+          siparisler['dovizCinsi'],
+          DateTime.parse(siparisler['sip_tarih'].toString()),
+          DateTime.parse(siparisler['sip_teslim_tarih'].toString())
+        );
+        acikSiparisGridList.add(bbbb);
       }
-      if(acikSiparislerGridList.length == 1) acikSiparislerGridList.clear();
-      if(acikSiparislerGridList.length == 2){
-        late AcikSiparislerGridModel first;
-        late AcikSiparislerGridModel last;
-        for(var data in acikSiparislerGridList)
-        {
-            if(data.musteriIsim == "TOPLAM") last = data;
-            else first = data;
-        }
-        List<AcikSiparislerGridModel> newList = [first,last];
-        acikSiparislerGridList = newList;
-
-      }
+      // if(acikSiparisGridList.length == 1)
+      //   acikSiparisGridList.clear();
+      //
+      // if(acikSiparisGridList.length == 2){
+      //   late AcikSiparislerGridModel first;
+      //   late AcikSiparislerGridModel last;
+      //   for(var data in acikSiparisGridList)
+      //   {
+      //     print("bakkk ${data.musteriIsim}");
+      //       if(data.musteriIsim == "TOPLAM")
+      //         last = data;
+      //       else first = data;
+      //   }
+      //   List<AcikSiparislerGridModel> newList = [first,last];
+      //   acikSiparisGridList = newList;
+      //
+      // }
       setState(() {
         _stokAcikSiparislerGridSource = StokAcikSiparislerGridSource(dataGridController);
         loading = true;
-        aramaList = acikSiparislerGridList;
+        aramaList = acikSiparisGridList;
       });
     }else{
       setState(() {
         _stokAcikSiparislerGridSource = StokAcikSiparislerGridSource(dataGridController);
-        acikSiparislerGridList.clear();
+        acikSiparisGridList.clear();
         loading = true;
       });
     }
   }
 }
-
-
 
 
 
@@ -261,10 +280,8 @@ class StokAcikSiparislerGridSource extends DataGridSource {
   @override
   List<DataGridRow> get rows => dataGridRows;
 
-
-
   void buildDataGridRows() {
-    dataGridRows = acikSiparislerGridList.map<DataGridRow>((e) => DataGridRow(
+    dataGridRows = acikSiparisGridList.map<DataGridRow>((e) => DataGridRow(
         cells: [
           DataGridCell<String>(columnName: 'musteriIsim',value: e.musteriIsim),
           DataGridCell<String>(columnName: 'musteriKod',value: e.musteriKod),
@@ -276,8 +293,11 @@ class StokAcikSiparislerGridSource extends DataGridSource {
           DataGridCell<double>(columnName: 'birimFiyat',value: e.birimFiyat),
           DataGridCell<String>(columnName: 'dovizCinsi',value: e.dovizCinsi),
           DataGridCell<double>(columnName: 'tutar',value: e.tutar),
+          DataGridCell<DateTime>(columnName:'sip_tarih',value: e.sip_tarih),
+          DataGridCell<DateTime>(columnName:'sip_teslim_tarih',value: e.sip_teslim_tarih),
         ]
     )).toList();
+    print("ddataGridRows ${dataGridRows}");
   }
 
   final DataGridController dataGridController;
@@ -312,11 +332,10 @@ class StokAcikSiparislerGridSource extends DataGridSource {
           );
         }).toList()
     );
-
-
   }
 
   void updateDataGridSource() {
     notifyListeners();
   }
 }
+

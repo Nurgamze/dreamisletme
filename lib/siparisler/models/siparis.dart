@@ -18,29 +18,6 @@ class Siparis extends BaseDataModel{
   String? durum;
   String? onayDurumu;
 
-
-
-  static List<DataGridRow> buildDataGridRows(List<Siparis> siparisList) {
-    return siparisList.map<DataGridRow>((e) => DataGridRow(
-        cells: [
-          DataGridCell<DateTime>(columnName: 'siparisTarihi',value: e.siparisTarihi),
-          DataGridCell<String>(columnName: 'evrak',value: e.evrak),
-          DataGridCell<String>(columnName: 'tip',value: e.tip),
-          DataGridCell<String>(columnName: 'cariKodu',value: e.cariKodu),
-          DataGridCell<String>(columnName: 'unvani',value: e.unvani),
-          DataGridCell<int>(columnName: 'miktar',value: e.miktar),
-          DataGridCell<int>(columnName: 'teslimMiktar',value: e.teslimMiktar),
-          DataGridCell<int>(columnName: 'kalan',value: e.kalan),
-          DataGridCell<double>(columnName: 'tutar',value: e.tutar),
-          DataGridCell<DateTime>(columnName: 'teslimTarihi',value: e.teslimTarihi),
-          DataGridCell<int>(columnName: 'satirSayisi',value: e.satirSayisi),
-          DataGridCell<String>(columnName: 'durum',value: e.durum),
-          DataGridCell<String>(columnName: 'onayDurumu',value: e.onayDurumu),
-
-        ]
-    )).toList();
-  }
-
   Siparis({
     this.siparisTarihi,
     this.evrak,
@@ -56,6 +33,40 @@ class Siparis extends BaseDataModel{
     this.durum,
     this.onayDurumu,
   });
+  Siparis.name({
+    this.siparisTarihi,
+    this.evrak,
+    this.tip,
+    this.cariKodu,
+    this.unvani,
+    this.miktar,
+    this.teslimMiktar,
+    this.kalan,
+    this.tutar,
+    this.teslimTarihi,
+    this.satirSayisi,
+    this.durum,
+    this.onayDurumu,
+  });
+
+
+  Map<String, dynamic> toMap() {
+    return {
+      'siparisTarihi': this.siparisTarihi,
+      'evrak': this.evrak,
+      'tip': this.tip,
+      'cariKodu': this.cariKodu,
+      'unvani': this.unvani,
+      'miktar': this.miktar,
+      'teslimMiktar': this.teslimMiktar,
+      'kalan': this.kalan,
+      'tutar': this.tutar,
+      'teslimTarihi': this.teslimTarihi,
+      'satirSayisi': this.satirSayisi,
+      'durum': this.durum,
+      'onayDurumu': this.onayDurumu,
+    };
+  }
 
   factory Siparis.fromMap(Map<String, dynamic> map) {
     return Siparis(
@@ -79,5 +90,31 @@ class Siparis extends BaseDataModel{
   fromMap(Map<String, dynamic> map) {
     return Siparis.fromMap(map);
   }
+
+  static List<DataGridRow> buildDataGridRows(List<Siparis> siparisList) {
+    return siparisList.map<DataGridRow>((e) => DataGridRow(
+        cells: [
+          DataGridCell<DateTime>(columnName: 'siparisTarihi',value: e.siparisTarihi),
+          DataGridCell<String>(columnName: 'evrak',value: e.evrak),
+          DataGridCell<String>(columnName: 'tip',value: e.tip),
+          DataGridCell<String>(columnName: 'cariKodu',value: e.cariKodu),
+          DataGridCell<String>(columnName: 'unvani',value: e.unvani),
+          DataGridCell<int>(columnName: 'miktar',value: e.miktar),
+          DataGridCell<int>(columnName: 'teslimMiktar',value: e.teslimMiktar),
+          DataGridCell<int>(columnName: 'kalan',value: e.kalan),
+          DataGridCell<double>(columnName: 'tutar',value: e.tutar),
+          DataGridCell<DateTime>(columnName: 'teslimTarihi',value: e.teslimTarihi),
+          DataGridCell<int>(columnName: 'satirSayisi',value: e.satirSayisi),
+          DataGridCell<String>(columnName: 'durum',value: e.durum),
+          DataGridCell<String>(columnName: 'onayDurumu',value: e.onayDurumu),
+
+        ]
+    )).toList();
+  }
+
+
+
+
+
 }
 

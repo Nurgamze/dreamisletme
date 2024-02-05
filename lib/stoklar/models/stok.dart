@@ -39,6 +39,8 @@ class Stok extends BaseDataModel {
   double? sdsBodrum;
   double? sdsKayseri;
   double? sdsSivas;
+  double? sdsDenizli;
+  double? sdsManisa;
   double? zenitled;
   double? zenitledUretim;
   double? zenitledMerkez;
@@ -63,6 +65,8 @@ class Stok extends BaseDataModel {
   double? d1SdsBodrum;
   double? d1SdsKayseri;
   double? d1SdsSivas;
+  double? d1SdsDenizli;
+  double? d1SdsManisa;
   double? d1Zenitled;
   double? d1ZenitledUretim;
   double? d1ZenitledMerkez;

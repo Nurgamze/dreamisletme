@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import 'modeller/GridModeller.dart';
 import 'modeller/Listeler.dart';
 import 'modeller/Modeller.dart';
@@ -31,7 +29,7 @@ class _DovizKurlariSayfasiState extends State<DovizKurlariSayfasi> {
   String dateYear = DateTime.now().year.toString();
   String dateMonth = new DateFormat.MMMM('tr').format(DateTime.now());
   String dateDay = DateTime.now().day.toString();
-  
+
   final DataGridController _dataGridController = DataGridController();
   late DovizKurlariDataSource _dovizKurlariDataSource = DovizKurlariDataSource(_dataGridController);
   @override
@@ -53,83 +51,83 @@ class _DovizKurlariSayfasiState extends State<DovizKurlariSayfasi> {
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
     return ConstScreen(
-      child: currentOrientation == Orientation.landscape && !TelefonBilgiler.isTablet ?
-      HorizontalPage(_grid(),) :
-      Scaffold(
-        appBar: AppBar(
-          title: Container(
-              child: Image(image: AssetImage("assets/images/b2b_isletme_v3.png"),width: 150,)
-          ),
-          centerTitle: true,
-          backgroundColor: Colors.blue.shade900,
-        ),
-        body: Column(
-          children: [
-            InkWell(
-              child: Container(
-                child:Row(
-                  children: [
-                    Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5),topLeft: Radius.circular(5)),
-                          color: Colors.blue.shade900,
-                        ),
-                        margin: EdgeInsets.only(left: 1),
-                        height: 50,
-                        width: MediaQuery.of(context).size.width/5,
-                        child: Center(child: Text("TARİH:",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.bold))),)
-                    ),
-                    Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(5),topRight: Radius.circular(5)),
-                            border: Border.all(color: Colors.blue.shade900),
-                            color: Colors.white
-                        ),
-                        margin: EdgeInsets.only(right: 1),
-                        height: 50,
-                        width: MediaQuery.of(context).size.width/5*4-4,
-                        child: Center(child:
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(dateDay,style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold))),
-                            Text(dateMonth,style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold))),
-                            Text(dateYear,style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold)))
-                          ],
-                        ),)
-                    ),
-                  ],
-                ),
-                margin: EdgeInsets.only(top: 10),
+        child: currentOrientation == Orientation.landscape && !TelefonBilgiler.isTablet ?
+        HorizontalPage(_grid(),) :
+        Scaffold(
+            appBar: AppBar(
+              title: Container(
+                  child: Image(image: AssetImage("assets/images/b2b_isletme_v3.png"),width: 150,)
               ),
-              onTap: () => callDatePicker(),
+              centerTitle: true,
+              backgroundColor: Colors.blue.shade900,
             ),
-            SizedBox(height: 10,),
-            Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topRight: Radius.circular(5),topLeft: Radius.circular(5)),
-                  color: Colors.blue.shade900,
+            body: Column(
+              children: [
+                InkWell(
+                  child: Container(
+                    child:Row(
+                      children: [
+                        Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5),topLeft: Radius.circular(5)),
+                              color: Colors.blue.shade900,
+                            ),
+                            margin: EdgeInsets.only(left: 1),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width/5,
+                            child: Center(child: Text("TARİH:",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.bold))),)
+                        ),
+                        Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(bottomRight: Radius.circular(5),topRight: Radius.circular(5)),
+                                border: Border.all(color: Colors.blue.shade900),
+                                color: Colors.white
+                            ),
+                            margin: EdgeInsets.only(right: 1),
+                            height: 50,
+                            width: MediaQuery.of(context).size.width/5*4-4,
+                            child: Center(child:
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(dateDay,style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold))),
+                                Text(dateMonth,style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold))),
+                                Text(dateYear,style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold)))
+                              ],
+                            ),)
+                        ),
+                      ],
+                    ),
+                    margin: EdgeInsets.only(top: 10),
+                  ),
+                  onTap: () => callDatePicker(),
                 ),
-                margin: EdgeInsets.symmetric(horizontal: 1),
-                height: 35,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text("DÖVİZ KURLARI",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.w500))),
-                    Text("(Tablodaki kurlar Mikro'dan alınmıştır)",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.w500)))
-                  ],
-                )
-            ),
-            !loading ? Container(child: DreamCogs(),margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/4),) :
-            Expanded(child: Container(
-              margin: EdgeInsets.only(bottom: 1,left: 1,right: 1),
-              child:  _grid(),
-            ))
-          ],
+                SizedBox(height: 10,),
+                Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(5),topLeft: Radius.circular(5)),
+                      color: Colors.blue.shade900,
+                    ),
+                    margin: EdgeInsets.symmetric(horizontal: 1),
+                    height: 35,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("DÖVİZ KURLARI",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.w500))),
+                        Text("(Tablodaki kurlar Mikro'dan alınmıştır)",style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 12,color: Colors.white,fontWeight: FontWeight.w500)))
+                      ],
+                    )
+                ),
+                !loading ? Container(child: DreamCogs(),margin: EdgeInsets.only(top: MediaQuery.of(context).size.height/4),) :
+                Expanded(child: Container(
+                  margin: EdgeInsets.only(bottom: 1,left: 1,right: 1),
+                  child:  _grid(),
+                ))
+              ],
+            )
         )
-      )
     );
 
   }
@@ -301,7 +299,7 @@ class DovizKurlariDataSource extends DataGridSource {
   }
 
   void updateDataGridSource() {
+    buildDataGridRows();
     notifyListeners();
   }
 }
-

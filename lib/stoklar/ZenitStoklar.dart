@@ -10,9 +10,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
 import '../modeller/GridModeller.dart';
 import '../modeller/Listeler.dart';
 import '../modeller/Modeller.dart';
@@ -209,8 +209,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                             ),
                             suggestionsCallback: (pattern) {
                               arananKelime = pattern;
-                              if(pattern == "")
-                                return [];
+                              if(pattern == "") return SearchHistoryHelperZenit.getSearchHistoryZenit();
                               return getSuggestions(pattern);
                             },
                             noItemsFoundBuilder: (context) {
@@ -229,12 +228,17 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                             },
                             itemBuilder: (context, suggestion) {
                               if (arananKelime != "") {
-                                var mySuggestion = suggestion
-                                    .toString()
-                                    .replaceAll(arananKelime.toUpperCase(), '=');
+                                var mySuggestion = suggestion.toString().replaceAll(arananKelime.toUpperCase(), '=');
                                 for (var i = 0; i < mySuggestion.toString().length; i++) {
                                   aramaHelperList.add(mySuggestion[i]);
                                 }
+                              }else{
+                                return Container(
+                                  color: suggestion == _stokAramaController.text ? Colors.yellow : Colors.white,
+                                  child: ListTile(
+                                    title: Text(suggestion.toString()),
+                                  ),
+                                );
                               }
                               return ListTile(
                                   title: RichText(
@@ -280,6 +284,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                             },
                             onSuggestionSelected: (suggestion) async {
                               this._stokAramaController.text = suggestion.toString();
+                              await SearchHistoryHelperZenit.addToSearchHistoryZenit(suggestion.toString());
                               if(await Foksiyonlar.internetDurumu(context)){
                                 setState(() {
                                   arananKelime = _stokAramaController.text;
@@ -326,6 +331,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
                                   setState(() {
                                     grupFiltreMi = false;
                                   });
+                                  print("stoklar internet durumu içindeyim");
                                 }else{
                                   String anaGruplar = "";
                                   String altGruplar = "";
@@ -1956,6 +1962,8 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
             stok['sdsBodrum'],
             stok['sdsKayseri'],
             stok['sdsSivas'],
+            stok['sdsDenizli'],
+            stok['sdsManisa'],
             stok['zenitled'],
             stok['zenitledUretim'],
             stok['zenitledMerkez'],
@@ -1980,6 +1988,8 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
             stok['D1SdsBodrum'],
             stok['D1SdsKayseri'],
             stok['D1SdsSivas'],
+            stok['D1SdsDenizli'],
+            stok['D1SdsManisa'],
             stok['D1Zenitled'],
             stok['D1ZenitledUretim'],
             stok['D1ZenitledMerkez'],
@@ -1997,6 +2007,7 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
       if(isScan && stoklarGridList.length == 1){
 
         StoklarGridModel stok = stoklarGridList[0];
+        print("stoklar : $stok");
 
         Navigator.push(context, MaterialPageRoute(
           builder: (context) => StokDetaySayfasi(data: stok),
@@ -2240,5 +2251,24 @@ class StoklarDataSource extends DataGridSource {
 
   void updateDataGridSource() {
     notifyListeners();
+  }
+
+}
+
+class SearchHistoryHelperZenit{
+  static const String _searchkeyZenit = 'search_history_zenit';
+
+  static Future<List<String>> getSearchHistoryZenit() async{
+    final SharedPreferences prefszenit = await SharedPreferences.getInstance();
+    return prefszenit.getStringList(_searchkeyZenit) ?? [];
+  }
+  static Future<void> addToSearchHistoryZenit(String searchTerm) async{
+    final SharedPreferences prefszenit = await SharedPreferences.getInstance();
+    List<String> searchHistoryZenit = prefszenit.getStringList(_searchkeyZenit) ??[];
+
+    if(!searchHistoryZenit.contains(searchTerm.toLowerCase())){
+      searchHistoryZenit.insert(0, searchTerm.toLowerCase());
+      prefszenit.setStringList(_searchkeyZenit, searchHistoryZenit);
+    }
   }
 }
