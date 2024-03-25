@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9d997fe3-1e28-4221-aba8-fa7bef46a81c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/release/3.7.25app-release.rar" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../lib/siparisler/TumAcikSiparis.dart" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../lib/test.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Dart_Packages.xml" afterDir="false" />
@@ -50,7 +51,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\gamzenur.demir\.android\avd\Pixel_C_API_30.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\gamzenur.demir\.android\avd\Pixel_7_API_30.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
