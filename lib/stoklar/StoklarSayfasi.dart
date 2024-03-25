@@ -285,22 +285,28 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
                                 (context, suggestionsBox, controller) {
                               return suggestionsBox;
                             },
-                              onSuggestionSelected: (suggestion) async {
-                                // Seçilen öğeyi arama geçmişinin en üstüne ekleyin
+                            onSuggestionSelected: (suggestion) async {
+                              // Seçilen öğeyi arama geçmişinin en üstüne ekleyin
+                              this._stokAramaController.text = suggestion.toString();
+                              await SearchHistoryHelper.addToSearchHistory(suggestion.toString());
+
+                              if (await Foksiyonlar.internetDurumu(context)) {
                                 setState(() {
-                                  arananKelime = suggestion.toString();
-                                  stoklarGridList = [];
-                                  _stokAramaController.text = suggestion.toString();
-                                  _stoklariGetir(false);
+                                  arananKelime = _stokAramaController.text;
                                 });
-                                // Geçmişe ekleyin
-                                setState(() {
-                                  List<String> searchHistory = aramaHelperList.toList(); // Geçmiş listesini kopyalayın
-                                  searchHistory.remove(suggestion); // Öğeyi listeden kaldırın (en üstte olacak)
-                                  searchHistory.insert(0, suggestion.toString()); // Öğeyi listenin en başına ekleyin
-                                  aramaHelperList = searchHistory; // Güncellenmiş geçmişi kaydedin
-                                });
-                                },
+                                stoklarGridList = [];
+                                _stokAramaController.text = suggestion.toString();
+                                _stoklariGetir(false);
+                              }
+                              // Geçmişe ekleyin ve seçilen öğeyi listede en üste taşıyın
+                              setState(() {
+                                List<String> searchHistory = aramaHelperList.toList(); // Geçmiş listesini kopyalayın
+                                searchHistory.remove(suggestion); // Öğeyi listeden kaldırın (eğer varsa)
+                                searchHistory.insert(0, suggestion.toString()); // Öğeyi listenin en başına ekleyin
+                                aramaHelperList = searchHistory; // Güncellenmiş geçmişi kaydedin
+                              });
+                            },
+
                             onSaved: (value) => this._stokAramaController.text = value!,
                           ),
 
@@ -417,6 +423,8 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
     );
 
   }
+
+
   Widget _grid() {
     return SfDataGridTheme(
       data: SfDataGridThemeData(
@@ -2002,7 +2010,10 @@ class _StoklarSayfasiState extends State<StoklarSayfasi> {
       loading = false;
     });
     print("VtIsim : ${UserInfo.activeDB}");
-    print(UserInfo.aktifSubeNo);
+    print("UserInfo.aktifSubeNo ${UserInfo.aktifSubeNo}");
+
+
+
     stoklarGridList.clear();
     var body = jsonEncode({
       "VtIsim" : UserInfo.activeDB,
@@ -2328,9 +2339,15 @@ class SearchHistoryHelper{
   static Future<void> addToSearchHistory(String searchTerm) async{
     final SharedPreferences prefs=await SharedPreferences.getInstance();
     List<String> searchHistory=prefs.getStringList(_searchkey) ??[];
-    searchHistory.remove(searchTerm.toLowerCase());
-    searchHistory.insert(0, searchTerm.toLowerCase());
-    prefs.setStringList(_searchkey, searchHistory);
+
+    // searchHistory.remove(searchTerm.toLowerCase());
+    // searchHistory.insert(0, searchTerm.toLowerCase());
+    // prefs.setStringList(_searchkey, searchHistory);
+
+    if(!searchHistory.contains(searchTerm.toLowerCase())){
+      searchHistory.insert(0, searchTerm.toLowerCase());
+      prefs.setStringList(_searchkey, searchHistory);
+    }
   }
 }
 
@@ -2348,12 +2365,33 @@ class StoklarDataSource extends DataGridSource {
     buildDataGridRows();
   }
   void buildDataGridRows() {
-    dataGridRows = stoklarGridList.map<DataGridRow>((e) => DataGridRow(
+    dataGridRows =
+        stoklarGridList.map<DataGridRow>((e) => buildDataGridRow(e)).toList();
+  }
+
+//benim yaptıgımmm
+    DataGridRow buildDataGridRow(e) {
+      double musait;
+      if (UserInfo.activeDB == 'MikroDB_V16_04' ||
+          UserInfo.activeDB == 'MikroDB_V16_09' ||
+          UserInfo.activeDB == 'MikroDB_V16_14') {
+        musait = e.depo1StokMiktar- e.alinanSiparisKalan;
+        print("UserInfo.activeDB111 ${UserInfo.activeDB}");
+        print("musait11 $musait");
+      } else {
+        musait = e.depo1StokMiktar ;
+        print("UserInfo.activeDB22 ${UserInfo.activeDB}");
+        print("musait22 $musait");
+      }
+
+
+
+        return DataGridRow(
         cells: [
           DataGridCell<String>(columnName: 'stokKodu',value: e.stokKodu),
           DataGridCell<String>(columnName: 'stokIsim',value: e.stokIsim),
           DataGridCell<String>(columnName: 'stokYabanciIsim',value: e.stokYabanciIsim),
-          DataGridCell<double>(columnName: 'musait',value: e.depo1StokMiktar-e.alinanSiparisKalan),
+          DataGridCell<double>(columnName: 'musait',value:musait),
           DataGridCell<double>(columnName: 'tumDepolarStokMiktar',value: e.tumDepolarStokMiktar),
           DataGridCell<double>(columnName: 'depo1StokMiktar',value: e.depo1StokMiktar),
           DataGridCell<double>(columnName: 'depo2StokMiktar',value: e.depo2StokMiktar),
@@ -2376,8 +2414,9 @@ class StoklarDataSource extends DataGridSource {
           DataGridCell<String>(columnName: 'alternatifStokIsim',value: e.stokAlternatifIsim),
           DataGridCell<String>(columnName: 'barKodu',value: e.barKodu),
         ]
-    )).toList();
-  }
+
+    );
+}
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row){

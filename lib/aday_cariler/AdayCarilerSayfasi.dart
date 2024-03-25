@@ -172,9 +172,7 @@ class _AdayCarilerSayfasiState extends State<AdayCarilerSayfasi> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
+                    SizedBox(height: 5,),
                     Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
@@ -192,9 +190,7 @@ class _AdayCarilerSayfasiState extends State<AdayCarilerSayfasi> {
                                       fontSize: 15,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold))),
-                        )),
-                    !loading
-                        ? Container(
+                        )), !loading ? Container(
                             child: DreamCogs(),
                             margin: EdgeInsets.only(
                                 top: MediaQuery.of(context).size.height / 4),

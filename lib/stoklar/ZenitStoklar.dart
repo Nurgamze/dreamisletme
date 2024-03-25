@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import '../lojistik/Stoklar/StokDetaySayfasi.dart';
 import '../modeller/GridModeller.dart';
 import '../modeller/Listeler.dart';
 import '../modeller/Modeller.dart';
@@ -24,7 +25,6 @@ import '../widgets/select/src/model/choice_item.dart';
 import '../widgets/select/src/model/modal_config.dart';
 import '../widgets/select/src/model/modal_theme.dart';
 import '../widgets/select/src/widget.dart';
-import 'StokDetaySayfasi.dart';
 class ZenitStoklarSayfasi extends StatefulWidget {
   @override
   _ZenitStoklarSayfasiState createState() => _ZenitStoklarSayfasiState();

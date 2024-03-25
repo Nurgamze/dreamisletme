@@ -1871,6 +1871,9 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
     }
   }
 
+
+
+
   _stoklariGetir(bool isScan) async {
     setState(() {
       loading = false;
@@ -2153,7 +2156,6 @@ class _ZenitStoklarSayfasiState extends State<ZenitStoklarSayfasi> {
 
   Future<void> scanBarcodeNormal() async {
     String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "İptal", true, ScanMode.BARCODE);
@@ -2204,12 +2206,17 @@ class StoklarDataSource extends DataGridSource {
     buildDataGridRows();
   }
   void buildDataGridRows() {
+
+
+
     dataGridRows = stoklarGridList.map<DataGridRow>((e) => DataGridRow(
         cells: [
           DataGridCell<String>(columnName: 'stokKodu',value: e.stokKodu),
           DataGridCell<String>(columnName: 'stokIsim',value: e.stokIsim),
           DataGridCell<String>(columnName: 'stokYabanciIsim',value: e.stokYabanciIsim),
+
           DataGridCell<double>(columnName: 'musait',value: e.depo1StokMiktar-e.alinanSiparisKalan),
+
           DataGridCell<double>(columnName: 'tumDepolarStokMiktar',value: e.tumDepolarStokMiktar),
           DataGridCell<double>(columnName: 'depo1StokMiktar',value: e.depo1StokMiktar),
           DataGridCell<double>(columnName: 'depo2StokMiktar',value: e.depo2StokMiktar),

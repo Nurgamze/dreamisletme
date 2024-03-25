@@ -16,6 +16,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../Stoklar/StokDetaySayfasi.dart';
 import 'models/cari.dart';
 
+
+
 class CariAcikSiparislerSayfasi extends StatefulWidget {
   final DreamCari data;
   CariAcikSiparislerSayfasi({required this.data});
@@ -235,9 +237,23 @@ class _CariAcikSiparislerSayfasiState extends State<CariAcikSiparislerSayfasi> {
       var siparislerJson = jsonDecode(response.body);
       for(var siparisler in siparislerJson) {
         print(siparisler);
-        AcikSiparislerGridModel siparis = AcikSiparislerGridModel(siparisler['sip_cins'], siparisler['sip_tip'], siparisler['sip_evrakno_seri'],siparisler['sip_evrakno_sira']
-            ,siparisler['sip_stok_kod'],siparisler['sto_isim'],siparisler['cari_unvan'],siparisler['sip_musteri_kod'],siparisler['sip_miktar'],siparisler['sip_teslim_miktar'],siparisler['kalan'],siparisler['tutar'],
-          siparisler['birim'], siparisler['birimFiyat'], siparisler['dovizCinsi'], DateTime.parse(siparisler['sip_tarih'].toString()),
+        AcikSiparislerGridModel siparis = AcikSiparislerGridModel(
+            siparisler['sip_cins'],
+            siparisler['sip_tip'],
+            siparisler['sip_evrakno_seri'],
+            siparisler['sip_evrakno_sira'],
+            siparisler['sip_stok_kod'],
+            siparisler['sto_isim'],
+            siparisler['cari_unvan'],
+            siparisler['sip_musteri_kod'],
+            siparisler['sip_miktar'],
+            siparisler['sip_teslim_miktar'],
+            siparisler['kalan'],
+            siparisler['tutar'],
+            siparisler['birim'],
+            siparisler['birimFiyat'],
+            siparisler['dovizCinsi'],
+            DateTime.parse(siparisler['sip_tarih'].toString()),
             DateTime.parse(siparisler['sip_teslim_tarih'].toString())
 
         );

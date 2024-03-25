@@ -561,7 +561,50 @@ class AcikSiparislerGridModel {
       );
 }
 
-class DepoMiktarlariGridModel{
+class TumAcikSiparislerGridModel{
+  DateTime? sip_tarih;
+  String? sip_no;
+  DateTime? sip_teslim_tarih;
+  String musteriKod;
+  String musteriIsim;
+  String? temsilci;
+  String sipStokKod;
+  String sipStokIsim;
+  double? sipNetFiyat;
+  String? dovizCinsi;
+  double? tutar;
+  double? TlTutar;
+  double? sipMiktar;
+  double? kalanMiktar;
+  double? kalan2;
+  double? mevcutStok;
+  double? verilenSip;
+  String? aciklama1;
+  String? aciklama2;
+
+  TumAcikSiparislerGridModel(
+      this.sip_tarih,
+      this.sip_no,
+      this.sip_teslim_tarih,
+      this.musteriKod,
+      this.musteriIsim,
+      this.temsilci,
+      this.sipStokKod,
+      this.sipStokIsim,
+      this.sipNetFiyat,
+      this.dovizCinsi,
+      this.tutar,
+      this.TlTutar,
+      this.sipMiktar,
+      this.kalanMiktar,
+      this.kalan2,
+      this.mevcutStok,
+      this.verilenSip,
+      this.aciklama1,
+      this.aciklama2);
+}
+
+class DepoDetayGridModel{
    String? subeKodu;
    String? subeAdi;
    String? depoAdi;
@@ -570,8 +613,14 @@ class DepoMiktarlariGridModel{
    String? stokAdi;
    double? stokMiktar;
 
-   DepoMiktarlariGridModel(this.subeKodu,this.subeAdi,this.depoAdi,this.depoKodu,this.stokKodu,this.stokAdi,this.stokMiktar);
+   DepoDetayGridModel(this.subeKodu,this.subeAdi,this.depoAdi,this.depoKodu,this.stokKodu,this.stokAdi,this.stokMiktar);
 }
+
+
+// class CariSektorKodu{
+//   String? cari_sektor_kodu;
+//   CariSektorKodu(this.cari_sektor_kodu);
+// }
 
 class ZiyaretlerGridModel {
   final String veri;

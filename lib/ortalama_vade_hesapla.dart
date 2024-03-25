@@ -140,11 +140,7 @@ class _OVHSayfasiState extends State<OVHSayfasi> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
-                                "Ort. Vade",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
-                              ),
+                              Text("Ort. Vade", style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
                               Text(vade)
                             ]),
                       ),
@@ -255,10 +251,8 @@ class _OVHSayfasiState extends State<OVHSayfasi> {
         allowTriStateSorting: false,
         controller: _OVHSayfasiController,
         columns: <GridColumn>[
-          dreamColumn(
-              columnName: 'tarih', label: "TARİH", alignment: Alignment.center),
-          dreamColumn(
-              columnName: 'tutar', label: "TUTAR", alignment: Alignment.center),
+          dreamColumn( columnName: 'tarih', label: "TARİH", alignment: Alignment.center),
+          dreamColumn( columnName: 'tutar', label: "TUTAR", alignment: Alignment.center),
         ],
         onCellTap: (v) {
           Future.delayed(Duration(milliseconds: 50), () async {

@@ -271,6 +271,7 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
         )
     );
   }
+
   Widget _grid() {
     return SfDataGridTheme(
       data: myGridTheme,
@@ -317,13 +318,13 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
         onCellLongPress: (args){
           if(ziyaretPlaniGridList[args.rowColumnIndex.rowIndex].ilgili == UserInfo.mikroPersonelKod){
 
-            print("ziyaret yetiştirme yetkin var ");
+            print("ziyaret değiştirme yetkin var ");
             //updateZiyaretNotu();
 
 
           }else{
 
-            print("ziyaret yetiştirme yetkin yoooook ");
+            print("ziyaret değiştirme yetkin yoooook ");
           }
 
 
@@ -380,8 +381,6 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
     }
   }
 
-
-
   _aramaYap() {
 
     if(yedekGridList.isEmpty) return;
@@ -407,6 +406,7 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
       });
     }
   }
+
   _ziyaretPlaniGetir() async {
     setState(() {
       loading = false;
@@ -499,6 +499,8 @@ class _ZiyaretPlaniSayfasiState extends State<ZiyaretPlaniSayfasi> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
+
+
         child: Container(
           width: 250,
           decoration: BoxDecoration(

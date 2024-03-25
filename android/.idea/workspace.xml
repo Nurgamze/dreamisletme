@@ -4,226 +4,45 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9281702-4cb0-43f0-9501-047518105fb6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../assets/images/appbar_title2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../assets/images/dream_lojistik.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../assets/images/lojistik.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Cikis/Cikis.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Cikis/FireCikis.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Cikis/PlanlıMalSevk.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Cikis/PlansizMalSeck.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Cikis/SarfCikis.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Depo/Depo.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Depo/Sayim/SayimEvrakSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Depo/Sayim/SayimModulu.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Giris/Giris.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Giris/PlanliMalKabul.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Giris/PlansizMalKabul.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Giris/SayimGiris.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Giris/İadeKabul.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/KaliteKontrol/KaliteKontrol.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/LocalDB/DatabaseHelper.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/LocalDB/EvraklarDB.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/LocalDB/KullanicilarDB.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/LojistikAnaEkran.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Sayim/SayimEvrakiSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Sayim/SayimModuluSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Siparis/Siparis.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/StokAcikSiparislerSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/StokAlternatifleriSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/StokDetaySayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/StokFiyatlariSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/StokKimlerdenAlinmis.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/StokKimlereSatilmisSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/StokReferanslarSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/StoklarSayfasi.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/ZenitStoklar.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/datagrid_utils.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/Dialoglar.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/DreamCogsGif.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/HorizontalPage.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/beautiful_popup/beautiful_popup.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/beautiful_popup/templates/Common.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/beautiful_popup/templates/Term.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/beautiful_popup/templates/Thumb.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/const_screen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/flutter_awesome_select.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/chip_theme.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/choice_divider.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/choices_empty.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/choices_list.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/choices_resolver.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/group_header.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/modal.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/builder.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/choice_config.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/choice_item.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/choice_loader.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/choice_theme.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/choices.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/chosen.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/group_config.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/group_data.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/group_sort.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/group_style.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/modal_config.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/model/modal_theme.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/pagination.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/scrollbar.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/spinner.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/state/choices.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/state/filter.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/state/selected.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/state/selection.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/text.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/text_error.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/tile/tile.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/tile/tile_chips.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/utils/accent.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/utils/debouncer.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/lojistik/widgets/select/src/widget.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/modeller/Dialoglar.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/modeller/DreamCogsGif.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/modeller/GridListeler.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/modeller/ProviderHelper.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/modeller/splash.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/stoklar/DepoMiktarDetaySayfası.dart" afterDir="false" />
+    <list default="true" id="9d997fe3-1e28-4221-aba8-fa7bef46a81c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../lib/siparisler/TumAcikSiparis.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/test.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/runConfigurations/main_dart.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/app-release.apk" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/app-release.apk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/release/output-metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/app/release/output-metadata.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../assets/images/appbartitle.png" beforeDir="false" afterPath="$PROJECT_DIR$/../assets/images/appbartitledream.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/AnaEkranSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/AnaEkranSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/BilisimTalepleriSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/BilisimTalepleriSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/DovizKurlariSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/DovizKurlariSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/GirisYapYeni.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/GirisYapYeni.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/OdemeYap.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/OdemeYap.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/OnlineHesabimSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/OnlineHesabimSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/ZiyaretPlaniSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/ZiyaretPlaniSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/ZiyaretlerSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/ZiyaretlerSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/aday_cariler/AdayCariDetaySayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/aday_cariler/AdayCariDetaySayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/aday_cariler/AdayCarilerSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/aday_cariler/AdayCarilerSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/AdresleriSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/AdresleriSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/AlislarSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/AlislarSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/cariler/CariAcikSiparisler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/CariAcikSiparisler.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/CariDetaySayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/CariDetaySayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/CariEkstreSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/IPTALCariEkstreSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/CariRiskFoyuSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/CariRiskFoyuSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/CarilerSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/CarilerSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/DonemselBakiyelerRaporuPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/DonemselBakiyelerRaporuPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/FaturaDetaySayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/FaturaDetaySayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/cariler/OrtalamaVadeSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/OrtalamaVadeSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/SatislarSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/IPTALSatislarSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/cari_arama_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/cariler.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/cari_donemsel_bakiye_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/cari_donemsel_bakiye_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/cari_ekstre_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/cari_ekstre_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/cari_risk_foyu_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/cari_risk_foyu_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/cari_satislar_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/cari_satislar_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/cariler/cariler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/cariler.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/cariler/models/cari.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/models/cari.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/models/cari_donemsel_bakiye.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/models/cari_donemsel_bakiye.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/models/cari_ekstre.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/models/cari_ekstre.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/models/cari_risk_foyu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/models/cari_risk_foyu.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/cariler/models/cari_satislar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/cariler/models/cari_satislar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/constants/app_keys.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/constants/app_keys.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/constants/colors.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/constants/colors.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/extensions/color_extensions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/extensions/color_extensions.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/extensions/double_extensions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/extensions/double_extensions.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/extensions/string_extensions.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/extensions/string_extensions.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/models/base_data_grid_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/models/base_data_grid_source.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/models/base_data_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/models/base_data_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/models/base_response_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/models/base_response_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/models/base_state_interface.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/models/base_state_interface.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/core/services/api_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/services/api_service.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/core/services/hive_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/services/hive_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/lojistik/Stoklar/ZenitStoklar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/lojistik/Stoklar/ZenitStoklar.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/modeller/GridModeller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/modeller/GridModeller.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/modeller/Listeler.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/modeller/Listeler.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/modeller/Modeller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/modeller/Modeller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/modeller/SplashScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/modeller/SplashScreen.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/ortalama_vade_hesapla.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/ortalama_vade_hesapla.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/ButceGerceklesenRaporu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/ButceGerceklesenRaporu.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/CiroTablosuSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/CiroTablosuSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/PortfoydekiCeklerSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/PortfoydekiCeklerSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/SatisCiroKaybi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/SatisCiroKaybi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/SatisTahsilatAnaliziSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/SatisTahsilatAnaliziSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/SatisTahsilatOzet.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/SatisTahsilatOzet.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/SatisTahsilatTemsilci.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/SatisTahsilatTemsilci.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/StokSatisKarlilikRaporuSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/StokSatisKarlilikRaporuSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/TahsilatBakiyeAnaliziSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/TahsilatBakiyeAnaliziSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/raporlar/TahsilatlarSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/raporlar/TahsilatlarSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/siparisler/models/siparis.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/siparisler/models/siparis.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/siparisler/siparisler_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/siparisler/siparisler_view.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/Dialoglar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/Dialoglar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/DreamCogsGif.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/DreamCogsGif.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/HorizontalPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/HorizontalPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/MailGondermePopUp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/MailGondermePopUp.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/stoklar/DepoMiktarDetaySayfası.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/DepoMiktarDetaySayfası.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokAcikSiparislerSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokAcikSiparislerSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokAlternatifleriSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokAlternatifleriSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokDetaySayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokDetaySayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokFiyatlariSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokFiyatlariSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokKimlerdenAlinmis.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokKimlerdenAlinmis.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokKimlereSatilmisSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokKimlereSatilmisSayfasi.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/StokReferanslarSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StokReferanslarSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/StoklarSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/StoklarSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/stoklar/ZenitStoklar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/ZenitStoklar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/const_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/const_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/stoklar/models/stok.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/stoklar/models/stok.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/widgets/Dialoglar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/Dialoglar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/DreamCogsGif.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/DreamCogsGif.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/HorizontalPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/HorizontalPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/widgets/MailGondermePopUp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/MailGondermePopUp.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/beautiful_popup/beautiful_popup.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/beautiful_popup/beautiful_popup.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/beautiful_popup/templates/Common.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/beautiful_popup/templates/Common.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/beautiful_popup/templates/Term.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/beautiful_popup/templates/Term.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/beautiful_popup/templates/Thumb.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/beautiful_popup/templates/Thumb.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/const_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/const_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/flutter_awesome_select.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/flutter_awesome_select.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/chip_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/chip_theme.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/choice_divider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/choice_divider.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/choices_empty.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/choices_empty.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/choices_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/choices_list.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/choices_resolver.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/choices_resolver.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/group_header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/group_header.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/modal.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/modal.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/builder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/builder.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/choice_config.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/choice_config.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/choice_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/choice_item.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/choice_loader.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/choice_loader.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/choice_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/choice_theme.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/choices.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/choices.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/chosen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/chosen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/group_config.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/group_config.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/group_data.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/group_data.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/group_sort.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/group_sort.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/group_style.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/group_style.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/modal_config.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/modal_config.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/model/modal_theme.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/model/modal_theme.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/pagination.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/pagination.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/scrollbar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/scrollbar.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/spinner.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/spinner.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/state/choices.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/state/choices.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/state/filter.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/state/filter.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/state/selected.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/state/selected.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/state/selection.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/state/selection.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/text.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/text.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/text_error.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/text_error.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/tile/tile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/tile/tile.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/tile/tile_chips.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/tile/tile_chips.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/utils/accent.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/utils/accent.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/utils/debouncer.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/utils/debouncer.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/widgets/select/src/widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/widgets/select/src/widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/yagiz/YagizOzelSayfa.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/yagiz/YagizOzelSayfa.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/yagiz/YagizTabloSayfasi.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/yagiz/YagizTabloSayfasi.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/yeni_formlar/YeniAdayCariForm.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/yeni_formlar/YeniAdayCariForm.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/yeni_formlar/YeniPortalTalep.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/yeni_formlar/YeniPortalTalep.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/yeni_formlar/YeniStokReferans.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/yeni_formlar/YeniStokReferans.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/yeni_formlar/YeniZiyaret.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/yeni_formlar/YeniZiyaret.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -231,21 +50,21 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\gamzenur.demir\.android\avd\Pixel_7_API_30.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\gamzenur.demir\.android\avd\Pixel_C_API_30.avd]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
   <component name="GenerateSignedApkSettings">
-    <option name="KEY_STORE_PATH" value="C:\repos\SdsDreamV3\android\keystore\sdskey.jks" />
+    <option name="KEY_STORE_PATH" value="C:\repos\SdsDreamV3\android\keystore\SdsDream.keystore" />
     <option name="KEY_ALIAS" value="sdsdream" />
     <option name="BUILD_TARGET_KEY" value="apk" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectId" id="2bwbt65IY16t3Qhstr7gvMRaIOk" />
+  <component name="ProjectId" id="2e2n2YLOt966oBWHcnprlXBvEg8" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -253,14 +72,14 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ApkExportedModule": "android.app",
-    "BundleExportedModule": "android.app",
     "ExportApk.ApkPathForandroid.app": "C:\\repos\\SdsDreamV3\\android\\app",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "cidr.known.project.marker": "true",
     "dart.analysis.tool.window.visible": "false",
-    "last_opened_file_path": "C:/repos/SdsDreamV3/android/keystore/sdskey.jks",
+    "last_opened_file_path": "C:/repos/SdsDreamV3/android/keystore/SdsDream.keystore",
+    "memory.settings.postsync.last.time.stamp": "1711111353505",
     "show.migrate.to.gradle.popup": "false"
   },
   "keyToStringList": {
@@ -340,11 +159,11 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b9281702-4cb0-43f0-9501-047518105fb6" name="Changes" comment="" />
-      <created>1707129299234</created>
+      <changelist id="9d997fe3-1e28-4221-aba8-fa7bef46a81c" name="Changes" comment="" />
+      <created>1711111333211</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1707129299234</updated>
+      <updated>1711111333211</updated>
     </task>
     <servers />
   </component>

@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:auto_orientation/auto_orientation.dart';
+import 'package:device_imei/device_imei.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:imei/imei.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'modeller/GridModeller.dart';
@@ -14,6 +18,10 @@ import 'widgets/Dialoglar.dart';
 import 'widgets/DreamCogsGif.dart';
 import 'widgets/HorizontalPage.dart';
 import 'widgets/const_screen.dart';
+import 'dart:io';
+
+
+
 
 class DovizKurlariSayfasi extends StatefulWidget {
   final bool userMi;
@@ -29,6 +37,8 @@ class _DovizKurlariSayfasiState extends State<DovizKurlariSayfasi> {
   String dateYear = DateTime.now().year.toString();
   String dateMonth = new DateFormat.MMMM('tr').format(DateTime.now());
   String dateDay = DateTime.now().day.toString();
+
+
 
   final DataGridController _dataGridController = DataGridController();
   late DovizKurlariDataSource _dovizKurlariDataSource = DovizKurlariDataSource(_dataGridController);
@@ -47,6 +57,7 @@ class _DovizKurlariSayfasiState extends State<DovizKurlariSayfasi> {
     dovizKurlariGridList.clear();
     if(!TelefonBilgiler.isTablet) AutoOrientation.portraitAutoMode();
   }
+
   @override
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;

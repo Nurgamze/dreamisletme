@@ -3,7 +3,6 @@ import 'package:auto_orientation/auto_orientation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:sdsdream_flutter/modeller/GridModeller.dart';
 import 'package:sdsdream_flutter/modeller/Listeler.dart';
@@ -13,7 +12,8 @@ import 'package:sdsdream_flutter/widgets/HorizontalPage.dart';
 import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'StokDetaySayfasi.dart';
+
+import '../lojistik/Stoklar/StokDetaySayfasi.dart';
 
 class StokAlternatifleriSayfasi extends StatefulWidget {
 
@@ -328,7 +328,7 @@ class _StokAlternatifleriSayfasiState extends State<StokAlternatifleriSayfasi> {
       "sezonlar" : "",
       "hammaddeler" : "",
       "kategoriler" : "",
-      "uygulama":" "
+     // "uygulama":" "
     });
 
     var responseStok = await http.post(Uri.parse("${Sabitler.url}/api/StokV4"),

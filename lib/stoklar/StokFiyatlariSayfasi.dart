@@ -123,7 +123,11 @@ class _StokFiyatlariSayfasiState extends State<StokFiyatlariSayfasi> {
     if(response.statusCode == 200){
       var fiyatlarJson = jsonDecode(response.body);
       for(var fiyatlar in fiyatlarJson) {
-        StokFiyatlariGridModel fiyat = StokFiyatlariGridModel(fiyatlar['listeAdi'], fiyatlar['fiyat'], fiyatlar['doviz']);
+        StokFiyatlariGridModel fiyat = StokFiyatlariGridModel(
+            fiyatlar['listeAdi'],
+            fiyatlar['fiyat'],
+            fiyatlar['doviz']
+        );
         stokFiyatlariGridList.add(fiyat);
       }
       setState(() {

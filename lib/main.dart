@@ -16,6 +16,9 @@ import 'modeller/SplashScreen.dart';
 import 'core/services/api_service.dart';
 import 'core/services/hive_service.dart';
 
+
+
+
 Future<void> init() async{
   WidgetsFlutterBinding.ensureInitialized();
   if(Platform.isAndroid || Platform.isIOS){
@@ -29,8 +32,8 @@ Future<void> init() async{
 }
 
 Future<void> main() async {
-  await init();
-  return runApp(
+   await init();
+   return runApp(
     MultiProvider(
       providers: [
          ChangeNotifierProvider(create: (context) => StateHelper())
@@ -45,9 +48,9 @@ Future<void> main() async {
          Locale('en', ''),Locale('tr', '')
        ],
        debugShowCheckedModeBanner: false,
-       title: "Dream İşletme",
-       theme: ThemeData(brightness: Brightness.light),
-       home: SafeArea(
+        title: "Dream İşletme",
+        theme: ThemeData(brightness: Brightness.light),
+        home: SafeArea(
          child: MyApp(),
        ),
       ),
@@ -98,3 +101,23 @@ class _MyAppState extends State<MyApp> {
     TelefonBilgiler.appVersion = packageInfo.version;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:auto_orientation/auto_orientation.dart';
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../ZiyaretlerSayfasi.dart';
@@ -100,8 +99,7 @@ class _CariAramaViewState extends State<CariAramaView> {
                     child: Image(image: AssetImage("assets/images/b2b_isletme_v3.png"),width: 150,)
                 ),
                 actions: [
-                  filtreSektolerMi || filtreGruplarMi || filtreBolgelerMi || filtreTemsilcilerMi ?
-                  Stack(
+                  filtreSektolerMi || filtreGruplarMi || filtreBolgelerMi || filtreTemsilcilerMi ? Stack(
                     alignment: Alignment(0,5),
                     children: [
                       Container(
@@ -959,6 +957,7 @@ class _CariAramaViewState extends State<CariAramaView> {
       ),
     );
   }
+
   Future<void> _filtreGetir() async {
     var queryParameters = {
       "vtIsim" : UserInfo.activeDB
@@ -1094,6 +1093,7 @@ class SearchCariHistoryHelper{
     final SharedPreferences prefs2 =await SharedPreferences.getInstance();
     return prefs2.getStringList(_searchCariKey) ?? [];
   }
+
   static Future<void> addToSearchCariHistory(String searchCariTerm) async{
     final SharedPreferences prefs2=await SharedPreferences.getInstance();
     List<String> searchCariHistory=prefs2.getStringList(_searchCariKey) ??[];

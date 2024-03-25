@@ -20,16 +20,15 @@ import 'package:sdsdream_flutter/Raporlar/SatisTahsilatAnaliziSayfasi.dart';
 import 'package:sdsdream_flutter/Raporlar/SatisTahsilatOzet.dart';
 import 'package:sdsdream_flutter/Raporlar/StokSatisKarlilikRaporuSayfasi.dart';
 import 'package:sdsdream_flutter/Raporlar/TahsilatBakiyeAnaliziSayfasi.dart';
-import 'package:sdsdream_flutter/lojistik/LojistikAnaEkran.dart';
+import 'package:sdsdream_flutter/siparisler/TumAcikSiparis.dart';
 import 'package:sdsdream_flutter/widgets/Dialoglar.dart';
 import 'package:sdsdream_flutter/widgets/const_screen.dart';
 import 'package:sdsdream_flutter/Yagiz/YagizOzelSayfa.dart';
 import 'package:sdsdream_flutter/ZiyaretPlaniSayfasi.dart';
 import 'package:sdsdream_flutter/ortalama_vade_hesapla.dart';
-import 'package:sdsdream_flutter/siparisler/siparisler_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'OdemeYap.dart';
 import 'aday_cariler/AdayCarilerSayfasi.dart';
 import 'BilisimTalepleriSayfasi.dart';
 import 'cariler/cariler.dart';
@@ -50,52 +49,63 @@ class AnaEkranSayfasi extends StatefulWidget {
 class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
   FixedExtentScrollController? scrollController;
   FixedExtentScrollController? zenitScrollController;
+  final TextEditingController _sifreController = TextEditingController();
+  final TextEditingController _kullaniciBilgiController = TextEditingController();
+  final TextEditingController _kullaniciAdiController = TextEditingController();
+  final TextEditingController _kullaniciEskiSifreController = TextEditingController();
+  final TextEditingController _kullaniciYeniSifreController = TextEditingController();
+  final TextEditingController _kullaniciYeniSifreTekrarController = TextEditingController();
+
   int seciliButon = 0;
+  bool rememberMe = false;
   bool confettiGoster = false;
   bool onlineGoster = false;
   bool yagizGoster = false;
+  String selectedPage = " ";
+  bool passwordVisible = true;
+
   PageController controller = PageController();
   List<VeriTabanlari> veriTabanlariList = [];
   late bool btnPortfoydekiCekler,
-      btnCiroTablosu,
-      btnStokSatisKarlilikRaporu,
-      btnTahsilatlarKonsolide;
+            btnCiroTablosu,
+            btnStokSatisKarlilikRaporu,
+            btnTahsilatlarKonsolide;
 
-  DovizKurlariSayfasi dd =DovizKurlariSayfasi(true);
+  DovizKurlariSayfasi dd = DovizKurlariSayfasi(true);
 
   @override
   void initState() {
     if (UserInfo.activeDB == "MikroDB_V16_Z17_YAGIZ") {
-      yagizGoster = true;
-
+       yagizGoster = true;
     }
     print("init aktif ${UserInfo.aktifSubeNo}");
     UserInfo.aktifSubeNo ??= "0";
     super.initState();
     if (UserInfo.isCriticUser!) {
-      btnPortfoydekiCekler = btnCiroTablosu =
-          btnStokSatisKarlilikRaporu = btnTahsilatlarKonsolide = false;
+      btnPortfoydekiCekler = btnCiroTablosu = btnStokSatisKarlilikRaporu = btnTahsilatlarKonsolide = false;
     } else {
-      btnPortfoydekiCekler = btnCiroTablosu =
-          btnStokSatisKarlilikRaporu = btnTahsilatlarKonsolide = true;
+      btnPortfoydekiCekler = btnCiroTablosu = btnStokSatisKarlilikRaporu = btnTahsilatlarKonsolide = true;
       btnCiroTablosu = !UserInfo.isCiroRapor!;
       btnPortfoydekiCekler = !UserInfo.isPortfoyCekRapor!;
       btnStokSatisKarlilikRaporu = !UserInfo.isStokSatisKarlilikRapor!;
     }
     if (UserInfo.activeDB == null) {
-      _showDialog();
+           _showDialog();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     if (UserInfo.activeDB == null) {
-      UserInfo.fullAccess = false;
-      btnPortfoydekiCekler = btnCiroTablosu =
-          btnStokSatisKarlilikRaporu = btnTahsilatlarKonsolide = true;
-      btnCiroTablosu = true;
-      btnPortfoydekiCekler = true;
-      btnStokSatisKarlilikRaporu = true;
+          UserInfo.fullAccess = false;
+          btnPortfoydekiCekler = btnCiroTablosu = btnStokSatisKarlilikRaporu = btnTahsilatlarKonsolide = true;
+          btnCiroTablosu = true;
+          btnPortfoydekiCekler = true;
+          btnStokSatisKarlilikRaporu = true;
     }
     return WillPopScope(
       onWillPop: _onWillPop,
@@ -106,7 +116,13 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
             title: const Image(
               image: AssetImage("assets/images/b2b_isletme_v3.png"),
               width: 150,
-            ),
+            ), leading: IconButton(
+            onPressed: (){
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            icon: Icon(Icons.menu),
+          ),
+
             centerTitle: true,
             backgroundColor: Colors.blue.shade900,
             automaticallyImplyLeading: false,
@@ -118,17 +134,290 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                   ),
                   onPressed: () {
                     if (!Device.get().isTablet){
-                      AutoOrientation.portraitUpMode();
+                        AutoOrientation.portraitUpMode();
                     };
                     Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
+                      context, MaterialPageRoute(
                           builder: (context) => GirisYapSayfasi()),
-                      (Route<dynamic> route) => false,
+                            (Route<dynamic> route) => false,
                     );
                   })
             ],
+          ),drawer: Drawer(
+          width: MediaQuery.of(context).size.width/2,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade900,
+                ),
+                child: Center(
+                  child: Text( 'Merhaba ${UserInfo.ad}!', style: TextStyle( color: Colors.white, fontSize: 24 ),),
+                ),
+              ),
+              ListTile(
+                leading: Container(
+                  height: 55,
+                  width:  55,
+                  decoration:  BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey.shade300),
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.coins,
+                      color: Colors.blue.shade900,
+                    ),
+                  ),
+                ),
+                title: Text('Döviz Kurları'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DovizKurlariSayfasi(false)));
+                },
+              ),SizedBox(height: 10,),
+              ListTile(
+                leading: Container(
+                  height: 55,
+                  width:  55,
+                  decoration:  BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey.shade300),
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.stripeS,
+                      color: Colors.blue.shade900,
+                    ),
+                  ),
+                ),
+                title: Text('SDS e-Tahsilat'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OdemeSayfasi(false)));
+                },
+              ),SizedBox(height: 10,),
+              ListTile(
+                leading: Container(
+                  height: 55,
+                  width:  55,
+                  decoration:  BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey.shade300),
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.hryvnia,
+                      color: Colors.blue.shade900,
+                    ),
+                  ),
+                ),
+                title: Text('Zenitled e-Tahsilat'),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => OdemeSayfasi(true)));
+                },
+              ),
+              SizedBox(height: 10,),
+              ListTile(
+                leading: Container(
+                  height: 55,
+                  width:  55,
+                  decoration:  BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.grey.shade300),
+                  child: Center(
+                    child: FaIcon(
+                      FontAwesomeIcons.questionCircle,
+                      color: Colors.blue.shade900,
+                    ),
+                  ),
+                ),
+                title: Text('Şifremi Değiştir'),
+                onTap: () {
+                  _kullaniciAdiController.clear();
+                  _kullaniciEskiSifreController.clear();
+                  _kullaniciYeniSifreController.clear();
+                  _kullaniciYeniSifreTekrarController.clear();
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      insetPadding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width / 10),
+                      backgroundColor: Colors.white,
+                      child: Container(
+                        height: 314,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                height: 22,
+                                child: Text("Şifremi Değiştir",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18),
+                                ),
+                                margin: EdgeInsets.only(top: 15),
+                              ),
+                              SizedBox(height: 10,),
+                              Container(
+                                height: 45,
+                                child: TextFormField(
+                                  controller: _kullaniciAdiController,
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                    labelText: "Kullanıcı adı",
+                                    hintText: "ad.soyad",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  cursorColor: Colors.blue.shade900,
+                                  style: TextStyle(color: Colors.black),
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
+                              ),
+                              SizedBox(height: 5),
+                              Container(
+                                height: 45,
+                                child: TextFormField(
+                                  controller: _kullaniciEskiSifreController,
+                                  maxLines: 1,
+                                  decoration: InputDecoration(
+                                    labelText: "Eski şifre",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  cursorColor: Colors.blue.shade900,
+                                  style: TextStyle(color: Colors.black),
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              Container(
+                                height: 45,
+                                child: TextFormField(
+                                  controller: _kullaniciYeniSifreController,
+                                  maxLines: 1,
+                                  obscureText: passwordVisible,
+                                  decoration: InputDecoration(
+                                    labelText: "Yeni şifre",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  cursorColor: Colors.blue.shade900,
+                                  style: TextStyle(color: Colors.black),
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
+                              ),
+                              SizedBox(height: 5,),
+                              Container(
+                                height: 45,
+                                child: TextFormField(
+                                  controller: _kullaniciYeniSifreTekrarController,
+                                  maxLines: 1,
+                                  obscureText: passwordVisible,
+                                  decoration: InputDecoration(
+                                    labelText: "Yeni şifre tekrar",
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),          suffixIcon: IconButton(
+                                    icon: Icon(
+                                        passwordVisible ? Icons.visibility_off : Icons.visibility, color: Colors.blue.shade900),
+                                    onPressed: () {
+                                      setState(() {
+                                        passwordVisible = !passwordVisible;
+                                      });
+                                    },
+                                  ),
+                                  ),
+                                  cursorColor: Colors.blue.shade900,
+                                  style: TextStyle(color: Colors.black),
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(top: 5),
+                                color: Colors.grey,
+                                height: 1,
+                              ),
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextButton(
+                                          onPressed: () async {
+                                            if (_kullaniciEskiSifreController.text == UserInfo.password && _kullaniciAdiController.text==UserInfo.ldapUser){
+                                              if(_kullaniciYeniSifreController.text==_kullaniciYeniSifreTekrarController.text){
+                                                _sifremiDegistir();
+                                              }else{
+                                                Fluttertoast.showToast(
+                                                  msg: "Yeni şifreler eşleşmiyor.",
+                                                  toastLength: Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: Colors.red,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0,
+                                                );
+                                              }
+                                            }else{
+                                              print("eski şifre aynı değil");
+                                              Fluttertoast.showToast(
+                                                msg: "Eski şifreniz ya da Kullanıcı adınız yanlış. Lütfen doğru bir şekilde girin.",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0,
+                                              );
+                                            }
+                                          }, child: Text( "GÖNDER", style: TextStyle(color: Colors.blue),)),
+                                    ),
+                                    Container(width: 1, color: Colors.grey, height: 50,),
+                                    Expanded(
+                                      child: TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: Text("İPTAL", style: TextStyle(color: Colors.blue))),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+
+            ],
           ),
+        ),
           body: Stack(
             children: [
               Container(
@@ -172,14 +461,10 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: seciliButon == 0
-                                            ? Colors.orange.shade900
-                                            : Colors.orange.shade800),
+                                        color: seciliButon == 0 ? Colors.orange.shade900 : Colors.orange.shade800),
                                     borderRadius: BorderRadius.only(
                                         topRight: Radius.circular(60)),
-                                    color: seciliButon == 0
-                                        ? Colors.orange.shade900
-                                        : Colors.orange.shade800),
+                                    color: seciliButon == 0 ? Colors.orange.shade900 : Colors.orange.shade800),
                                 child: const RotatedBox(
                                     quarterTurns: 3,
                                     child: Center(
@@ -215,11 +500,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                                 child: const RotatedBox(
                                     quarterTurns: 3,
                                     child: Center(
-                                      child: Text(
-                                        'Raporlar',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 21),
-                                      ),
+                                      child: Text('Raporlar', style: TextStyle(color: Colors.white, fontSize: 21),),
                                     )),
                                 height:
                                 MediaQuery.of(context).size.height * 2 / 9,
@@ -228,26 +509,18 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                               onTap: () {
                                 setState(() {
                                   seciliButon = 1;
-                                  controller.animateToPage(1,
-                                      duration: Duration(milliseconds: 200),
-                                      curve: Curves.easeIn);
+                                  controller.animateToPage(1, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
                                 });
                               },
                             ),
                             InkWell(
                               child: Container(
                                 decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.orange.shade800),
-                                    color: Colors.orange.shade800),
+                                    border: Border.all(color: Colors.orange.shade800), color: Colors.orange.shade800),
                                 child: const RotatedBox(
                                     quarterTurns: 3,
                                     child: Center(
-                                      child: Text(
-                                        'Menü',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 21),
-                                      ),
+                                      child: Text('Menü', style: TextStyle(color: Colors.white, fontSize: 21),),
                                     )),
                                 height:
                                 MediaQuery.of(context).size.height * 2 / 9,
@@ -298,8 +571,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     border: Border(
-                                        top:
-                                        BorderSide(color: Colors.orange.shade800))),
+                                        top: BorderSide(color: Colors.orange.shade800))),
                                 child: Row(
                                   children: [
                                     InkWell(
@@ -308,13 +580,9 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                                             maxHeight: 80,
                                           ),
                                           child: Container(
-                                            width: (MediaQuery.of(context).size.width -
-                                                50) /
-                                                2 -
-                                                13,
+                                            width: (MediaQuery.of(context).size.width - 50) / 2 - 13,
                                             decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5)),
+                                                borderRadius: BorderRadius.all(Radius.circular(5)),
                                                 boxShadow: [
                                                   BoxShadow(
                                                     color: Colors.grey.withOpacity(0.3),
@@ -331,8 +599,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                                                       left: 10, top: 10),
                                                   child: Align(
                                                       alignment: Alignment.topLeft,
-                                                      child: Text(
-                                                        "Şube Seçimi",
+                                                      child: Text( "Şube Seçimi",
                                                         style: GoogleFonts.roboto(
                                                             fontSize: 18,
                                                             fontWeight: FontWeight.w600,
@@ -341,8 +608,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                                                       )),
                                                 ),
                                                 Padding(
-                                                  padding: EdgeInsets.only(
-                                                      right: 15, bottom: 10),
+                                                  padding: EdgeInsets.only( right: 15, bottom: 10),
                                                   child: Align(
                                                     alignment: Alignment.bottomRight,
                                                     child: FaIcon(
@@ -366,9 +632,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                                         }
                                       },
                                     ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
+                                    SizedBox(width: 5,),
                                     InkWell(
                                       child: ConstrainedBox(
                                         constraints: BoxConstraints(
@@ -376,9 +640,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
                                         ),
                                         child: Container(
                                           width:
-                                          (MediaQuery.of(context).size.width - 50) /
-                                              2 -
-                                              13,
+                                          (MediaQuery.of(context).size.width - 50) / 2 - 13,
                                           decoration: BoxDecoration(
                                               borderRadius:
                                               BorderRadius.all(Radius.circular(5)),
@@ -485,6 +747,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
     }
   }
 
+  
   bool enabled = false;
   _getDatabases() async {
     var response = await http.get(
@@ -833,6 +1096,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
         UserInfo.mikroPersonelKod = data["MikroPersonelKod"];
         UserInfo.ad = data["Ad"];
         UserInfo.soyAd = data["SoyAd"];
+        UserInfo.password = data["Password"];
         UserInfo.isSuperUser = data["IsSuperUser"];
         UserInfo.isCiroRapor = data["IsCiroRapor"];
         UserInfo.isCriticUser = data["IsCriticUser"];
@@ -1092,7 +1356,7 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
           ),
         ));
   }
-  //modullerListSet
+
   Widget raporlar() {
     return Container(
         color: Colors.white,
@@ -2145,21 +2409,8 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
             width: (MediaQuery.of(context).size.width - 50) / 2 - 10,
           ),
           onTap: () async {
-            bool? checkAll = await Foksiyonlar.checkAppEngine(context, false);
-            if (checkAll == false) return;
-            else{
-              Fluttertoast.showToast(
-                  msg: "Modül geliştirme aşamasındadır!",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.CENTER,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.grey,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
-              return;
-            }
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => SiparislerView()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => TumAcikSiparis()));
+
           }),
     );
     menuList.add(
@@ -2220,6 +2471,78 @@ class _AnaEkranSayfasiState extends State<AnaEkranSayfasi> {
           );
 
     return menuList;
+  }
+
+
+
+
+
+
+  _sifremiUnuttum() async {
+    var body = jsonEncode({
+      "kullaniciBilgisi": _kullaniciBilgiController.text,
+      "telefonBilgi" : TelefonBilgiler.userDeviceInfo
+    });
+    var response = await http.post(Uri.parse("${Sabitler.url}/api/DreamSifremiUnuttum"),
+        headers: {
+          "apiKey": Sabitler.apiKey,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body);
+    if (response.statusCode == 200) {
+      showDialog(
+          context: context,
+          builder: (context) => BilgilendirmeDialog(
+              "Şifreniz kayıtlı mail adresinize gönderildi.\nMailinizi kontrol etmeyi unutmayınız."))
+          .then(
+              (value) => FocusScope.of(context).requestFocus(new FocusNode()));
+    } else if (response.statusCode == 404) {
+      showDialog(
+          context: context,
+          builder: (context) => BilgilendirmeDialog(
+              "Bu bilgiye ait kullanıcı bulunamadı.\nBilginizi kontrol edip tekrar deneyebilirsiniz."))
+          .then(
+              (value) => FocusScope.of(context).requestFocus(new FocusNode()));
+    } else {
+      showDialog(
+          context: context,
+          builder: (context) => BilgilendirmeDialog(
+              "Şuan sisteme erişilemiyor. Daha sonra tekrar deneyiniz.")).then(
+              (value) => FocusScope.of(context).requestFocus(new FocusNode()));
+    }
+  }
+
+  _sifremiDegistir() async {
+    print("debug1");
+    print("_kullaniciYeniSifreController.text ${_kullaniciYeniSifreController.text}");
+    print("_id ${UserInfo.activeUserId}");
+
+    var response = await http.post(Uri.parse("${Sabitler.url}/api/DreamSifreDegistir?yeniSifre=${_kullaniciYeniSifreController.text}&id=${UserInfo.activeUserId}"),
+      headers: {
+        "apiKey": Sabitler.apiKey,
+      },
+    );
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: "şifre başarıyla değiştirildi.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "Şifre değiştirme başarısız, tekrar deneyin.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }  Navigator.pop(context);
   }
 }
 

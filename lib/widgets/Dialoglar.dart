@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 
+
 class BilgilendirmeDialog extends StatelessWidget {
   String bilgiMesaji;
   BilgilendirmeDialog(this.bilgiMesaji);
@@ -62,8 +63,7 @@ class DetayDialog extends StatelessWidget {
                 ),
                 Divider(),
                 Container(
-                    height: MediaQuery.of(context).size.height*5
-                        /8-104,
+                    height: MediaQuery.of(context).size.height*5 /8-104,
                     child: ListView(
                       children: [
                         Text(detay,style: TextStyle(color: Colors.black,fontSize: 17)),

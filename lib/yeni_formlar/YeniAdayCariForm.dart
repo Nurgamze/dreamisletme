@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,12 +26,53 @@ class _YeniAdayCariFormState extends State<YeniAdayCariForm> {
   TextEditingController _webAdresiController = new TextEditingController();
   TextEditingController _epostaAdresiController = new TextEditingController();
   TextEditingController _vergiDaireNoController = new TextEditingController();
+  TextEditingController _sektorController = new TextEditingController();
+  TextEditingController _bolgeController = new TextEditingController();
   String bosString = "";
   bool kaydedildiMi = false;
-
   bool sending = false;
 
   final _formKey = GlobalKey<FormState>();
+  String _value = " ";
+  List<String> bolgeler = [];
+  List<String> sektorler = [];
+  String? selectedBolge;
+  String? selectedSektor;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCariBolgeler();
+    fetchCariSektorler();
+  }
+
+  Future<List<String>> fetchCariBolgeler() async {
+    final response = await http.get(Uri.parse('${Sabitler.url}/api/CariBolgeler?vtIsim=${UserInfo.activeDB}'),
+      headers: {
+        "apiKey": Sabitler.apiKey,
+      });
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      return data.where((item) => item['cari_bolge_kodu'].toString().isNotEmpty).map((item) => item['cari_bolge_kodu'].toString()).toList();
+    } else {
+      throw Exception('API isteği başarısız oldu, durum kodu: ${response.statusCode}');
+    }
+  }
+
+  Future<List<String>> fetchCariSektorler() async {
+    final response = await http.get(Uri.parse('${Sabitler.url}/api/CariSektorler?vtIsim=${UserInfo.activeDB}'),
+      headers: {
+        "apiKey": Sabitler.apiKey,
+      });
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      return data.where((item) => item['cari_sektor_kodu'].toString().isNotEmpty).map((item) => item['cari_sektor_kodu'].toString()).toList();
+
+    } else {
+      throw Exception('API isteği başarısız oldu, durum kodu: ${response.statusCode}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double formHeight = 50;
@@ -168,6 +208,110 @@ class _YeniAdayCariFormState extends State<YeniAdayCariForm> {
                         margin: EdgeInsets.symmetric(horizontal: 5),
                       ),
                       SizedBox(height: 2,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Container(
+                          height: formHeight,
+                          decoration: new BoxDecoration(
+                              color: Colors.white,
+                              border: new Border.all(
+                                  color: Colors.blue.shade900,
+                                  width: 2.0
+                              ),
+                              borderRadius: new BorderRadius.circular(5.0)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                            child: Row(
+                             children: [
+                               Text("Bölge Seç:",style: TextStyle(color: Colors.grey),),
+                               SizedBox(width: 10,),
+                               FutureBuilder<List<String>>(
+                                 future: fetchCariBolgeler(),
+                                 builder: (context, snapshot) {
+                                   if (snapshot.connectionState == ConnectionState.waiting) {
+                                     return CircularProgressIndicator();
+                                   } else if (snapshot.hasError) {
+                                     return Text('Hata: ${snapshot.error}');
+                                   } else {
+                                     bolgeler = snapshot.data!;
+                                     return DropdownButton<String>(
+                                       value: selectedBolge,
+                                       onChanged: (newValue) {
+                                         setState(() {
+                                           selectedBolge = newValue;
+                                           _bolgeController.text = newValue.toString();
+                                           print("_bolgeController ${_bolgeController}");
+                                         });
+                                       },
+                                       items: bolgeler.map<DropdownMenuItem<String>>((String value) {
+                                         return DropdownMenuItem<String>(
+                                           value: value,
+                                           child: Text(value),
+                                         );
+                                       }).toList(),
+                                     );
+                                   }
+                                 },
+                               ),
+                             ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 3,),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Container(
+                          height: formHeight,
+                          decoration: new BoxDecoration(
+                              color: Colors.white,
+                              border: new Border.all(
+                                  color: Colors.blue.shade900,
+                                  width: 2.0
+                              ),
+                              borderRadius: new BorderRadius.circular(5.0)
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                            child: Row(
+                             children: [
+                               Text('Sektör Seç:',style: TextStyle(color: Colors.grey),),
+                               SizedBox(width: 10,),
+                               FutureBuilder<List<String>>(
+                                 future: fetchCariSektorler(),
+                                 builder: (context, snapshot) {
+                                   if (snapshot.connectionState == ConnectionState.waiting) {
+                                     return CircularProgressIndicator();
+                                   } else if (snapshot.hasError) {
+                                     return Text('Hata: ${snapshot.error}');
+                                   } else {
+                                     sektorler = snapshot.data!;
+                                     return DropdownButton<String>(
+                                       value: selectedSektor,
+                                       onChanged: (newValue) {
+                                         setState(() {
+                                           selectedSektor = newValue;
+                                           _sektorController.text = newValue.toString();
+                                           print("sektorcontroller ${_sektorController}");
+                                         });
+                                       },
+                                       items: sektorler.map<DropdownMenuItem<String>>((String value) {
+                                         return DropdownMenuItem<String>(
+                                           value: value,
+                                           child: Text(value),
+                                         );
+                                       }).toList(),
+                                     );
+                                   }
+                                 },
+                               ),
+                             ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 3,),
                       Container(
                         decoration: new BoxDecoration(
                             color: Colors.white,
@@ -409,14 +553,16 @@ class _YeniAdayCariFormState extends State<YeniAdayCariForm> {
     _yetkiliKisiController.text = _yetkiliKisiController.text.replaceAll("'", "''");
     _yetkiliCepController.text = _yetkiliCepController.text.replaceAll("'", "''");
     _yetkiliEpostaController.text = _yetkiliEpostaController.text.replaceAll("'", "''");
+    _sektorController.text = _sektorController.text.replaceAll("'", "''");
+    _bolgeController.text = _bolgeController.text.replaceAll("'", "''");
 
     var body = jsonEncode({
       "vtname" : UserInfo.activeDB,
       "unvan" : _unvanController.text,
       "vdaireno" : _vergiDaireNoController.text,
       "temsilci" : bosString,
-      "sektor" : bosString,
-      "bolge" : bosString,
+      "sektor" : _sektorController.text,
+      "bolge" : _bolgeController.text,
       "grup" : bosString,
       "web" : _webAdresiController.text,
       "eposta" : _epostaAdresiController.text,
@@ -431,8 +577,7 @@ class _YeniAdayCariFormState extends State<YeniAdayCariForm> {
       "AppVer" : TelefonBilgiler.userAppVersion,
       "UserId" : UserInfo.activeUserId
     });
-    var response = await http.post(Uri.parse(
-        "${Sabitler.url}/api/YeniAdayCari"),
+    var response = await http.post(Uri.parse("${Sabitler.url}/api/YeniAdayCari"),
       headers: {
           "apiKey": Sabitler.apiKey,
           'Content-Type': 'application/json; charset=UTF-8',

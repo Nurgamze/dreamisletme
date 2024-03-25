@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdsdream_flutter/AnaEkranSayfasi.dart';
+import 'package:sdsdream_flutter/GirisYapYeni.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
 
 import '../cariler/models/cari.dart';
@@ -21,8 +26,8 @@ class MailGonderPopUp extends StatefulWidget {
 
 class _MailGonderPopUpState extends State<MailGonderPopUp> {
 
-
   TextEditingController _mailGonderController = new TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -131,3 +136,178 @@ class _MailGonderPopUpState extends State<MailGonderPopUp> {
     }
   }
 }
+
+
+
+class KayitKodGonder extends StatefulWidget {
+
+  final String userName;
+  KayitKodGonder(this.userName);
+  @override
+  _KayitKodGonderState createState() => _KayitKodGonderState();
+
+}
+
+class _KayitKodGonderState extends State<KayitKodGonder> {
+//  String kayitKod = "9999";
+  String dogrulamaKodu = '';
+  bool tekrarGonder = false;
+  Timer? _timer;
+  TextEditingController _kayitMailKodController = new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _kodGonder();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return MediaQuery(
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Container(
+          height: 140,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(17),
+          ),
+          child: Column(
+            children: [
+              Container(height: 20,),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: TextField(
+                    keyboardType: TextInputType.number ,
+                    textAlign: TextAlign.center,
+                    controller: _kayitMailKodController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Mailinize gelen kodu giriniz.',
+                    ),
+                    inputFormatters:[
+                      LengthLimitingTextInputFormatter(6),
+                    ]
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 0),
+                child: Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(right: 10,left: 10),
+                          child:  Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                child: ElevatedButton(
+                                child: Text("Tekrar Gönder",style: TextStyle(color: Colors.grey.shade200),),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      side: BorderSide(color: tekrarGonder ? Colors.blue : Colors.grey,)
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if(!tekrarGonder){
+                                    Fluttertoast.showToast(
+                                        msg:  "60 saniye içinde tekrar kod gönderemezsiniz",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        textColor: Colors.white,
+                                        backgroundColor: Colors.green.shade600,
+                                        fontSize: 16.0
+                                    );
+                                  }else{
+                                    setState(() {
+                                     // kayitKod = "9999999";
+                                      tekrarGonder = false;
+                                    });
+                                    _kodGonder();
+                                    Fluttertoast.showToast(
+                                        msg:  "Mailinize doğrulama amaçlı kod gönderilmiştir kontrol ediniz.",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        textColor: Colors.white,
+                                        backgroundColor: Colors.blue.shade900,
+                                        fontSize: 16.0
+                                    );
+                                  }
+                                },
+                              ),),
+                              SizedBox(width: 10,),
+                              Expanded(
+                                  child: ElevatedButton(
+                                child: Text("Onayla",style: TextStyle(color: Colors.grey.shade200),),
+                               style: ElevatedButton.styleFrom(
+                                 shape: RoundedRectangleBorder(
+                                     borderRadius: BorderRadius.circular(5.0),
+                                     side: BorderSide(color: Colors.green)
+                                 ),
+                               ),
+                                onPressed: () async {
+                                  print("dogrulamakoduuuuuu ${dogrulamaKodu}");
+
+                                  if(_kayitMailKodController.text == dogrulamaKodu){
+                                    //kod doğruysa giriş yap sayafasındaki checklogin ile giriş yapmalılar
+                                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AnaEkranSayfasi()));
+                                    print("giriş yapabilir");
+                                    _timer!.cancel();
+                                  }else{
+                                    Fluttertoast.showToast(
+                                        msg:  "Girdiğiniz kod yanlış",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        textColor: Colors.white,
+                                        backgroundColor: Colors.green.shade600,
+                                        fontSize: 16.0
+                                    );
+                                  }
+                                },
+                              ))
+                            ],
+                          ),
+                        )
+                      ],
+                    )
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+    );
+  }
+
+ void _kodGonder () async {
+    print("id ye bakıyoss ${widget.userName}");
+    var response  = await http.get(Uri.parse("${Sabitler.url}/api/Dogrulama?userName=${widget.userName}",),
+      headers: {
+        "apiKey": Sabitler.apiKey,
+      },
+    );
+    if(response.statusCode == 200){
+      dogrulamaKodu  = response.body;
+      print("doğrulamakodu ${dogrulamaKodu }");
+      dogrulamaKodu  = json.decode(response.body);
+      _timerCheck();
+    }else{
+      dogrulamaKodu  = 'Failed to fetch verification code';
+    }
+    return;
+  }
+
+  _timerCheck() {
+    _timer = Timer(Duration(seconds: 125), () {
+      setState(() {
+        tekrarGonder = true;
+      });
+    });
+  }
+}
+

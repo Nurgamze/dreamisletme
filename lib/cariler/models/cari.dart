@@ -21,25 +21,7 @@ class DreamCari extends BaseDataModel{
   String? vNo;
   String? vade;
 
-  DreamCari({
-    this.bolge,
-    this.bakiye,
-    this.email,
-    this.grup,
-    this.gsm,
-    this.kod,
-    this.kalanKredi,
-    this.kredi,
-    this.musteriTipi,
-    this.mutabakatmail,
-    this.risk,
-    this.sektor,
-    this.temsilci,
-    this.unvan,
-    this.vDairesi,
-    this.vNo,
-    this.vade,
-  });
+  DreamCari({this.bolge, this.bakiye, this.email, this.grup, this.gsm, this.kod, this.kalanKredi, this.kredi, this.musteriTipi, this.mutabakatmail, this.risk, this.sektor, this.temsilci, this.unvan, this.vDairesi, this.vNo, this.vade,});
 
   Map<String, dynamic> toMap() {
     return {

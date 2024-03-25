@@ -29,7 +29,7 @@ class _DepodakiMiktarlarDetaySayfasiState extends State<DepodakiMiktarlarDetaySa
   late DepoMiktarGridSource _depoMiktarGridSource;
 
   bool loading = false;
-  List<DepoMiktarlariGridModel> aramaList = [];
+  List<DepoDetayGridModel> aramaList = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -194,7 +194,7 @@ class _DepodakiMiktarlarDetaySayfasiState extends State<DepodakiMiktarlarDetaySa
   }
 
   _satisAra() async {
-    List<DepoMiktarlariGridModel> arananlarList = [];
+    List<DepoDetayGridModel> arananlarList = [];
     for(var stok in aramaList){
       if(stok.subeAdi!.toLowerCase().contains(_aramaController.text) || stok.depoAdi!.toLowerCase().contains(_aramaController.text)){
         arananlarList.add(stok);
@@ -215,7 +215,7 @@ class _DepodakiMiktarlarDetaySayfasiState extends State<DepodakiMiktarlarDetaySa
     if(response.statusCode == 200){
       var depoMiktarJson = jsonDecode(response.body);
       for(var depoMiktar in depoMiktarJson) {
-        DepoMiktarlariGridModel bbbb = DepoMiktarlariGridModel(
+        DepoDetayGridModel bbbb = DepoDetayGridModel(
             depoMiktar['SubeKodu'],
             depoMiktar['SubeAdi'],
             depoMiktar['DepoAdi'],

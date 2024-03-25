@@ -61,8 +61,8 @@ android {
         applicationId "sds.dream"
         minSdkVersion 23
         targetSdkVersion 33
-        versionCode 3718
-        versionName "3.7.18"
+        versionCode 3725
+        versionName "3.7.25"
         multiDexEnabled true
     }
 

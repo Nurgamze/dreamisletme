@@ -29,7 +29,8 @@ List<StokSatisKarlilikRaporuGridModel> stokSatisKarlilikRaporuGridList = [];
 List<OnlineHesabimGridModel> onlineHesabimGridList = [];
 List<ZiyaretPlaniGridModel> ziyaretPlaniGridList = [];
 List<AcikSiparislerGridModel> acikSiparisGridList = [];
-List<DepoMiktarlariGridModel> depoMiktarlariGridList = [];
+List<TumAcikSiparislerGridModel> tumAcikSiparisGridList=[];
+List<DepoDetayGridModel> depoMiktarlariGridList = [];
 List<SatisCiroKaybiGridModel> satisCiroKaybiGridList = [];
 List<OrtalamaVadeHesapla> ovhGridList = [];
 

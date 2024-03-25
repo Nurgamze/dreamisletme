@@ -85,6 +85,11 @@ dependencies:
   provider:
   sqflite:
   info_popup:
+  imei:
+  device_imei:
+  mobile_number: ^2.1.1
+  sms_autofill: ^2.3.0
+  intl:
 
 
 dev_dependencies:

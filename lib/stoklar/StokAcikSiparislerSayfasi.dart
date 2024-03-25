@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdsdream_flutter/lojistik/Stoklar/StokDetaySayfasi.dart';
 import 'package:sdsdream_flutter/modeller/GridModeller.dart';
 import 'package:sdsdream_flutter/modeller/Listeler.dart';
 import 'package:sdsdream_flutter/modeller/Modeller.dart';
@@ -28,6 +29,8 @@ class _StokAcikSiparislerSayfasiState extends State<StokAcikSiparislerSayfasi> {
 
   DataGridController dataGridController = DataGridController();
   late StokAcikSiparislerGridSource _stokAcikSiparislerGridSource;
+
+
 
   bool loading = false;
   List<AcikSiparislerGridModel> aramaList = [];
@@ -191,6 +194,8 @@ class _StokAcikSiparislerSayfasiState extends State<StokAcikSiparislerSayfasi> {
         onCellTap: (value) async {
           Future.delayed(Duration(milliseconds: 10), () async{
             FocusScope.of(context).requestFocus(new FocusNode());
+            //Navigator.push(context, MaterialPageRoute(builder: (context)=>StokDetaySayfasi(data:value )));
+           // print("sjdbshfhseabfhu");
           });
         },
       ),
@@ -219,7 +224,7 @@ class _StokAcikSiparislerSayfasiState extends State<StokAcikSiparislerSayfasi> {
     if(response.statusCode == 200){
       var siparislerJson = jsonDecode(response.body);
       for(var siparisler in siparislerJson) {
-        AcikSiparislerGridModel bbbb = AcikSiparislerGridModel(
+        AcikSiparislerGridModel acikSip = AcikSiparislerGridModel(
           siparisler['sip_cins'],
           siparisler['sip_tip'],
           siparisler['sip_evrakno_seri'],
@@ -238,7 +243,7 @@ class _StokAcikSiparislerSayfasiState extends State<StokAcikSiparislerSayfasi> {
           DateTime.parse(siparisler['sip_tarih'].toString()),
           DateTime.parse(siparisler['sip_teslim_tarih'].toString())
         );
-        acikSiparisGridList.add(bbbb);
+        acikSiparisGridList.add(acikSip);
       }
       // if(acikSiparisGridList.length == 1)
       //   acikSiparisGridList.clear();

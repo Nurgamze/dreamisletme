@@ -21,7 +21,7 @@ import 'models/cari.dart';
 
 
 class OrtalamaVade extends StatefulWidget {
-  final DreamCari data;
+  final DreamCari? data;
   OrtalamaVade({required this.data});
   @override
   _OrtalamaVadeState createState() => _OrtalamaVadeState();
@@ -86,7 +86,7 @@ class _OrtalamaVadeState extends State<OrtalamaVade> {
                               PdfBitmap(await _readImageData());
                           font = await _readFontData();
                           generateReport();*/
-                            showDialog(context: context,builder: (context) => MailGonderPopUp(context,"OrtalamaVade",ekstreTarihi: DateTime.now().toString(),data: widget.data));
+                            showDialog(context: context,builder: (context) => MailGonderPopUp(context,"OrtalamaVade",ekstreTarihi: DateTime.now().toString(),data: widget.data!));
                           },),
                       ],
                     )
@@ -145,7 +145,7 @@ class _OrtalamaVadeState extends State<OrtalamaVade> {
                               Container(
                                 margin: EdgeInsets.symmetric(horizontal: 2),
                                 height:31,
-                                child: Center(child: Text("${widget.data.vade}",style: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold),),),
+                                child: Center(child: Text("${widget.data?.vade}",style: TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.bold),),),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(5),bottomRight: Radius.circular(5)),
                                     border: Border.all(color: Colors.blue.shade900,width: 2)
@@ -254,16 +254,20 @@ class _OrtalamaVadeState extends State<OrtalamaVade> {
     double gecenBakiye00Gun = 0;
     double gecenBakiye30Gun = 0;
     double gecenBakiye60Gun = 0;
-    String yazilacakVade = widget.data.vade == "PEŞİN" ? "0 GÜN" : "${widget.data.vade}";
+   // String yazilacakVade =  "0 GÜN" ;
+    String yazilacakVade = widget.data?.vade == "PEŞİN" ? "0 GÜN" : "${widget.data?.vade}";
+    print("yazılacak vade ${yazilacakVade}");
+    print("widget.data.vade ${widget.data}");
     int vadeGun = int.parse(yazilacakVade.replaceAll(" GÜN", ""));
-    var response = await http.get(Uri.parse("${Sabitler.url}/api/CariHesapEkstresi?VtIsim=${UserInfo.activeDB}&Customer=false&cariKod=${widget.data.kod}&ozet=false&Mobile=true&ekstreTarihi=&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),headers: {"apiKey" : Sabitler.apiKey});
+    print("vadeGun  ${vadeGun}");
+    var response = await http.get(Uri.parse("${Sabitler.url}/api/CariHesapEkstresi?VtIsim=${UserInfo.activeDB}&Customer=false&cariKod=${widget.data?.kod}&ozet=false&Mobile=true&ekstreTarihi=&DevInfo=${TelefonBilgiler.userDeviceInfo}&AppVer=${TelefonBilgiler.userAppVersion}&UserId=${UserInfo.activeUserId}"),headers: {"apiKey" : Sabitler.apiKey});
     if(response.statusCode == 200) {
       setState(() {
         var ekstreDetay = json.decode(response.body);
         listGelenVeri = ekstreDetay;
         for(int i = listGelenVeri.length-1 ; i > -1 ; i--){
           var kayitTip = listGelenVeri[i]['tip'].toString().toLowerCase();
-          if (meblagTutar >= (widget.data.bakiye ?? 0)) break;
+          if (meblagTutar >= (widget.data?.bakiye ?? 0)) break;
           if (kayitTip == "alacak") continue;
 
           if(listGelenVeri[i]['kayit'].toString() == "0"){
@@ -281,7 +285,7 @@ class _OrtalamaVadeState extends State<OrtalamaVade> {
             kalanGun = gecenGun * -1;
           }
 
-          var kalanBorc = meblagTutar > (widget.data.bakiye ?? 0) ? meblag - (meblagTutar - (widget.data.bakiye ?? 0)) : meblag;
+          var kalanBorc = meblagTutar > (widget.data?.bakiye ?? 0) ? meblag - (meblagTutar - (widget.data?.bakiye ?? 0)) : meblag;
           borcToplam += kalanBorc;
           hesapToplam += kalanBorc * kalanGun;
 

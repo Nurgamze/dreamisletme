@@ -206,6 +206,11 @@ class APIService {
   }
 
 
+
+
+
+
+
   ///example: APIService.fetchDataWithModel<ReturnModel,ParseModel>
   static Future<ResponseModel<R>> getDataWithModel<R,T extends BaseDataModel>(String url,Map<String, dynamic> queryParameters,T model,{String? partOfJson}) async {
     try{

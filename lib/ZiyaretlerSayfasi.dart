@@ -47,6 +47,7 @@ class _ZiyaretlerSayfasiState extends State<ZiyaretlerSayfasi> {
     if(!TelefonBilgiler.isTablet) AutoOrientation.portraitAutoMode();
     ziyaretlerGridList.clear();
   }
+
   @override
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;

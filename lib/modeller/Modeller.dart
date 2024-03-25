@@ -153,6 +153,7 @@ class UserInfo {
   static String? mikroPersonelKod = "";
   static String? ad = "";
   static String? soyAd = "";
+  static String? password = "";
   static bool? isSuperUser = false;
   static bool? isCriticUser = false;
   static bool? isCiroRapor = false;
@@ -176,6 +177,9 @@ class UserInfo {
   static bool alisDetayYetkisi = false;
   static bool onlineHesabimYetkisi = false;
   static bool zenitUretimYetki = false;
+  static String? lastLoginDate = DateTime.now().toString();
+  static String? dateTimeNow;
+
 }
 
 class TelefonBilgiler {
@@ -184,6 +188,7 @@ class TelefonBilgiler {
   static String userAppVersion = "";
   static String appVersion = "";
   static bool isTablet = false;
+  static String androidId= "";
 }
 
 class Foksiyonlar {
@@ -306,7 +311,7 @@ class Foksiyonlar {
           .then((value) => Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => GirisYapSayfasi()),
-                (Route<dynamic> route) => false,
+                (Route<dynamic> route) => true,
               ));
     }
     return false;
